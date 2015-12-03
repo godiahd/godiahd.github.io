@@ -1,0 +1,1288 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>CIAT SOC APPLICATION</title>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oxygen:300">
+		
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		
+		
+		<!-- <script src="Scripts/chartist/chartist.min.js"></script>
+		<link href="Scripts/chartist/chartist.css" rel="stylesheet" type="text/css" />
+		
+		<script src="Scripts/jquery-2.1.3.min.js"></script>
+		<script src="Scripts/jquery-ui-1.11.2/jquery-ui.min.js"></script>
+		<link href="Scripts/jquery-ui-1.11.2/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+		<link href="Scripts/jquery-ui-1.11.2/jquery-ui.theme.css" rel="stylesheet" type="text/css" /> -->
+		
+		<script>
+			var data;
+			var options;
+			var activity1tablecomputations = [];
+			var activity1graphcomputations = [];
+			var activity2tablecomputations = [];
+			var activity2graphcomputations = [];
+			var addindex = 0;
+			var showcomputations = false;
+			
+			$(document).ready(function() {
+				$(function() {
+					$(".accordion").accordion();
+					$(".selector").accordion({ animated: 'bounceslide' });
+					//getter
+					var animated = $(".selector").accordion("option", "animated");
+					//setter
+					$(".selector").accordion("option", "animated", 'bounceslide');
+				});
+				
+				
+				
+				
+				
+				
+				
+			});
+			
+			function selectcelltext($cell) {
+				if (document.selection) {  // IE
+					var range = document.body.createTextRange();
+					range.moveToElementText($cell);
+					range.select();
+				}
+				else if (window.getSelection) {
+					var range = document.createRange();
+					range.selectNode($cell.firstChild);
+					window.getSelection().addRange(range);
+				}
+			}
+			
+			
+			function addtablerow() {
+				var thicknessval;
+				var socstartval;
+				var socendval;
+				var bulkdensityval;
+				
+				switch(addindex) {
+					case 0:
+						thicknessval = 6;
+						socstartval = 35;
+						socendval = 45;
+						bulkdensityval = 1.2;
+						break;
+					case 1:
+						thicknessval = 22;
+						socstartval = 30;
+						socendval = 30;
+						bulkdensityval = 1.25;
+						break;
+					case 2:
+						thicknessval = 34;
+						socstartval = 15;
+						socendval = 20;
+						bulkdensityval = 1.3;
+						break;
+					case 3:
+						thicknessval = 40;
+						socstartval = 10;
+						socendval = 10;
+						bulkdensityval = 1.35;
+						break;
+					case 4:
+						thicknessval = 44;
+						socstartval = 5;
+						socendval = 5;
+						bulkdensityval = 1.38;
+						break;
+					default:
+						thicknessval = "??";
+						socstartval = "??";
+						socendval = "??";
+						bulkdensityval = "??";
+				}
+				
+				$('#tblactivity1').append('<tr>' +
+                        '<td onblur="displayactivityvalues()" onclick="selectcelltext(this)" contenteditable=true style="cursor:pointer;">' + thicknessval + '</td>' +
+						'<td onblur="displayactivityvalues()" onclick="selectcelltext(this)" contenteditable=true style="cursor:pointer;">' + socstartval + '</td>' +
+						'<td onblur="displayactivityvalues()" onclick="selectcelltext(this)" contenteditable=true style="cursor:pointer;">' + socendval + '</td>' +
+						'<td onblur="displayactivityvalues()" onclick="selectcelltext(this)" contenteditable=true style="cursor:pointer;">' + bulkdensityval + '</td>' +
+                    '</tr>');
+				addindex += 1;
+			}
+			
+			
+			function removetablerow() {
+				$('#tblactivity1 tbody tr:last').remove();
+				addindex-=1;
+			}
+			
+			
+			function displayactivityvalues() {
+				
+				if ($('#txtlocality').val()) {
+					$('#txtlocality').css({ "border": "solid 0.5px #000000" });
+					
+					if ($('#checkcomps').is(':checked')) {
+						showcomputations = true;
+					} else {
+						showcomputations = false;
+					}
+					
+					if (tablevaluesvalid($("#tblactivity1")) == true) {
+						$('.div-compute-table').empty();
+						$('.div-compute-table').css({"display": "none"});
+						$('.div-compute-chart').empty();
+						$('.div-compute-chart').css({"display": "none"});
+						
+						displayactivityonevalues();
+					} else {
+						alert("Input valid values in the table to continue.");
+					}
+					
+				} else {
+					$('#txtlocality').css({ "border": "solid 1px #FF0000" });
+					alert("Input locality to continue.");
+				}
+			}
+			
+			
+			function displayactivityonevalues() {
+				$('#divactivity1computedtable').empty();
+				
+				//$('body').append("<img style='top: 45%; position: absolute; height: 100px; width: 100px;background: black;left: 45%;' src='http://www.klk.com.my/wp-content/themes/klk/images/loading-ajax.gif' />");
+				
+				// if display tables
+				if (showcomputations == true) {
+					$('#divactivity1computedtable').append('<p>Computed Values:</p>' +
+					'<table id="tblactivity1computedvalues" class="display-table">');
+					
+					$('#tblactivity1computedvalues').append('<thead>' +
+						'<th>Layer</th><th>Layer Thickness</th><th>Layer, top depth(cm)</th><th>Layer, bottom depth(cm)</th><th>Layer, mid depth(cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Delta SOC (g/kg)</th><th>Bulk density (g/cm3)</th><th>SOC-seq (Mg/ha/depth)</th>' +
+					'</thead>' +
+						
+					'<tbody>' +
+						
+					'</tbody>');
+				}
+				
+				// append computed values
+				activity1tablecomputations = computeactivityonevalues();
+				if (activity1tablecomputations) {
+					// if display tables
+					if (showcomputations == true) {
+						for (i = 0; i < activity1tablecomputations.length; i++) {
+							var returnrows = activity1tablecomputations[i];
+							
+							$('#tblactivity1computedvalues').append('<tr></tr>');
+							
+							for (j = 0; j < returnrows.length; j++) {
+								$('#tblactivity1computedvalues tr:last').append('<td>' + returnrows[j] + '</td>');
+							}
+						}
+						
+						$('#divactivity1computedtable').css({ "display": "block" });
+					}
+					
+					$('.accordionitem').css({ "height": 500 });
+					
+					// create graph values (for second table)
+					activity1graphcomputations = computeactivityonegraphvalues(activity1tablecomputations);
+					var labelsdata = [];
+					var linesmoothenedstart = [];
+					var linesmoothenedend = [];
+					var markerliststart = []; // holds values to display with marker
+					var markerlistend = []; // holds values to display with marker
+					
+					if (activity1graphcomputations) {
+						// if display tables
+						if (showcomputations == true) {
+							$('#divactivity1graphtable').append('<table id="tblactivity1graphvalues" class="display-table">');
+								
+								$('#tblactivity1graphvalues').append('<thead>' +
+									'<th>Depth(cm)</th><th>Line, smoothened - START</th><th>Line, smoothened - END</th>' +
+								'</thead>' +
+									
+								'<tbody>' +
+									
+								'</tbody>');
+						}
+						
+						for (k = 0; k < activity1graphcomputations.length; k++) {
+							var returnrows = activity1graphcomputations[k];
+							
+							// if display tables
+							if (showcomputations == true) {
+								var item = '<tr>';
+								
+								for (l = 0; l < returnrows.length; l++) {
+									item += '<td>' + returnrows[l] + '</td>';
+								}
+								item += '</tr>';
+								$('#tblactivity1graphvalues').append(item);
+							}
+							
+							labelsdata.push(returnrows[0]);
+							linesmoothenedstart.push(returnrows[1]);
+							linesmoothenedend.push(returnrows[2]);
+						}
+						
+						if (showcomputations == true) {
+							$('#divactivity1graphtable').css({ "display": "block" });
+						}
+						
+						$('.accordionitem').css({ "height": 500 });
+						
+						// get marker values
+						for (i = 1; i < activity1tablecomputations.length - 2; i++) {
+							var returnrows = activity1tablecomputations[i];
+							markerliststart.push(returnrows[5]);
+							markerlistend.push(returnrows[6]);
+						}
+						
+						// draw graph
+						drawactivityonegraph(labelsdata, linesmoothenedstart, linesmoothenedend, markerliststart, markerlistend);
+						
+					} else {
+						alert("No values for graph display.");
+					}
+					
+				} else {
+					alert("No values computed.");
+				}
+			}
+			
+			
+			function computeactivityonevalues() {
+				var layer = 0;
+				var layerthickness = "";
+				var topdepth = "";
+				var bottomdepth = "";
+				var middepth = 0;
+				var socstart = 0;
+				var socend = 0;
+				var deltasoc = "";
+				var bulkdensity = "";
+				var socseq = "";
+				var sumlayerthickness = 0.0;
+				var sumbulkdensity = 0.0;
+				var sumsocseq = 0.0;
+				var lastrowlist = [];
+				var activityonecomputedlist = [];
+				var r = 0;
+				
+				$('#tblactivity1').find('tr').each(function () {
+					var rowlist = [];
+					
+					if (r > 0) { // leave out header
+						var selrow = $(this);
+						
+						if (r == 1){
+							socstart = selrow.find('td').eq(1).html();
+							socend = selrow.find('td').eq(2).html();
+							rowlist = [layer, layerthickness, topdepth, bottomdepth, middepth, socstart, socend, deltasoc, bulkdensity, socseq];
+							activityonecomputedlist.push(rowlist);
+							
+							rowlist = [];
+							layer = r;
+							
+							layerthickness = parseInt(selrow.find('td').eq(0).html());
+							topdepth = 0;
+							bottomdepth = layerthickness + topdepth;
+							middepth = (topdepth + bottomdepth)/2;
+							socstart = parseInt(selrow.find('td').eq(1).html());
+							socend = parseInt(selrow.find('td').eq(2).html());
+							deltasoc = (socend - socstart)
+							bulkdensity = parseFloat(selrow.find('td').eq(3).html());
+							
+							// compute
+							socseq = (parseFloat(selrow.find('td').eq(0).html()) * deltasoc * bulkdensity)/10.0;
+							sumlayerthickness += parseInt(layerthickness);
+							sumbulkdensity += parseFloat(layerthickness) * parseFloat(bulkdensity); // sumproduct
+							sumsocseq += parseFloat(socseq);
+							
+							rowlist = [layer, layerthickness, topdepth, bottomdepth, middepth, socstart, socend, deltasoc, bulkdensity, socseq];
+							activityonecomputedlist.push(rowlist);
+							
+						} else {
+							layer = r;
+							layerthickness = parseInt(selrow.find('td').eq(0).html());
+							topdepth = bottomdepth; // previous
+							bottomdepth = layerthickness + topdepth;
+							middepth = (topdepth + bottomdepth)/2;
+							socstart = parseInt(selrow.find('td').eq(1).html());
+							socend = parseInt(selrow.find('td').eq(2).html());
+							deltasoc = (socend - socstart)
+							bulkdensity = parseFloat(selrow.find('td').eq(3).html());
+							
+							// compute
+							socseq = (parseFloat(selrow.find('td').eq(0).html()) * deltasoc * bulkdensity)/10.0;
+							sumlayerthickness += parseInt(layerthickness);
+							sumbulkdensity += parseFloat(layerthickness) * parseFloat(bulkdensity); // sumproduct
+							sumsocseq += parseFloat(socseq);
+							
+							rowlist = [layer, layerthickness, topdepth, bottomdepth, middepth, socstart, socend, deltasoc, bulkdensity, socseq];
+							activityonecomputedlist.push(rowlist);
+						}
+					}
+					r+=1;
+					lastrowlist = rowlist;
+					
+					rowlist = [];
+				});
+				
+				activityonecomputedlist.push(["Last", "", "", "", parseInt(lastrowlist[4]) + 5, lastrowlist[5], lastrowlist[6], "", "", ""]);
+				activityonecomputedlist.push(["", "", "", "", "", "", "", "", sumbulkdensity/sumlayerthickness, sumsocseq]);
+				
+				return activityonecomputedlist;
+			}
+			
+			
+			function computeactivityonegraphvalues(graphlist) {
+				var layerdepth_range = [];
+				var socstart_range = [];
+				var socend_range = [];
+				var activityonecomputedgraphlist = [];
+				var linesmoothenedstart;
+				var linesmoothenedend;
+				
+				if (activity1tablecomputations) {
+					for (i = 0; i < activity1tablecomputations.length - 1; i++) {
+						layerdepth_range.push(parseInt(activity1tablecomputations[i][4]));
+						socstart_range.push(parseInt(activity1tablecomputations[i][5]));
+						socend_range.push(parseInt(activity1tablecomputations[i][6]));
+					}
+					
+					var highestdepth = parseInt(graphlist[graphlist.length - 3][3]) + 5;
+					
+					for (depth = 0; depth < highestdepth; depth++) {
+						linesmoothenedstart = cubic_spline(layerdepth_range, socstart_range, depth);
+						linesmoothenedend = cubic_spline(layerdepth_range, socend_range, depth);
+						
+						rowlist = [depth, linesmoothenedstart, linesmoothenedend];
+						activityonecomputedgraphlist.push(rowlist);
+					}
+				}
+				
+				return activityonecomputedgraphlist;
+			}
+			
+			
+			
+			function drawactivityonegraph(labelsdata, linesmoothenedstart, linesmoothenedend, markerliststart, markerlistend) {
+				var chart = new Highcharts.Chart({
+					chart: {
+						renderTo: 'ct-chartactivity1',
+						type: 'line',
+						inverted: true
+					},
+					title: {
+						text: 'SOC Sequestration Graph',
+						x: -20 //center
+					},
+					xAxis: {
+						categories: labelsdata,
+						allowDecimals: false,
+						gridLineColor: '#D8D8D8',
+						gridLineWidth: 1
+					},
+					yAxis: {
+						title: {
+							text: 'SOC (g/kg)'
+						},
+						plotLines: [{
+							value: 0,
+							width: 1,
+							color: '#808080'
+						}],
+						allowDecimals: false,
+						opposite: true,
+						gridLineColor: '#D8D8D8',
+						gridLineWidth: 1
+					},
+					tooltip: {
+						valueSuffix: 'g/kg'
+					},
+					legend: {
+						layout: 'vertical',
+						align: 'right',
+						verticalAlign: 'middle',
+						borderWidth: 0
+					},
+					series: [{
+						name: 'SOC conc - START (g/kg)',
+						data: linesmoothenedstart
+						
+					}, {
+						name: 'SOC conc - END (g/kg)',
+						data: linesmoothenedend
+					}]
+				});
+				
+				
+				
+				// update series 1 chart
+				var seriesend = chart.series[1];
+				if (seriesend.data.length) {
+					var lastvalupdated;
+					
+					for (j = 0; j < seriesend.data.length; j++) {
+						if ((markerlistend.indexOf(seriesend.data[j].y) >= 0) && (seriesend.data[j].y != lastvalupdated)) {
+							seriesend.data[j].update({
+								marker:{
+									enabled: true,
+									symbol: 'square',
+									radius: 8,
+									fillColor: 'white',
+									lineColor: '#FF0000',
+									lineWidth: 1,
+									states: {
+										allowPointSelect: true,
+										hover: {
+											fillColor: 'red',
+											lineColor: 'red'                                	
+										}
+									}
+								}
+							});
+							lastvalupdated = seriesend.data[j].y;
+						}
+					}
+				}
+				
+				// update series 0 chart
+				var seriesstart = chart.series[0];
+				if (seriesstart.data.length) {
+					var lastvalupdated;
+					
+					for (j = 0; j < seriesstart.data.length; j++) {
+						if ((markerliststart.indexOf(seriesstart.data[j].y) >= 0) && (seriesstart.data[j].y != lastvalupdated)) {
+							seriesstart.data[j].update({
+								marker:{
+									enabled: true,
+									symbol: 'circle',
+									radius: 8,
+									fillColor: 'white',
+									lineColor: '#000000',
+									lineWidth: 1,
+									states: {
+										allowPointSelect: true,
+										hover: {
+											fillColor: '#000000',
+											lineColor: '#000000'                                	
+										}
+									}
+								}
+							});
+							lastvalupdated = seriesstart.data[j].y;
+						}
+					}
+				}
+				
+				$('#ct-chartactivity1').css({ "display": "block" });
+				$('#outerdiv').css({ "display": "block" });
+				
+				$('.accordionitem').css({ "height": 500 });
+				
+				// activity 2 computations
+				displayactivitytwovalues();
+			}
+			
+			
+			function displayactivitytwovalues() {
+				$('#divactivity2computedtable').empty();
+				activity2tablecomputations = [];
+				
+				var rowvalues = ["", "Year"];
+				for (x = 1; x < $('#tblactivity1').find('tr').length; x++) {
+					rowvalues.push("Layer " + x);
+				}
+				rowvalues.push("% Increase");
+				
+				activity2tablecomputations.push(rowvalues);
+				
+				var layerarray = [];
+				var selrow;
+				var layerrows = [];
+				var c = 0;
+				$('#tblactivity1').find('tr').each(function () {
+					if (c > 0) {
+						selrow = $(this);
+						layerrows = [selrow.find('td').eq(1).html(), "", "", selrow.find('td').eq(2).html(), selrow.find('td').eq(3).html(), selrow.find('td').eq(0).html()];
+						layerarray.push(layerrows);
+					}
+					c+=1;
+				});
+				
+				rowvalues = ["START", 0];
+				for (i = 0; i < layerarray.length; i++) {
+					rowvalues.push(layerarray[i][0]);
+				}
+				rowvalues.push("");
+				activity2tablecomputations.push(rowvalues); 
+				
+				rowvalues = ["", ""];
+				for (i = 0; i < layerarray.length; i++) {
+					rowvalues.push(layerarray[i][1]);
+				}
+				rowvalues.push("");
+				activity2tablecomputations.push(rowvalues); 
+				
+				rowvalues = ["", ""];
+				for (i = 0; i < layerarray.length; i++) {
+					rowvalues.push(layerarray[i][2]);
+				}
+				rowvalues.push("");
+				activity2tablecomputations.push(rowvalues);
+				
+				rowvalues = ["END", 60];
+				for (i = 0; i < layerarray.length; i++) {
+					rowvalues.push(layerarray[i][3]);
+				}
+				rowvalues.push("");
+				activity2tablecomputations.push(rowvalues);
+				
+				rowvalues = ["BD (g/cm3)", ""];
+				for (i = 0; i < layerarray.length; i++) {
+					rowvalues.push(layerarray[i][4]);
+				}
+				rowvalues.push("");
+				activity2tablecomputations.push(rowvalues);
+				
+				rowvalues = ["Thickness (cm)", ""];
+				for (i = 0; i < layerarray.length; i++) {
+					rowvalues.push(layerarray[i][5]);
+				}
+				rowvalues.push("");
+				activity2tablecomputations.push(rowvalues);
+				
+				// update values
+				if (activity2tablecomputations.length == 7) {
+					if (updateactivity2yearcomputations() == false) {
+						alert("Activity 2 user input values invalid.");
+						return;
+					}
+					if (updateactivity2layercomputations() == false) {
+						alert("Activity 2 user input values invalid.");
+						return;
+					}
+					
+				} else {
+					alert("Activity 2 values failed to compute.");
+					return;
+				}
+				
+				
+				// append computed values
+				if (activity2tablecomputations) {
+					for (i = 0; i < activity2tablecomputations.length; i++) {
+						if (i == 0) {
+							$('#divactivity2computedtable').append('<p>Computed Values:</p>' +
+							'<table id="tblactivity2computedvalues" class="display-table">');
+							
+							var headeritem = '<thead>';
+							for (j = 0; j < activity2tablecomputations[i].length; j++) {
+								headeritem+='<th>' + activity2tablecomputations[i][j] + '</th>';
+							}
+							headeritem+='</thead>' + '<tbody>' + '</tbody>';
+							
+							$('#tblactivity2computedvalues').append(headeritem);
+							
+						} else {
+							var rowitem = '<tr>';
+							
+							for (k = 0; k < activity2tablecomputations[i].length; k++) {
+								if (((i == 2 || i == 3 || i == 4) && k == 1) || ((i == 2 || i == 3) && k == 2)) {
+									rowitem += '<td contenteditable=true onblur="activity2tablevalueschanged(this)" onclick="selectcelltext(this)" style="cursor:pointer;">' + activity2tablecomputations[i][k] + '</td>';
+								} else {
+									rowitem += '<td contenteditable=false style="color:#C0C0C0;">' + activity2tablecomputations[i][k] + '</td>';
+								}
+							}
+							
+							rowitem += '</tr>';
+							$('#tblactivity2computedvalues').append(rowitem);
+						}
+					}
+					
+					$('#divactivity2computedtable').css({ "display": "block" });
+					$('.accordionitem').css({ "height": 500 });
+					
+					// compute graph values
+					computeactivity2graphvalues();
+					
+				} else {
+					alert("No values computed for activity 2.");
+				}
+			}
+			
+			
+			function updateactivity2yearcomputations() {
+				if (!$.isNumeric(activity2tablecomputations[4][1])) {
+					return false;
+
+				} else {
+					var years = parseInt(activity2tablecomputations[4][1]);
+					activity2tablecomputations[2][1] = years/3;
+					activity2tablecomputations[3][1] = years * 2/3;
+					return true;
+				}
+			}
+			
+			function updateactivity2layercomputations() {
+				activity2tablecomputations[2][2] = parseFloat(activity2tablecomputations[1][2]) + (parseFloat(activity2tablecomputations[4][2]) - parseFloat(activity2tablecomputations[1][2])) * 0.6;
+				activity2tablecomputations[3][2] = parseFloat(activity2tablecomputations[1][2]) + (parseFloat(activity2tablecomputations[4][2]) - parseFloat(activity2tablecomputations[1][2])) * 0.9;
+				
+				activity2tablecomputations[2][activity2tablecomputations[0].length - 1] = (parseFloat(activity2tablecomputations[2][2]) - parseFloat(activity2tablecomputations[1][2]))/(parseFloat(activity2tablecomputations[4][2]) - parseFloat(activity2tablecomputations[1][2])) * 100.0;
+				activity2tablecomputations[3][activity2tablecomputations[0].length - 1] = (parseFloat(activity2tablecomputations[3][2]) - parseFloat(activity2tablecomputations[1][2]))/(parseFloat(activity2tablecomputations[4][2]) - parseFloat(activity2tablecomputations[1][2])) * 100.0;
+				
+				for (i = 3; i < activity2tablecomputations[0].length - 1; i++) {
+					activity2tablecomputations[2][i] = parseFloat(activity2tablecomputations[1][i]) + (parseFloat(activity2tablecomputations[2][activity2tablecomputations[0].length - 1])/100.0) * (parseFloat(activity2tablecomputations[4][i]) - parseFloat(activity2tablecomputations[1][i]));
+					activity2tablecomputations[3][i] = parseFloat(activity2tablecomputations[1][i]) + (parseFloat(activity2tablecomputations[3][activity2tablecomputations[0].length - 1])/100.0) * (parseFloat(activity2tablecomputations[4][i]) - parseFloat(activity2tablecomputations[1][i]));
+				}
+				
+				return true;
+			}
+			
+			
+			function computeactivity2graphvalues() {
+				activity2graphcomputations = [];
+				var totalyears = parseInt(activity2tablecomputations[4][1]);
+				var rowvalues = ["Year"];
+				
+				for (i = 2; i < activity2tablecomputations[0].length - 1; i++) {
+					rowvalues.push(activity2tablecomputations[0][i]);
+				}
+				
+				for (i = 2; i < activity2tablecomputations[0].length - 1; i++) {
+					rowvalues.push(activity2tablecomputations[0][i]);
+				}
+				rowvalues.push("All Layers");
+				activity2graphcomputations.push(rowvalues);
+				
+				var yearrange = [parseFloat(activity2tablecomputations[1][1]), parseFloat(activity2tablecomputations[2][1]), parseFloat(activity2tablecomputations[3][1]), parseFloat(activity2tablecomputations[4][1])];
+				
+				for (i = 0; i <= totalyears; i++) {
+					rowvalues = [i];
+					var colval;
+					
+					for (j = 2; j < activity2tablecomputations[0].length - 1; j++) {	
+						var layerrange = [parseFloat(activity2tablecomputations[1][j]), parseFloat(activity2tablecomputations[2][j]), parseFloat(activity2tablecomputations[3][j]), parseFloat(activity2tablecomputations[4][j])];
+						colval = cubic_spline(yearrange, layerrange, i);
+						rowvalues.push(colval);
+					}
+					
+					if (i == 0) {
+						for (j = 2; j < activity2tablecomputations[0].length - 1; j++) {
+							rowvalues.push("");
+						}
+						rowvalues.push("");
+						
+					} else {
+						var colsum = 0.0;
+						for (j = 2; j < activity2tablecomputations[0].length - 1; j++) {
+							colval = SOC_Konv((parseFloat(rowvalues[j-1]) - parseFloat(activity2graphcomputations[activity2graphcomputations.length - 1][j-1]))/10.0, parseFloat(activity2tablecomputations[5][j]), parseFloat(activity2tablecomputations[6][j]));
+							rowvalues.push(colval);
+							colsum += colval;
+						}
+						rowvalues.push(colsum);
+					}
+					
+					activity2graphcomputations.push(rowvalues);
+				}
+				
+				
+				if (showcomputations == true) {
+					for (i = 0; i < activity2graphcomputations.length; i++) {
+						if (i == 0) {
+							$('#divactivity2graphtable').append('<p>Computed Graph Values:</p>' +
+							'<table id="tblactivity2graphvalues" class="display-table">');
+							
+							var headeritem = '<thead>';
+							for (j = 0; j < activity2graphcomputations[i].length; j++) {
+								headeritem+='<th>' + activity2graphcomputations[i][j] + '</th>';
+							}
+							headeritem+='</thead>' + '<tbody>' + '</tbody>';
+							
+							$('#tblactivity2graphvalues').append(headeritem);
+							
+						} else {
+							var rowitem = '<tr>';
+							
+							for (k = 0; k < activity2graphcomputations[i].length; k++) {
+								rowitem += '<td>' + activity2graphcomputations[i][k] + '</td>';
+							}
+							
+							rowitem += '</tr>';
+							$('#tblactivity2graphvalues').append(rowitem);
+						}
+					
+						$('#divactivity2graphtable').css({ "display": "block" });
+					}
+				}
+				
+				$('.accordionitem').css({ "height": 500 });
+				
+				var yearslabel = [];
+				var soclayer1values = [];
+				var socseqlayer1values = [];
+				var markerlistsock = [];
+				
+				for (n = 1; n < activity2graphcomputations.length; n++) {
+					yearslabel.push(activity2graphcomputations[n][0]);
+					soclayer1values.push(activity2graphcomputations[n][1]);
+					
+					if (n > 1) {
+						socseqlayer1values.push(activity2graphcomputations[n][activity2graphcomputations[0].length - 1]);
+					}
+				}
+				
+				for (j = 0; j < 4; j++) {
+					markerlistsock.push(activity2tablecomputations[j+1][2]);
+				}
+				
+				// draw graph
+				drawactivitytwograph(yearslabel, soclayer1values, socseqlayer1values, markerlistsock);
+			}
+			
+			
+			function drawactivitytwograph(yearslabel, soclayer1values, socseqlayer1values, markerlistsock) {
+				var chart = new Highcharts.Chart({
+					chart: {
+						renderTo: 'ct-chartactivity2',
+						type: 'line'
+					},
+					title: {
+						text: 'SOC Sequestration Over Time Graph',
+						x: -20 //center
+					},
+					xAxis: {
+						categories: yearslabel,
+						//allowDecimals: false,
+						gridLineColor: '#D8D8D8',
+						gridLineWidth: 1
+					},
+					yAxis: [{
+						title: {
+							text: 'SOC (g/kg)'
+						},
+						plotLines: [{
+							value: 0,
+							width: 1,
+							color: '#808080'
+						}],
+						allowDecimals: false,
+						opposite: false,
+						gridLineColor: '#D8D8D8',
+						gridLineWidth: 1,
+						min: 0
+					},{
+						title: {
+							text: 'SOC seq. (t/ha)'
+						},
+						plotLines: [{
+							value: 0,
+							width: 1,
+							color: '#808080'
+						}],
+						allowDecimals: true,
+						opposite: true,
+						gridLineColor: '#D8D8D8',
+						gridLineWidth: 1,
+						min: 0
+					}],
+					tooltip: {
+						valueSuffix: 'g/kg'
+					},
+					legend: {
+						layout: 'vertical',
+						align: 'right',
+						verticalAlign: 'middle',
+						borderWidth: 0
+					},
+					series: [{
+						name: 'SOC (g/kg)',
+						data: soclayer1values,
+						yAxis: 0
+					},{
+						name: 'SOC (g/kg)',
+						data: socseqlayer1values,
+						yAxis: 1
+					}]
+				});
+				
+				// update series 0 chart
+				var seriessock = chart.series[0];
+				if (seriessock.data.length) {
+					var lastvalupdated;
+					
+					for (j = 0; j < seriessock.data.length; j++) {
+						if ((markerlistsock.indexOf(seriessock.data[j].y) >= 0) && (seriessock.data[j].y != lastvalupdated)) {
+							seriessock.data[j].update({
+								marker:{
+									enabled: true,
+									symbol: 'circle',
+									radius: 8,
+									fillColor: 'white',
+									lineColor: '#FF0000',
+									lineWidth: 1,
+									states: {
+										allowPointSelect: true,
+										hover: {
+											fillColor: 'red',
+											lineColor: 'red'                                	
+										}
+									}
+								}
+							});
+							lastvalupdated = seriessock.data[j].y;
+						}
+					}
+				}
+				
+				$('#ct-chartactivity2').css({ "display": "block" });
+				$('#outerdiv').css({ "display": "block" });
+				
+				$('.accordionitem').css({ "height": 500 });
+				
+				// activity 3 computations
+				//displayactivitytwovalues();
+			}
+			
+			
+			function activity2tablevalueschanged($cell) {
+				activity2tablecomputations = [];
+				
+				// check if cells are numeric
+				if (!$.isNumeric($cell.innerHTML)) {
+					//$cell.style.borderColor = "FF0000";
+					alert("Input numeric value.");
+					return;
+					
+				} else {
+					//$cell.style.borderColor = "F4A460";
+				}
+				
+				
+				$('#tblactivity2computedvalues')
+				var htable = document.getElementById('tblactivity2computedvalues');
+				var hrows = htable.rows;
+				
+				// if year numeric
+				var years = parseInt(hrows[4].cells[1].innerHTML);
+				hrows[2].cells[1].innerHTML = years/3;
+				hrows[3].cells[1].innerHTML = years * 2/3;
+				
+				// compute layer 1 values
+				hrows[2].cells[hrows[0].cells.length - 1].innerHTML = (parseFloat(hrows[2].cells[2].innerHTML) - parseFloat(hrows[1].cells[2].innerHTML))/(parseFloat(hrows[4].cells[2].innerHTML) - parseFloat(hrows[1].cells[2].innerHTML)) * 100.0;
+				hrows[3].cells[hrows[0].cells.length - 1].innerHTML = (parseFloat(hrows[3].cells[2].innerHTML) - parseFloat(hrows[1].cells[2].innerHTML))/(parseFloat(hrows[4].cells[2].innerHTML) - parseFloat(hrows[1].cells[2].innerHTML)) * 100.0;
+				
+				// compute other values
+				for (i = 3; i < hrows[0].cells.length - 1; i++) {
+					hrows[2].cells[i].innerHTML = parseFloat(hrows[1].cells[i].innerHTML) + (parseFloat(hrows[2].cells[hrows[0].cells.length - 1].innerHTML)/100.0) * (parseFloat(hrows[4].cells[i].innerHTML) - parseFloat(hrows[1].cells[i].innerHTML));
+					hrows[3].cells[i].innerHTML = parseFloat(hrows[1].cells[i].innerHTML) + (parseFloat(hrows[3].cells[hrows[0].cells.length - 1].innerHTML)/100.0) * (parseFloat(hrows[4].cells[i].innerHTML) - parseFloat(hrows[1].cells[i].innerHTML));
+				}
+				
+				for (i = 0; i < hrows.length; i++) {
+					var colvals = [];
+					for (j = 0; j < hrows[i].cells.length; j++) {
+						colvals.push(hrows[i].cells[j].innerHTML);
+					}
+					activity2tablecomputations.push(colvals);
+				}
+				
+				
+				// compute graph values
+				computeactivity2graphvalues();
+			}
+			
+			
+			function tablevaluesvalid(inputtable) {
+				var isvalid = true;
+				
+				if (inputtable.find('tr').length <= 1) {
+					isvalid = false;
+					return isvalid;
+				}
+				
+				inputtable.find('tr').each(function () {
+					$(this).find('td').each(function () {
+						if (!$.isNumeric($(this).text())) {
+							isvalid = false;
+							$(this).css ({
+								"border": "solid 1.5px #FF0000"
+							});
+						} else {
+							$(this).css ({
+								"border": "solid 1px #F4A460"
+							});
+						}
+					});
+				});
+				
+				return isvalid;
+			}
+			
+			
+			// From VBA codes
+			function SOC_Konv(SOC_percent, BD, Layer_Thickness_cm) { // SOC_percent As Double, BD As Double, Layer_Thickness_cm As Double
+				// BD in g cm-3, Layer thickness in cm, SOC as soil organc _carbon_ in percent
+				return(SOC_percent * BD * Layer_Thickness_cm); //Result is Mg ha-1 depth-1; depth in cm
+			}
+			
+			
+			/*********************  Cubic_Spline by SRS1 Software ****************
+			Version 1.01*/
+
+			function cubic_spline(Input_x_range, Input_y_range, X_for_which_2find_Y) { // Input_x_range As Range, Input_y_range As Range, X_for_which_2find_Y As Double
+
+				/*Purposecubic_spline:   Given a data set consisting of a list of x values
+						   and y values, this function will smoothly interpolate
+						   a resulting output (y) value from a given input (x) value */
+
+
+				// This counts how many points are in "input" and "output" set of data
+				var input_count; // Integer
+				var output_count; // Integer
+
+				var input_count = Input_x_range.length; // row count
+				var output_count = Input_y_range.length; // row count
+				
+				// Next check to be sure that "input" # points = "output" # points
+				if (input_count != output_count) {
+					alert("Something's messed up!  The number of indeces number of Input_y_rangeues don't match!");
+					return;
+				}
+				
+				var xin = new Array(input_count); // ReDim xin(input_count) As Single
+				var yin = new Array(input_count); // ReDim yin(input_count) As Single
+				var c; // Integer
+				
+				for (c = 0; c < input_count; c++) {
+					xin[c] = Input_x_range[c];
+					yin[c] = Input_y_range[c];
+				}
+				
+				// values are populated
+				var n; // Integer 'n=input_count
+				var i, K; // Integer 'these are loop counting integers
+				var p, qn, sig, un; // Single
+				var U = new Array(input_count); // ReDim U(input_count - 1) As Single
+				var yt = new Array(input_count); //ReDim yt(input_count) As Single 'these are the 2nd deriv values
+				
+				n = input_count - 1;
+				yt[0] = 0;
+				U[0] = 0;
+				
+				for (i = 1; i < n; i++) {
+					sig = (xin[i] - xin[i - 1]) / (xin[i + 1] - xin[i - 1]);
+					p = sig * yt[i - 1] + 2;
+					yt[i] = (sig - 1) / p;
+					U[i] = (yin[i + 1] - yin[i]) / (xin[i + 1] - xin[i]) - (yin[i] - yin[i - 1]) / (xin[i] - xin[i - 1]);
+					U[i] = (6 * U[i] / (xin[i + 1] - xin[i - 1]) - sig * U[i - 1]) / p;
+				}
+				
+				qn = 0;
+				un = 0;
+				
+				yt[n] = (un - qn * U[n - 1]) / (qn * yt[n - 1] + 1);
+				
+				for (K = n - 1; K >= 1; K--) {
+					yt[K] = yt[K] * yt[K + 1] + U[K];
+				}
+				
+				// now eval spline at one point
+				var klo, khi; // Integer
+				var h, b, a; // Single
+				
+				// first find correct interval
+				klo = 1;
+				khi = n;
+				
+				do {
+					K = khi - klo;
+					if (xin[K] > X_for_which_2find_Y) {
+						khi = K;
+					} else {
+						klo = K;
+					}
+					
+					K = khi - klo;
+				}
+				while (K > 1);
+				
+				// RS added - preventing negative or possitive values in-between two y-values equal zero!
+				if (yin[khi] == 0 && yin[klo] == 0) {
+					cubic_spline = 0;
+					return;
+				}
+				//End added
+
+				var Y; // Double
+
+				// ********* check if multiplication should be float
+				h = xin[khi] - xin[klo];
+				a = (xin[khi] - X_for_which_2find_Y) / h;
+				b = (X_for_which_2find_Y - xin[klo]) / h;
+				
+				Y = a * yin[klo] + b * yin[khi] + ((Math.pow(a, 3) - a) * yt[klo] + (Math.pow(b, 3) - b) * yt[khi]) * (Math.pow(h, 2)) / 6;
+				return Y;
+			}
+			
+			// get exponential
+			function ExpDecay(Y_t0, Jahr, rate_const) { // Y_t0 As Double, Jahr As Double, rate_const As Double
+				return Y_t0 * (Math.exp(Math.log(rate_const) * Jahr));
+			}
+			
+			function Area_Year_SOC_Seq_NEW(Jahre, Area_Time0, Area_rate_const, x, CubicSpline_X_range, CubicSpline_Y_range, BD, SoilDepth, Total_Area) { // Jahre As Integer, Area_Time0 As Double, Area_rate_const As Double, x As Double, CubicSpline_X_range As Range, CubicSpline_Y_range As Range, BD As Double, SoilDepth As Double, Total_Area As Double
+				/*
+				Jahre is the number of years for which each year additional area (following the exponential decay function)
+				is added to sequestration campain
+				x is the sequestration year
+				*/
+				var returnvalue = 0.0;
+				var Area_Exp_Decay = new Array(100); // length = 100 Double
+				var SOC_Seq_Rate = new Array(100); // length = 100 Double
+				var AreaYear = 0; // Integer
+				var SeqYear = 0; // Integer
+				var Area_Seq_Year = new Array(100); // length = 100 Double
+				
+				for (AreaYear = Jahre; AreaYear >= 1; AreaYear--) {
+					Area_Exp_Decay[AreaYear] = ExpDecay(Area_Time0, AreaYear - 1, Area_rate_const);
+				}
+				
+				for (SeqYear = x; SeqYear >= 1; SeqYear--) {
+					SOC_Seq_Rate[SeqYear] = cubic_spline(CubicSpline_X_range, CubicSpline_Y_range, parseFloat(SeqYear));
+				}
+				
+				SeqYear = x;
+				
+				for (AreaYear = 0; AreaYear < Jahre; AreaYear++) {
+					Area_Seq_Year[AreaYear] = SOC_Seq_Rate[SeqYear] * Area_Exp_Decay[AreaYear] * Total_Area;
+					//Area_Year_SOC_Seq_NEW = Area_Year_SOC_Seq_NEW + Area_Seq_Year(AreaYear)
+					returnvalue += Area_Seq_Year[AreaYear];
+					SeqYear -= 1;
+					if (SeqYear < 1) {
+						break;
+					}
+				}
+				
+				return returnvalue;
+			}
+			
+			function Four_Param_Sigmoid(x, a, b, x0, Y0) { // x As Double, a As Double, b As Double, x0 As Double, Y0 As Double  
+				return Y0 + a / (1 + Math.exp(-(x - x0) / b));
+
+			}
+			
+			function FourSigm_a(x, b, x0, Y0, SOCx) { // x As Double, b As Double, x0 As Double, Y0 As Double, SOCx As Double
+				return (SOCx - Y0) * (1 + Math.exp((x0 - x) / b));
+			}
+			
+			function Annual_SOC_Seq_Rate(x, x_minus_1, a, b, x0, Y0, BD, SoilDepth) { // x As Double, x_minus_1 As Double, a As Double, b As Double, x0 As Double, Y0 As Double, BD As Double, SoilDepth As Double
+				/*
+				calculated the annual Soil Organic Carbon sequestration amount in Mg/ha/SoilDepth
+				for the given increase in %-SOC based on a four-parameter sigmoid function
+				Soil depth in cm
+				BD in g/cm3
+				*/
+				
+				var SOC0; // Double
+				var SOC1; // Double
+				var delta_SOC; // Double
+				
+				SOC0 = Four_Param_Sigmoid(x_minus_1, a, b, x0, Y0); // SOC-% last year
+				SOC1 = Four_Param_Sigmoid(x, a, b, x0, Y0); // SOC-% current year
+				delta_SOC = SOC1 - SOC0;
+				
+				return SOC_Konv(delta_SOC, BD, SoilDepth);
+			}
+			
+			
+			
+		</script>
+		
+		<style type="text/css">
+			.display-table {
+				border: solid 1px #DDEEEE;
+				border-collapse: collapse;
+				border-spacing: 0;
+				font: normal 10px Arial, sans-serif;
+				cellspacing: 0;
+				width: 100%;
+			}
+			.display-table thead th {
+				background-color: #F4A460;
+				border: solid 1px #F4A460;
+				color: #000000;
+				padding: 3px;
+				text-align: left;
+				text-shadow: 1px 1px 1px #fff;
+			}
+			.display-table tbody td {
+				border: solid 1px #F4A460;
+				color: #333;
+				padding: 3px;
+				text-shadow: 1px 1px 1px #fff;
+			}
+			
+			.display-table tbody tr:nth-child(even) { background: #FFFFFF }
+			.display-table tbody tr:nth-child(odd) { background: #E8E8E8 }
+			
+			.display-table tbody tr:hover {
+				 background-color: #ffff99;
+			}
+			
+			.div-outer {
+				width: 100%;
+				overflow: auto;
+				padding: 5px;
+				display: none;
+			}
+			
+			.div-table {
+				 width: 100%;
+				 height: 200px;
+				 overflow: auto;
+				 border: 1px solid #707070;
+				 padding: 3px;
+			}
+			
+			.div-compute-table {
+				 width: 100%;
+				 height: 250px;
+				 overflow: auto;
+				 border: 1px solid #707070;
+				 display: none;
+				 padding: 3px;
+			}
+			
+			.divbuttons {
+				background-color: #E0E0E0;
+				width: 100%;
+				font: normal 12px Arial, sans-serif;
+			}
+			
+			.divlocality {
+				width: 100%;
+				font: normal 12px Arial, sans-serif;
+			}
+			
+			.div-compute-chart {
+				 width: 100%;
+				 overflow: auto;
+				 border: 1px solid #707070;
+				 display: none;
+				 padding: 3px;
+			}
+			
+			.div-footer {
+				display: block;
+				background-color: #e1f0c2;
+				color:black;
+				clear:both;
+				text-align:center;
+				padding:5px;
+			}
+			
+			.div-introduction {
+				display: block;
+				background-color: #e1f0c2;
+				color:black;
+				clear:both;
+				padding:5px;
+			}
+			
+			
+			
+			
+			
+			
+		</style>
+	</head>
+	
+	<body>
+		<div class = "div-introduction">
+			<p>Introductory Information</p>
+		</div>
+		
+		<div style="clear:both; height:10px;"></div>
+	
+		<div style="font-size:10px">
+			<!--locality-->
+			<div class="divlocality">
+				<table width="100%">
+					<tr>
+						<td style="float:left;"><span>Locality:</span><span><input id="txtlocality" type="text" style="width:300px" /></span></td>
+					</tr>
+				</table>
+			</div>
+			<div style="clear:both; height:5px;"></div>
+			
+			<div class="divbuttons">
+				<table width="100%">
+					<tr>
+						<td style="float:left;"><input id="btnaddrow" type="button" onclick="addtablerow()" value="Add" /><input id="btnremoverow" type="button" onclick="removetablerow()" value="Remove" /></td>
+						<td style="float:right;"><label><input type="checkbox" id="checkcomps" />Check Computations</label><input id="btncomputeactivity" type="button" onclick="displayactivityvalues()" value="Compute" /></td>
+					</tr>
+				</table>
+			</div>
+			<div style="clear:both; height:5px;"></div>
+			
+			<div id="divactivity1table" class="div-table">
+				<p><h3>User Entries (Input all values):</h3></p>
+				<table id="tblactivity1" class="display-table">
+					<thead>
+						<th>Layer Thickness (cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Bulk density (g/cm3)</th>
+					</thead>
+						
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+			<div style="clear:both; height:10px;"></div>
+			
+			<div id="outerdiv" class="div-outer">
+				<div id="accordion" class="accordion">
+					<h3 id="subheadingactivity1">Activity 1 - SOC Sequestration</h3>
+					<div id="accordionitem-activity1" class="accordionitem">
+						<div id = "divactivity1computedtable" class="div-compute-table"></div>
+						<div id = "divactivity1graphtable" class="div-compute-table"></div>
+						<div id="ct-chartactivity1" class="div-compute-chart"></div>
+					</div>
+					
+					<h3 id="subheadingactivity2">Activity 2 - SOC Sequestration</h3>
+					<div id="accordionitem-activity2" class="accordionitem">
+						<div id = "divactivity2computedtable" class="div-compute-table"></div>
+						<div id = "divactivity2graphtable" class="div-compute-table"></div>
+						<div id="ct-chartactivity2" class="div-compute-chart"></div>
+					</div>
+					
+					
+				</div>
+				
+				
+					
+				
+				
+				
+			</div>
+			
+			
+
+		</div>
+		
+	</body>
+	
+	 <footer>
+		 <div class = "div-footer">
+			  <p>Footer Information</p>
+			  
+		  </div>
+	</footer> 
+</html>
