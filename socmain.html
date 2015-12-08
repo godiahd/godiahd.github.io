@@ -12,6 +12,27 @@
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 		<script src="https://code.highcharts.com/modules/exporting.js"></script>
 		
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		
+		
+		<!-- Editable cell -->
+		<!-- <script src="Scripts/bootstrap3-editable-1.5.0.js"></script> -->
+		
+		
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+		
+		
+		
+		
+	
+	
+	
+	
 		
 		<!-- <script src="Scripts/chartist/chartist.min.js"></script>
 		<link href="Scripts/chartist/chartist.css" rel="stylesheet" type="text/css" />
@@ -30,16 +51,10 @@
 			var activity2graphcomputations = [];
 			var addindex = 0;
 			var showcomputations = false;
+			var clickedcell;
+			
 			
 			$(document).ready(function() {
-				$(function() {
-					$(".accordion").accordion();
-					$(".selector").accordion({ animated: 'bounceslide' });
-					//getter
-					var animated = $(".selector").accordion("option", "animated");
-					//setter
-					$(".selector").accordion("option", "animated", 'bounceslide');
-				});
 				
 				
 				
@@ -49,18 +64,7 @@
 				
 			});
 			
-			function selectcelltext($cell) {
-				if (document.selection) {  // IE
-					var range = document.body.createTextRange();
-					range.moveToElementText($cell);
-					range.select();
-				}
-				else if (window.getSelection) {
-					var range = document.createRange();
-					range.selectNode($cell.firstChild);
-					window.getSelection().addRange(range);
-				}
-			}
+			
 			
 			
 			function addtablerow() {
@@ -69,64 +73,89 @@
 				var socendval;
 				var bulkdensityval;
 				
-				switch(addindex) {
-					case 0:
-						thicknessval = 6;
-						socstartval = 35;
-						socendval = 45;
-						bulkdensityval = 1.2;
-						break;
-					case 1:
-						thicknessval = 22;
-						socstartval = 30;
-						socendval = 30;
-						bulkdensityval = 1.25;
-						break;
-					case 2:
-						thicknessval = 34;
-						socstartval = 15;
-						socendval = 20;
-						bulkdensityval = 1.3;
-						break;
-					case 3:
-						thicknessval = 40;
-						socstartval = 10;
-						socendval = 10;
-						bulkdensityval = 1.35;
-						break;
-					case 4:
-						thicknessval = 44;
-						socstartval = 5;
-						socendval = 5;
-						bulkdensityval = 1.38;
-						break;
-					default:
-						thicknessval = "??";
-						socstartval = "??";
-						socendval = "??";
-						bulkdensityval = "??";
+				// if input is numeric
+				if (!$.isNumeric($('#txtaddrow').val())) {
+					$('#txtaddrow').css({ "border": "solid 2px #FF0000" });
+					return;
 				}
 				
-				$('#tblactivity1').append('<tr>' +
-                        '<td onblur="displayactivityvalues()" onclick="selectcelltext(this)" contenteditable=true style="cursor:pointer;">' + thicknessval + '</td>' +
-						'<td onblur="displayactivityvalues()" onclick="selectcelltext(this)" contenteditable=true style="cursor:pointer;">' + socstartval + '</td>' +
-						'<td onblur="displayactivityvalues()" onclick="selectcelltext(this)" contenteditable=true style="cursor:pointer;">' + socendval + '</td>' +
-						'<td onblur="displayactivityvalues()" onclick="selectcelltext(this)" contenteditable=true style="cursor:pointer;">' + bulkdensityval + '</td>' +
-                    '</tr>');
-				addindex += 1;
+				$('#txtaddrow').css({ "border": "solid 1px #dddddd" });
+				
+				for (i = 0; i < parseInt($('#txtaddrow').val()); i++) {
+					switch(addindex) {
+						case 0:
+							thicknessval = 6;
+							socstartval = 35;
+							socendval = 45;
+							bulkdensityval = 1.2;
+							break;
+						case 1:
+							thicknessval = 22;
+							socstartval = 30;
+							socendval = 30;
+							bulkdensityval = 1.25;
+							break;
+						case 2:
+							thicknessval = 34;
+							socstartval = 15;
+							socendval = 20;
+							bulkdensityval = 1.3;
+							break;
+						case 3:
+							thicknessval = 40;
+							socstartval = 10;
+							socendval = 10;
+							bulkdensityval = 1.35;
+							break;
+						case 4:
+							thicknessval = 44;
+							socstartval = 5;
+							socendval = 5;
+							bulkdensityval = 1.38;
+							break;
+						default:
+							thicknessval = "??";
+							socstartval = "??";
+							socendval = "??";
+							bulkdensityval = "??";
+					}
+					
+					$('#tblactivity1').append('<tr>' +
+							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter Thickness">' + thicknessval + '</td>' +
+							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter SOC">' + socstartval + '</td>' +
+							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter SOC">' + socendval + '</td>' +
+							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter Bulk Density">' + bulkdensityval + '</td>' +
+						'</tr>');
+		
+					addindex += 1;
+				}
+				
+				$('.editvalues1').editable({
+					mode: "popup",
+					validate: function(value) {
+						if (!$.isNumeric($.trim(value))) {
+							return "Enter numeric value";
+						}
+					}
+				});
+				$('.editvalues1').on('hidden', function (e, params) {
+					displayactivityvalues();
+				});
 			}
 			
 			
 			function removetablerow() {
 				$('#tblactivity1 tbody tr:last').remove();
-				addindex-=1;
+				if (addindex > 0) {
+					addindex-=1;
+				}
 			}
 			
 			
 			function displayactivityvalues() {
-				
 				if ($('#txtlocality').val()) {
-					$('#txtlocality').css({ "border": "solid 0.5px #000000" });
+					
+					$('#txtlocality').css({ "border": "solid 1px #dddddd" });
 					
 					if ($('#checkcomps').is(':checked')) {
 						showcomputations = true;
@@ -140,14 +169,14 @@
 						$('.div-compute-chart').empty();
 						$('.div-compute-chart').css({"display": "none"});
 						
+						$('#divsocsequence').empty();
+						$('#divsocsequence').css({"display": "none"});
+						
 						displayactivityonevalues();
-					} else {
-						alert("Input valid values in the table to continue.");
 					}
 					
 				} else {
-					$('#txtlocality').css({ "border": "solid 1px #FF0000" });
-					alert("Input locality to continue.");
+					$('#txtlocality').css({ "border": "solid 2px #FF0000" });
 				}
 			}
 			
@@ -155,25 +184,34 @@
 			function displayactivityonevalues() {
 				$('#divactivity1computedtable').empty();
 				
-				//$('body').append("<img style='top: 45%; position: absolute; height: 100px; width: 100px;background: black;left: 45%;' src='http://www.klk.com.my/wp-content/themes/klk/images/loading-ajax.gif' />");
-				
-				// if display tables
-				if (showcomputations == true) {
-					$('#divactivity1computedtable').append('<p>Computed Values:</p>' +
-					'<table id="tblactivity1computedvalues" class="display-table">');
-					
-					$('#tblactivity1computedvalues').append('<thead>' +
-						'<th>Layer</th><th>Layer Thickness</th><th>Layer, top depth(cm)</th><th>Layer, bottom depth(cm)</th><th>Layer, mid depth(cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Delta SOC (g/kg)</th><th>Bulk density (g/cm3)</th><th>SOC-seq (Mg/ha/depth)</th>' +
-					'</thead>' +
-						
-					'<tbody>' +
-						
-					'</tbody>');
-				}
-				
 				// append computed values
 				activity1tablecomputations = computeactivityonevalues();
 				if (activity1tablecomputations) {
+					// if display tables
+					if (showcomputations == true) {
+						$('#divactivity1computedtable').append('<p>Computed Values:</p>' +
+						'<table id="tblactivity1computedvalues" class="table table-striped table-hover table-bordered table-condensed">');
+						
+						$('#tblactivity1computedvalues').append('<thead>' +
+							'<th>Layer</th><th>Layer Thickness(cm)</th><th>Layer, top depth(cm)</th><th>Layer, bottom depth(cm)</th><th>Layer, mid depth(cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Delta SOC (g/kg)</th><th>Bulk density (g/cm3)</th><th>SOC-seq (Mg/ha/depth)</th>' +
+						'</thead>' +
+							
+						'<tbody>' +
+							
+						'</tbody>');
+					}
+				
+					// new div on the right
+					$('#divsocsequence').append('<div><table id ="tblsocsequence" class="table table-striped table-hover table-bordered table-condensed"><p><h5>SOC Sequestration</h5></p></div>');
+					$('#tblsocsequence').append('<thead><th>Layer</th><th>layer Thickness(cm)</th><th>SOC-Seq (Mg/ha/depth)</th></thead><tbody></tbody>');
+					
+					for (i = 0; i < activity1tablecomputations.length; i++) {
+						var returnrows = activity1tablecomputations[i];
+						$('#tblsocsequence').append('<tr><td style="color:#C0C0C0;">' + returnrows[0] + '</td><td style="color:#C0C0C0;">' + returnrows[1] + '</td><td style="color:#C0C0C0;">' + returnrows[returnrows.length - 1] + '</td></tr>');
+					}
+					
+					$('#divsocsequence').css({ "display": "block" });
+					
 					// if display tables
 					if (showcomputations == true) {
 						for (i = 0; i < activity1tablecomputations.length; i++) {
@@ -189,7 +227,7 @@
 						$('#divactivity1computedtable').css({ "display": "block" });
 					}
 					
-					$('.accordionitem').css({ "height": 500 });
+					
 					
 					// create graph values (for second table)
 					activity1graphcomputations = computeactivityonegraphvalues(activity1tablecomputations);
@@ -202,7 +240,7 @@
 					if (activity1graphcomputations) {
 						// if display tables
 						if (showcomputations == true) {
-							$('#divactivity1graphtable').append('<table id="tblactivity1graphvalues" class="display-table">');
+							$('#divactivity1graphtable').append('<table id="tblactivity1graphvalues" class="table table-striped table-hover table-bordered table-condensed">');
 								
 								$('#tblactivity1graphvalues').append('<thead>' +
 									'<th>Depth(cm)</th><th>Line, smoothened - START</th><th>Line, smoothened - END</th>' +
@@ -236,7 +274,6 @@
 							$('#divactivity1graphtable').css({ "display": "block" });
 						}
 						
-						$('.accordionitem').css({ "height": 500 });
 						
 						// get marker values
 						for (i = 1; i < activity1tablecomputations.length - 2; i++) {
@@ -348,8 +385,8 @@
 				var socstart_range = [];
 				var socend_range = [];
 				var activityonecomputedgraphlist = [];
-				var linesmoothenedstart;
-				var linesmoothenedend;
+				var linesmoothenedstart = 0.0;
+				var linesmoothenedend = 0.0;
 				
 				if (activity1tablecomputations) {
 					for (i = 0; i < activity1tablecomputations.length - 1; i++) {
@@ -382,7 +419,7 @@
 						inverted: true
 					},
 					title: {
-						text: 'SOC Sequestration Graph',
+						text: 'SOC Concentration',
 						x: -20 //center
 					},
 					xAxis: {
@@ -405,26 +442,31 @@
 						gridLineColor: '#D8D8D8',
 						gridLineWidth: 1
 					},
+					plotOptions: {
+						series: {
+							marker: {
+								enabled: false
+							}
+						}
+					},
 					tooltip: {
 						valueSuffix: 'g/kg'
 					},
 					legend: {
-						layout: 'vertical',
-						align: 'right',
-						verticalAlign: 'middle',
+						layout: 'horizontal',
+						align: 'center',
+						verticalAlign: 'bottom',
 						borderWidth: 0
 					},
 					series: [{
-						name: 'SOC conc - START (g/kg)',
+						name: 'START (g/kg)',
 						data: linesmoothenedstart
 						
 					}, {
-						name: 'SOC conc - END (g/kg)',
+						name: 'END (g/kg)',
 						data: linesmoothenedend
 					}]
 				});
-				
-				
 				
 				// update series 1 chart
 				var seriesend = chart.series[1];
@@ -483,11 +525,11 @@
 						}
 					}
 				}
+				//$('#ct-chartactivity1').highcharts().reflow();
 				
 				$('#ct-chartactivity1').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
 				
-				$('.accordionitem').css({ "height": 500 });
 				
 				// activity 2 computations
 				displayactivitytwovalues();
@@ -583,7 +625,7 @@
 					for (i = 0; i < activity2tablecomputations.length; i++) {
 						if (i == 0) {
 							$('#divactivity2computedtable').append('<p>Computed Values:</p>' +
-							'<table id="tblactivity2computedvalues" class="display-table">');
+							'<table id="tblactivity2computedvalues" class="table table-striped table-hover table-bordered table-condensed">');
 							
 							var headeritem = '<thead>';
 							for (j = 0; j < activity2tablecomputations[i].length; j++) {
@@ -598,7 +640,7 @@
 							
 							for (k = 0; k < activity2tablecomputations[i].length; k++) {
 								if (((i == 2 || i == 3 || i == 4) && k == 1) || ((i == 2 || i == 3) && k == 2)) {
-									rowitem += '<td contenteditable=true onblur="activity2tablevalueschanged(this)" onclick="selectcelltext(this)" style="cursor:pointer;">' + activity2tablecomputations[i][k] + '</td>';
+									rowitem += '<td class="editvalues2" contenteditable=true style="cursor:pointer;" data-title="Edit Value">' + activity2tablecomputations[i][k] + '</td>';
 								} else {
 									rowitem += '<td contenteditable=false style="color:#C0C0C0;">' + activity2tablecomputations[i][k] + '</td>';
 								}
@@ -609,8 +651,19 @@
 						}
 					}
 					
+					$('.editvalues2').editable({
+						mode: "popup",
+						validate: function(value) {
+							if (!$.isNumeric($.trim(value))) {
+								return "Enter numeric value";
+							}
+						}
+					});
+					$('.editvalues2').on('hidden', function (e, params) {
+						activity2tablevalueschanged(e.target);
+					});
+					
 					$('#divactivity2computedtable').css({ "display": "block" });
-					$('.accordionitem').css({ "height": 500 });
 					
 					// compute graph values
 					computeactivity2graphvalues();
@@ -700,7 +753,7 @@
 					for (i = 0; i < activity2graphcomputations.length; i++) {
 						if (i == 0) {
 							$('#divactivity2graphtable').append('<p>Computed Graph Values:</p>' +
-							'<table id="tblactivity2graphvalues" class="display-table">');
+							'<table id="tblactivity2graphvalues" class="table table-striped table-hover table-bordered table-condensed">');
 							
 							var headeritem = '<thead>';
 							for (j = 0; j < activity2graphcomputations[i].length; j++) {
@@ -725,7 +778,6 @@
 					}
 				}
 				
-				$('.accordionitem').css({ "height": 500 });
 				
 				var yearslabel = [];
 				var soclayer1values = [];
@@ -757,7 +809,7 @@
 						type: 'line'
 					},
 					title: {
-						text: 'SOC Sequestration Over Time Graph',
+						text: 'SOC Sequestration Over Time',
 						x: -20 //center
 					},
 					xAxis: {
@@ -782,7 +834,7 @@
 						min: 0
 					},{
 						title: {
-							text: 'SOC seq. (t/ha)'
+							text: 'SOC Seq. (t/ha)'
 						},
 						plotLines: [{
 							value: 0,
@@ -795,13 +847,20 @@
 						gridLineWidth: 1,
 						min: 0
 					}],
+					plotOptions: {
+						series: {
+							marker: {
+								enabled: false
+							}
+						}
+					},
 					tooltip: {
 						valueSuffix: 'g/kg'
 					},
 					legend: {
-						layout: 'vertical',
-						align: 'right',
-						verticalAlign: 'middle',
+						layout: 'horizontal',
+						align: 'center',
+						verticalAlign: 'bottom',
 						borderWidth: 0
 					},
 					series: [{
@@ -809,7 +868,7 @@
 						data: soclayer1values,
 						yAxis: 0
 					},{
-						name: 'SOC (g/kg)',
+						name: 'SOC Seq. (t/ha))',
 						data: socseqlayer1values,
 						yAxis: 1
 					}]
@@ -847,8 +906,6 @@
 				$('#ct-chartactivity2').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
 				
-				$('.accordionitem').css({ "height": 500 });
-				
 				// activity 3 computations
 				//displayactivitytwovalues();
 			}
@@ -858,43 +915,53 @@
 				activity2tablecomputations = [];
 				
 				// check if cells are numeric
-				if (!$.isNumeric($cell.innerHTML)) {
-					//$cell.style.borderColor = "FF0000";
-					alert("Input numeric value.");
+				if (!$.isNumeric(cleaninnerhtml($cell.innerHTML))) {
+					$cell.style.borderColor = "#FF0000";
+					$cell.style.borderWidth = "1.5px";
 					return;
 					
 				} else {
-					//$cell.style.borderColor = "F4A460";
+					$cell.style.borderColor = "#dddddd";
+					$cell.style.borderWidth = "1px";
 				}
 				
-				
-				$('#tblactivity2computedvalues')
 				var htable = document.getElementById('tblactivity2computedvalues');
 				var hrows = htable.rows;
 				
-				// if year numeric
-				var years = parseInt(hrows[4].cells[1].innerHTML);
-				hrows[2].cells[1].innerHTML = years/3;
-				hrows[3].cells[1].innerHTML = years * 2/3;
+				// if year numeric and changed
+				if ($cell.cellIndex == 1 && $cell.parentNode.rowIndex == 4) {
+					var years = parseInt(hrows[4].cells[1].innerHTML);
+					hrows[2].cells[1].innerHTML = years/3;
+					hrows[3].cells[1].innerHTML = years * 2/3;
+				}
+				
+				// check values
+				if ((parseFloat(cleaninnerhtml(hrows[2].cells[1].innerHTML)) >= parseFloat(cleaninnerhtml(hrows[3].cells[1].innerHTML))) || (parseFloat(cleaninnerhtml(hrows[2].cells[2].innerHTML)) >= parseFloat(cleaninnerhtml(hrows[3].cells[2].innerHTML))) ) {
+					$cell.style.borderColor = "#FF0000";
+					$cell.style.borderWidth = "1.5px";
+					return;
+				} else {
+					$cell.style.borderColor = "#dddddd";
+					$cell.style.borderWidth = "1px";
+				}
 				
 				// compute layer 1 values
-				hrows[2].cells[hrows[0].cells.length - 1].innerHTML = (parseFloat(hrows[2].cells[2].innerHTML) - parseFloat(hrows[1].cells[2].innerHTML))/(parseFloat(hrows[4].cells[2].innerHTML) - parseFloat(hrows[1].cells[2].innerHTML)) * 100.0;
-				hrows[3].cells[hrows[0].cells.length - 1].innerHTML = (parseFloat(hrows[3].cells[2].innerHTML) - parseFloat(hrows[1].cells[2].innerHTML))/(parseFloat(hrows[4].cells[2].innerHTML) - parseFloat(hrows[1].cells[2].innerHTML)) * 100.0;
+				hrows[2].cells[hrows[0].cells.length - 1].innerHTML = (parseFloat(cleaninnerhtml(hrows[2].cells[2].innerHTML)) - parseFloat(cleaninnerhtml(hrows[1].cells[2].innerHTML)))/(parseFloat(cleaninnerhtml(hrows[4].cells[2].innerHTML)) - parseFloat(cleaninnerhtml(hrows[1].cells[2].innerHTML))) * 100.0;
+				hrows[3].cells[hrows[0].cells.length - 1].innerHTML = (parseFloat(cleaninnerhtml(hrows[3].cells[2].innerHTML)) - parseFloat(cleaninnerhtml(hrows[1].cells[2].innerHTML)))/(parseFloat(cleaninnerhtml(hrows[4].cells[2].innerHTML)) - parseFloat(cleaninnerhtml(hrows[1].cells[2].innerHTML))) * 100.0;
 				
 				// compute other values
 				for (i = 3; i < hrows[0].cells.length - 1; i++) {
-					hrows[2].cells[i].innerHTML = parseFloat(hrows[1].cells[i].innerHTML) + (parseFloat(hrows[2].cells[hrows[0].cells.length - 1].innerHTML)/100.0) * (parseFloat(hrows[4].cells[i].innerHTML) - parseFloat(hrows[1].cells[i].innerHTML));
-					hrows[3].cells[i].innerHTML = parseFloat(hrows[1].cells[i].innerHTML) + (parseFloat(hrows[3].cells[hrows[0].cells.length - 1].innerHTML)/100.0) * (parseFloat(hrows[4].cells[i].innerHTML) - parseFloat(hrows[1].cells[i].innerHTML));
+					hrows[2].cells[i].innerHTML = parseFloat(cleaninnerhtml(hrows[1].cells[i].innerHTML)) + (parseFloat(cleaninnerhtml(hrows[2].cells[hrows[0].cells.length - 1].innerHTML))/100.0) * (parseFloat(cleaninnerhtml(hrows[4].cells[i].innerHTML)) - parseFloat(cleaninnerhtml(hrows[1].cells[i].innerHTML)));
+					hrows[3].cells[i].innerHTML = parseFloat(cleaninnerhtml(hrows[1].cells[i].innerHTML)) + (parseFloat(cleaninnerhtml(hrows[3].cells[hrows[0].cells.length - 1].innerHTML))/100.0) * (parseFloat(cleaninnerhtml(hrows[4].cells[i].innerHTML)) - parseFloat(cleaninnerhtml(hrows[1].cells[i].innerHTML)));
 				}
 				
 				for (i = 0; i < hrows.length; i++) {
 					var colvals = [];
 					for (j = 0; j < hrows[i].cells.length; j++) {
-						colvals.push(hrows[i].cells[j].innerHTML);
+						colvals.push(cleaninnerhtml(hrows[i].cells[j].innerHTML));
 					}
 					activity2tablecomputations.push(colvals);
 				}
-				
 				
 				// compute graph values
 				computeactivity2graphvalues();
@@ -914,17 +981,22 @@
 						if (!$.isNumeric($(this).text())) {
 							isvalid = false;
 							$(this).css ({
-								"border": "solid 1.5px #FF0000"
+								"border": "solid 2px #FF0000"
 							});
 						} else {
 							$(this).css ({
-								"border": "solid 1px #F4A460"
+								"border": "solid 1px #dddddd"
 							});
 						}
 					});
 				});
 				
 				return isvalid;
+			}
+			
+			
+			function cleaninnerhtml(cellvalue) {
+				return cellvalue.replace(/<br>/g, '');
 			}
 			
 			
@@ -944,7 +1016,7 @@
 						   and y values, this function will smoothly interpolate
 						   a resulting output (y) value from a given input (x) value */
 
-
+				
 				// This counts how many points are in "input" and "output" set of data
 				var input_count; // Integer
 				var output_count; // Integer
@@ -954,8 +1026,7 @@
 				
 				// Next check to be sure that "input" # points = "output" # points
 				if (input_count != output_count) {
-					alert("Something's messed up!  The number of indeces number of Input_y_rangeues don't match!");
-					return;
+					return "Something's messed up!  The number of indices number of input x and y ranges don't match!";
 				}
 				
 				var xin = new Array(input_count); // ReDim xin(input_count) As Single
@@ -965,6 +1036,7 @@
 				for (c = 0; c < input_count; c++) {
 					xin[c] = Input_x_range[c];
 					yin[c] = Input_y_range[c];
+					//alert(Input_y_range[c]);
 				}
 				
 				// values are populated
@@ -984,6 +1056,7 @@
 					yt[i] = (sig - 1) / p;
 					U[i] = (yin[i + 1] - yin[i]) / (xin[i + 1] - xin[i]) - (yin[i] - yin[i - 1]) / (xin[i] - xin[i - 1]);
 					U[i] = (6 * U[i] / (xin[i + 1] - xin[i - 1]) - sig * U[i - 1]) / p;
+					//alert(sig + ", " + p);
 				}
 				
 				qn = 0;
@@ -1015,15 +1088,20 @@
 				}
 				while (K > 1);
 				
-				// RS added - preventing negative or possitive values in-between two y-values equal zero!
-				if (yin[khi] == 0 && yin[klo] == 0) {
-					cubic_spline = 0;
-					return;
+				//// RS added - preventing negative or possitive values in-between two y-values equal zero!
+				//if (yin[khi] == 0 && yin[klo] == 0) {
+				//	return 0;
+				//}
+				
+				// RS added - prevent cubic spline from 'overshooting'
+				if (yin[khi] == yin[klo] && khi > input_count - 1) {
+					//alert(khi + ", " + input_count);
+					return yin[khi];
 				}
 				//End added
-
+				
 				var Y; // Double
-
+				
 				// ********* check if multiplication should be float
 				h = xin[khi] - xin[klo];
 				a = (xin[khi] - X_for_which_2find_Y) / h;
@@ -1107,36 +1185,6 @@
 		</script>
 		
 		<style type="text/css">
-			.display-table {
-				border: solid 1px #DDEEEE;
-				border-collapse: collapse;
-				border-spacing: 0;
-				font: normal 10px Arial, sans-serif;
-				cellspacing: 0;
-				width: 100%;
-			}
-			.display-table thead th {
-				background-color: #F4A460;
-				border: solid 1px #F4A460;
-				color: #000000;
-				padding: 3px;
-				text-align: left;
-				text-shadow: 1px 1px 1px #fff;
-			}
-			.display-table tbody td {
-				border: solid 1px #F4A460;
-				color: #333;
-				padding: 3px;
-				text-shadow: 1px 1px 1px #fff;
-			}
-			
-			.display-table tbody tr:nth-child(even) { background: #FFFFFF }
-			.display-table tbody tr:nth-child(odd) { background: #E8E8E8 }
-			
-			.display-table tbody tr:hover {
-				 background-color: #ffff99;
-			}
-			
 			.div-outer {
 				width: 100%;
 				overflow: auto;
@@ -1144,40 +1192,23 @@
 				display: none;
 			}
 			
-			.div-table {
-				 width: 100%;
-				 height: 200px;
-				 overflow: auto;
-				 border: 1px solid #707070;
-				 padding: 3px;
-			}
-			
 			.div-compute-table {
 				 width: 100%;
-				 height: 250px;
+				 height: 270px;
 				 overflow: auto;
-				 border: 1px solid #707070;
 				 display: none;
-				 padding: 3px;
+				 font-size: 12px;
 			}
 			
 			.divbuttons {
 				background-color: #E0E0E0;
 				width: 100%;
-				font: normal 12px Arial, sans-serif;
-			}
-			
-			.divlocality {
-				width: 100%;
-				font: normal 12px Arial, sans-serif;
 			}
 			
 			.div-compute-chart {
 				 width: 100%;
 				 overflow: auto;
-				 border: 1px solid #707070;
 				 display: none;
-				 padding: 3px;
 			}
 			
 			.div-footer {
@@ -1197,6 +1228,53 @@
 				padding:5px;
 			}
 			
+			.content-wrapper {
+				width: 100%;
+				text-align:center;
+				display:block;
+				padding:15px;
+			}
+			
+			.float-left {
+				float: left;
+				width:70%;
+				overflow: hidden;
+				display:block; 
+				text-align: left;
+			}
+			
+			.float-right {
+				float: right;
+				width:25%;
+				display:block; 
+				overflow: hidden;
+				text-align: left;
+			}
+			
+			.panel-heading a:after {
+				font-family:'Glyphicons Halflings';
+				content:"\e114";
+				float: right;
+				color: grey;
+			}
+			.panel-heading a.collapsed:after {
+				content:"\e080";
+			}
+			
+			.glyphicon.spinning {
+				animation: spin 1s infinite linear;
+				-webkit-animation: spin2 1s infinite linear;
+			}
+
+			@keyframes spin {
+				from { transform: scale(1) rotate(0deg); }
+				to { transform: scale(1) rotate(360deg); }
+			}
+
+			@-webkit-keyframes spin2 {
+				from { -webkit-transform: rotate(0deg); }
+				to { -webkit-transform: rotate(360deg); }
+			}
 			
 			
 			
@@ -1212,59 +1290,105 @@
 		
 		<div style="clear:both; height:10px;"></div>
 	
-		<div style="font-size:10px">
+		<div id="divmain" class="container-fluid" style="font-size:12px">
 			<!--locality-->
-			<div class="divlocality">
-				<table width="100%">
-					<tr>
-						<td style="float:left;"><span>Locality:</span><span><input id="txtlocality" type="text" style="width:300px" /></span></td>
-					</tr>
-				</table>
-			</div>
-			<div style="clear:both; height:5px;"></div>
-			
-			<div class="divbuttons">
-				<table width="100%">
-					<tr>
-						<td style="float:left;"><input id="btnaddrow" type="button" onclick="addtablerow()" value="Add" /><input id="btnremoverow" type="button" onclick="removetablerow()" value="Remove" /></td>
-						<td style="float:right;"><label><input type="checkbox" id="checkcomps" />Check Computations</label><input id="btncomputeactivity" type="button" onclick="displayactivityvalues()" value="Compute" /></td>
-					</tr>
-				</table>
-			</div>
-			<div style="clear:both; height:5px;"></div>
-			
-			<div id="divactivity1table" class="div-table">
-				<p><h3>User Entries (Input all values):</h3></p>
-				<table id="tblactivity1" class="display-table">
-					<thead>
-						<th>Layer Thickness (cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Bulk density (g/cm3)</th>
-					</thead>
-						
-					<tbody>
-						
-					</tbody>
-				</table>
+			<div class="form-horizontal">
+				<!--<label for="txtlocality" class="col-sm-2 control-label">Locality</label>-->
+				<div class="col-sm-10">
+				  <input type="text" class="form-control input-sm" id="txtlocality" placeholder="Locality" style="width:400px">
+				</div>
 			</div>
 			<div style="clear:both; height:10px;"></div>
 			
-			<div id="outerdiv" class="div-outer">
-				<div id="accordion" class="accordion">
-					<h3 id="subheadingactivity1">Activity 1 - SOC Sequestration</h3>
-					<div id="accordionitem-activity1" class="accordionitem">
-						<div id = "divactivity1computedtable" class="div-compute-table"></div>
-						<div id = "divactivity1graphtable" class="div-compute-table"></div>
-						<div id="ct-chartactivity1" class="div-compute-chart"></div>
+			<div class="form-inline">
+				<div class="form-group">
+					<div class="col-sm-10">
+					  <input type="text" class="form-control input-sm" id="txtaddrow" placeholder="No of Layers" style="width:400px">
 					</div>
-					
-					<h3 id="subheadingactivity2">Activity 2 - SOC Sequestration</h3>
-					<div id="accordionitem-activity2" class="accordionitem">
-						<div id = "divactivity2computedtable" class="div-compute-table"></div>
-						<div id = "divactivity2graphtable" class="div-compute-table"></div>
-						<div id="ct-chartactivity2" class="div-compute-chart"></div>
-					</div>
-					
-					
 				</div>
+				<div class="form-group">
+					<div class="col-sm-10">
+					  <button id="btnaddrow" onclick="addtablerow()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Add layers</span></button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-10">
+					  <button id="btnremoverow" onclick="removetablerow()" class="btn btn-danger btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Remove</span></button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="checkbox">
+					  <div class="checkbox"><label><input type="checkbox" id="checkcomps" value="">Dislay Tables</label></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-10">
+					  <button id="btncomputeactivity" onclick="displayactivityvalues()" class="btn btn-success btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Compute</span></button>
+					</div>
+				</div>
+			</div>
+			
+			<div style="clear:both; height:5px;"></div>
+			
+			<div class="content-wrapper">
+				<div id="divactivity1table" class="float-left">
+					<p><h5>User Entries (Input all values):</h5></p>
+					<table id="tblactivity1" class="table table-striped table-hover table-bordered table-condensed">
+						<thead>
+							<th>Layer Thickness (cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Bulk density (g/cm3)</th>
+						</thead>
+							
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+				
+				<div id="divsocsequence" class="float-right">
+			
+			
+				</div>
+			</div>
+			
+			<div style="clear:both; height:10px;"></div>
+			
+			<div id="outerdiv" class="div-outer">
+				<h4>Results</h4>
+					<div class="panel-group" id="accordion">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+								  <a data-toggle="collapse" href="#panel-activity1">SOC Concentration</a>
+								</h5>
+							</div>
+							
+							<div id="panel-activity1" class="panel-collapse collapse in" style="padding:10px">
+								<div id = "divactivity1computedtable" class="div-compute-table"></div>
+								<div id = "divactivity1graphtable" class="div-compute-table"></div>
+								<div id="ct-chartactivity1" class="div-compute-chart"></div>
+							</div>
+						</div>
+						
+						
+						
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+								  <a data-toggle="collapse" href="#panel-activity2">SOC Sequestration</a>
+								</h5>
+							</div>
+							
+							<div id="panel-activity2" class="panel-collapse collapse in" style="padding:10px">
+								<div id = "divactivity2computedtable" class="div-compute-table"></div>
+								<div id = "divactivity2graphtable" class="div-compute-table"></div>
+								<div id="ct-chartactivity2" class="div-compute-chart"></div>
+							</div>
+						</div>
+					</div>
+			
+				
+			
+				
 				
 				
 					
