@@ -68,6 +68,7 @@
 			
 			
 			$(document).ready(function() {
+				
 				// read json file and populate locality with corresponding values in dictionary
 				var faovaluedict = {};
 				faovaluedict["Kenya"] = 1.2;
@@ -77,8 +78,14 @@
 				faovaluedict["Rwanda"] = 0.7;
 				
 				var serialized_faovaluedict = JSON.stringify(faovaluedict, null, 4);
-				
 				var obj = JSON.parse(serialized_faovaluedict);
+				
+				// locality
+				$('#cmblocality').find('option').remove();
+				$('#cmblocality').append($('<option>', { 
+					value: "",
+					text : "[Select Locality]"
+				}));
 				for(var key in obj){
 					if (obj.hasOwnProperty(key)){
 						$('#cmblocality').append($('<option>', { 
@@ -91,8 +98,20 @@
 				$('#cmblocality').on('change', function() {
 					$('#txtlocality').val($(this).val());
 					$('#txtacreage').val(faovaluedict[$(this).val()]);
+					
+					if ($(this).val()) {
+						$('#txtlocality').prop('readonly', true);
+					} else {
+						$('#txtlocality').prop('readonly', false);
+					}
 				});
 				
+				// land use
+				$('#cmblanduse').find('option').remove();
+				$('#cmblanduse').append($('<option>', { 
+					value: "",
+					text : "[Select Land Use]"
+				}));
 				for(i = 0; i < faolocalitytypedata.length; i++){
 					$('#cmblanduse').append($('<option>', { 
 						value: i,
@@ -1672,7 +1691,7 @@
 				
 				<div class="form-group">
 					<label for="cmblocality">Locality</label>
-					<select id="cmblocality" class="form-control" style="width:170px"><option value="">[Select Locality]</option></select>
+					<select id="cmblocality" class="form-control" style="width:170px"></select>
 				</div>
 				
 				<div class="form-group">
@@ -1685,7 +1704,7 @@
 				
 				<div class="form-group">
 					<label for="cmblanduse">Land Use</label>
-					<select id="cmblanduse" class="form-control" style="width:170px"><option value="">[Select Land Use]</option></select>
+					<select id="cmblanduse" class="form-control" style="width:170px"></select>
 				</div>
 				
 				<div class="checkbox"><label><input type="checkbox" id="checkcomps" value=""></label></div>
