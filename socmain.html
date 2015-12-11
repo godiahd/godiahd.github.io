@@ -28,7 +28,7 @@
 		
 		
 		
-	
+		
 	
 	
 	
@@ -69,6 +69,9 @@
 			
 			
 			$(document).ready(function() {
+				
+		
+		
 				// read json file and populate locality with corresponding values in dictionary
 				
 				var faovaluedict = {};
@@ -243,6 +246,9 @@
 				} else {
 					graphovershootchecked = false;
 				}
+				
+				// activity 2 computations
+				displayactivitytwovalues();
 			}
 			
 			
@@ -318,7 +324,7 @@
 						'<table id="tblactivity1computedvalues" class="table table-striped table-hover table-bordered table-condensed">');
 						
 						$('#tblactivity1computedvalues').append('<thead>' +
-							'<th>Layer</th><th>Layer Thickness(cm)</th><th>Layer, top depth(cm)</th><th>Layer, bottom depth(cm)</th><th>Layer, mid depth(cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Delta SOC (g/kg)</th><th>Bulk density (g/cm3)</th><th>SOC-seq (Mg/ha/depth)</th>' +
+							'<th>Layer</th><th>Layer Thickness (cm)</th><th>Layer, top depth(cm)</th><th>Layer, bottom depth(cm)</th><th>Layer, mid depth(cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Delta SOC (g/kg)</th><th>Bulk density (g/cm3)</th><th>SOC-seq (Mg/ha/depth)</th>' +
 						'</thead>' +
 							
 						'<tbody>' +
@@ -328,7 +334,7 @@
 				
 					// new div on the right
 					$('#divsocsequence').append('<div><table id ="tblsocsequence" class="table table-striped table-hover table-bordered table-condensed"><p><h5>SOC Sequestration</h5></p></div>');
-					$('#tblsocsequence').append('<thead><th>Layer</th><th>layer Thickness(cm)</th><th>SOC-Seq (Mg/ha/depth)</th></thead><tbody></tbody>');
+					$('#tblsocsequence').append('<thead><th>Layer</th><th>Thickness (cm)</th><th>SOC-Seq (Mg/ha/depth)</th></thead><tbody></tbody>');
 					
 					for (i = 0; i < activity1tablecomputations.length; i++) {
 						var returnrows = activity1tablecomputations[i];
@@ -653,7 +659,6 @@
 				$('#ct-chartactivity1').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
 				
-				
 				// activity 2 computations
 				displayactivitytwovalues();
 			}
@@ -744,7 +749,7 @@
 				if (activity2tablecomputations) {
 					for (i = 0; i < activity2tablecomputations.length; i++) {
 						if (i == 0) {
-							$('#divactivity2computedtable').append('<p><div style="float:left;"><h5>Computed Values</h5></div><div class="checkbox" style="float:right;"><input type="checkbox" id="checkgraphovershoot" onchange="checkgraphovershootchange()" value="Without Overshooting">Without Overshooting<br></div></p>' +
+							$('#divactivity2computedtable').append('<p><div style="float:left;"><h5>Computed Values</h5></div><div class="checkbox" style="float:right;"><input type="checkbox" id="checkgraphovershoot" onchange="checkgraphovershootchange()" value="Prevent Overshooting">Prevent Overshooting<br></div></p>' +
 							'<table id="tblactivity2computedvalues" class="table table-striped table-hover table-bordered table-condensed">');
 							
 							if (graphovershootchecked == true) {
@@ -1324,16 +1329,9 @@
 				
 				$('#divtotalsocsequestration').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
+				
+				$('.panel-collapse').collapse('show');
 			}
-			
-			
-
-
-
-
-			
-			
-			
 			
 			
 			function activity2tablevalueschanged($cell) {
@@ -1425,6 +1423,14 @@
 				return cellvalue.replace(/<br>/g, '');
 			}
 			
+			
+			function displayabout() {
+				if ($('#divintroduction').css('display') == 'none') {
+				   $('#divintroduction').css({ "display": "block" });
+				} else {
+					$('#divintroduction').css({ "display": "none" });
+				}
+			}
 			
 			
 			
@@ -1618,6 +1624,8 @@
 		</script>
 		
 		<style type="text/css">
+			
+
 			.div-outer {
 				width: 100%;
 				overflow: auto;
@@ -1633,11 +1641,6 @@
 				 font-size: 12px;
 			}
 			
-			.divbuttons {
-				background-color: #E0E0E0;
-				width: 100%;
-			}
-			
 			.div-compute-chart {
 				 width: 100%;
 				 overflow: auto;
@@ -1645,21 +1648,11 @@
 				 margin: 0 auto;
 			}
 			
-			.div-footer {
-				display: block;
-				background-color: #e1f0c2;
-				color:black;
-				clear:both;
-				text-align:center;
-				padding:5px;
-			}
-			
-			.div-introduction {
-				display: block;
-				background-color: #e1f0c2;
-				color:black;
-				clear:both;
-				padding:5px;
+			#divintroduction {
+				background-color: #f2f2f2;
+				font-size: 14px; 
+				width: 100%;
+				padding: 5px;
 			}
 			
 			.content-wrapper {
@@ -1700,6 +1693,40 @@
 				padding: 0;
 			}
 
+			.page-footer {
+				background-color: #EDF0D8;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				display: block;
+			}
+			
+			.img-responsive {
+				background: transparent;
+			}
+			
+			.soc-logo span {
+				font-weight: 700;
+				font-size: 40px;
+				line-height: 1;
+				margin: 0px;
+				padding: 0px;
+			}
+			.brand-soc {
+				color: #000;
+			}
+			.brand-app {
+				color: #5CB85C;
+			}
+			
+			.cgiar-logo img {
+				padding: 23px 10px 0px 0px;
+			}
+			.ciat-logo {
+				padding: 23px 10px 0px 0px;
+			}
+			.pull-left {
+				float: left !important;
+			}
 			
 			
 			
@@ -1710,55 +1737,94 @@
 	</head>
 	
 	<body>
-		<div class = "div-introduction">
-			<p>Introductory Information</p>
+	
+	
+		<!-- Fixed navbar -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+		  <div class="container-fluid" style="background-color: #000; color: white;">
+			<div id="navbar" class="navbar-collapse collapse" style="padding: 5px">
+			  <ul class="nav navbar-nav navbar-right">
+				<li><a id="aboutlink" href="#" onclick="displayabout()">About</a></li>
+				<li><a href="#">Contact Us</a></li>
+			  </ul>
+			</div>
+			
+			
+			
+			<!-- <div class="pull-left">
+			<a class="navbar-brand" href="index.html">
+				<h1>
+					<span class="brand-land-tp">LAND</span>
+					<span class="brand-rest">REST</span>
+				</h1>
+			</a>
+            </div>    -->      
+			
+			
+			
+			
+			
+			
+		  </div>
+		</nav>
+		
+		<div style="clear:both; height:60px;"></div>
+		
+		<div id="divintroduction" style="display: none;">
+			<p>
+			There has been quite some debate about the scope for mitigating climate change by soil organic carbon (SOC) sequestration. 
+			However, it seems there is a general lack of understanding of quantities and the time-dimension, as well as the possible contribution 
+			that SOC-seq. can play. This web application provides a platform where users can visualize the organic carbon content of a soil of 
+			their choice, as well as the quantitative impact of soil conserving management practices on sequestration, how such sequestration 
+			would unfold over time and what would be the magnitude of SOC seq. if the anticipated practice (to foster SOC seq.) would be scaled 
+			out to countries, sub-continents or the entire world. The basis of the idea is the publication from Sommer and Bossio 2014 
+			(Dynamics and climate change mitigation potential of soil organic carbon sequestration. J. Environm. Management 144, 83-87.)
+			</p>
 		</div>
 		
-		<div style="clear:both; height:10px;"></div>
+		<div class="container-fluid" style="padding: 10px; background-color: #d9d9d9;">
+				<div class="form-inline" style="padding-left :10px; padding-right :10px;">
+					<div class="form-group">
+						<input type="text" class="form-control input-sm" id="txtaddrow" placeholder="No of Layers" style="width:100px">
+					</div>
+					<div class="form-group">
+						<button id="btnaddrow" onclick="addtablerow()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Add layers</span></button>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-10">
+							<button id="btnremoverow" onclick="removetablerow()" class="btn btn-danger btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Remove</span></button>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="cmblocality">Locality</label>
+						<select id="cmblocality" class="form-control" style="width:170px"></select>
+					</div>
+					
+					<div class="form-group">
+						<input type="text" class="form-control input-sm" id="txtlocality" placeholder="Locality" style="width:170px">
+					</div>
+					
+					<div class="form-group">
+						<label for="cmblanduse">Land Use</label>
+						<select id="cmblanduse" class="form-control" style="width:170px"></select>
+					</div>
+					
+					<div class="form-group">
+						<input type="text" class="form-control input-sm" id="txtacreage" placeholder="Acreage (Mha)" style="width:130px">
+					</div>
+					
+					<div class="checkbox"><label><input type="checkbox" id="checkcomps" value=""></label></div>
+					<button id="btncomputeactivity" onclick="displayactivityvalues()" class="btn btn-success btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Compute</span></button>
+				</div>
+			</div>
+	
+	
+	
+	
 	
 		<div id="divmain" class="container-fluid" style="font-size:12px">
-			<div class="form-inline" style="padding:5px;">
-				<div class="form-group">
-					<!-- <label for="txtaddrow">Layers</label> -->
-					<input type="text" class="form-control input-sm" id="txtaddrow" placeholder="No of Layers" style="width:100px">
-				</div>
-				<div class="form-group">
-					<button id="btnaddrow" onclick="addtablerow()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Add layers</span></button>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-sm-10">
-						<button id="btnremoverow" onclick="removetablerow()" class="btn btn-danger btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Remove</span></button>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label for="cmblocality">Locality</label>
-					<select id="cmblocality" class="form-control" style="width:170px"></select>
-				</div>
-				
-				<div class="form-group">
-					<input type="text" class="form-control input-sm" id="txtlocality" placeholder="Locality" style="width:170px">
-				</div>
-				
-				<div class="form-group">
-					<label for="cmblanduse">Land Use</label>
-					<select id="cmblanduse" class="form-control" style="width:170px"></select>
-				</div>
-				
-				<div class="form-group">
-					<input type="text" class="form-control input-sm" id="txtacreage" placeholder="Acreage (Mha)" style="width:130px">
-				</div>
-				
-				<div class="checkbox"><label><input type="checkbox" id="checkcomps" value=""></label></div>
-				<button id="btncomputeactivity" onclick="displayactivityvalues()" class="btn btn-success btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Compute</span></button>
-			</div>
-			<div style="clear:both; height:5px;"></div>
-			
-			<div class="form-inline" style="padding:5px;">
-				
-			</div>
-			<div style="clear:both; height:10px;"></div>
 			
 			<div class="content-wrapper">
 				<div id="divactivity1table" class="float-left" style="width:70%;">
@@ -1774,107 +1840,117 @@
 					</table>
 				</div>
 				
-				<div id="divsocsequence" class="float-right" style="width:25%">
-			
-			
-				</div>
+				<div id="divsocsequence" class="float-right" style="width:25%"></div>
 			</div>
-			
 			<div style="clear:both; height:10px;"></div>
 			
 			<div id="outerdiv" class="div-outer">
 				<h4>Results</h4>
-					<div class="panel-group" id="accordion">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h5 class="panel-title">
-								  <a data-toggle="collapse" href="#panel-activity1">SOC Concentration</a>
-								</h5>
-							</div>
-							
-							<div id="panel-activity1" class="panel-collapse collapse in" style="padding:10px">
-								<div id="divactivity1computedtable" class="div-compute-table"></div>
-								<div id="divactivity1graphtable" class="div-compute-table"></div>
-								<div id="ct-chartactivity1" class="div-compute-chart"></div>
-							</div>
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h5 class="panel-title">
+							  <a data-toggle="collapse" href="#panel-activity1">SOC Concentration</a>
+							</h5>
 						</div>
 						
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h5 class="panel-title">
-								  <a data-toggle="collapse" href="#panel-activity2">SOC Sequestration</a>
-								</h5>
-							</div>
-							
-							<div id="panel-activity2" class="panel-collapse collapse in" style="padding:10px">
-								<div id="divactivity2computedtable" class="div-compute-table"></div>
-								<div id="divactivity2graphtable" class="div-compute-table"></div>
-								<div id="ct-chartactivity2" class="div-compute-chart"></div>
-							</div>
+						<div id="panel-activity1" class="panel-collapse collapse in" style="padding:10px">
+							<div id="divactivity1computedtable" class="div-compute-table"></div>
+							<div id="divactivity1graphtable" class="div-compute-table"></div>
+							<div id="ct-chartactivity1" class="div-compute-chart"></div>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h5 class="panel-title">
+							  <a data-toggle="collapse" href="#panel-activity2">SOC Sequestration</a>
+							</h5>
 						</div>
 						
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h5 class="panel-title">
-								  <a data-toggle="collapse" href="#panel-activity3">SOC Sequestration Over Time</a>
-								</h5>
-							</div>
-							
-							<div id="panel-activity3" class="panel-collapse collapse in" style="padding:10px;">
-								<div class="row">
-									<div id="divactivity3computedtable" class="col-lg-1 col-md-1 col-sm-1" style="width:35%;"></div>
-									<div id="ct-chartactivity3" class="col-lg-2 col-md-2 col-sm-2" style="width:60%;"></div>
-								</div>
-								<div id="divactivity3graphtable" class="div-compute-table"></div>
-							</div>
+						<div id="panel-activity2" class="panel-collapse collapse in" style="padding:10px">
+							<div id="divactivity2computedtable" class="div-compute-table"></div>
+							<div id="divactivity2graphtable" class="div-compute-table"></div>
+							<div id="ct-chartactivity2" class="div-compute-chart"></div>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h5 class="panel-title">
+							  <a data-toggle="collapse" href="#panel-activity3">SOC Sequestration Over Time</a>
+							</h5>
 						</div>
 						
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h5 class="panel-title">
-								  <a data-toggle="collapse" href="#panel-finaltable">Total SOC-Sequestration</a>
-								</h5>
+						<div id="panel-activity3" class="panel-collapse collapse in" style="padding:10px;">
+							<div class="row">
+								<div id="divactivity3computedtable" class="col-lg-1 col-md-1 col-sm-1" style="width:35%;"></div>
+								<div id="ct-chartactivity3" class="col-lg-2 col-md-2 col-sm-2" style="width:60%;"></div>
 							</div>
-							
-							<div id="panel-finaltable" class="panel-collapse collapse in" style="padding:10px">
-								<div id="divtotalsocsequestration" class="div-compute-table">
-									<table id="tbltotalsocsequestration" class="table table-striped table-hover table-bordered table-condensed">
-										<thead>
-											<th>Locality</th><th>Land Use</th><th>Years of seq.</th><th>SOC-sequestration (Mg C)</th>
-										</thead>
-											
-										<tbody>
-											
-										</tbody>
-									</table>
-								
-								
-								</div>
+							<div id="divactivity3graphtable" class="div-compute-table"></div>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h5 class="panel-title">
+							  <a data-toggle="collapse" href="#panel-finaltable">Total SOC-Sequestration</a>
+							</h5>
+						</div>
+						
+						<div id="panel-finaltable" class="panel-collapse collapse in" style="padding:10px">
+							<div id="divtotalsocsequestration" class="div-compute-table">
+								<table id="tbltotalsocsequestration" class="table table-striped table-hover table-bordered table-condensed">
+									<thead>
+										<th>Locality</th><th>Land Use</th><th>Years of seq.</th><th>SOC-sequestration (Mg C)</th>
+									</thead>
+										
+									<tbody>
+										
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
-			
-				
-			
-				
-				
-				
-					
-				
-				
-				
+				</div>
 			</div>
-			
-			
-
 		</div>
-		
 	</body>
 	
-	 <footer>
-		 <div class = "div-footer">
-			  <p>Footer Information</p>
-			  
-		  </div>
+	<footer>
+		<div class = "page-footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="left-footer-details">
+							<h1 class="soc-logo">
+								<a href="socmain.html">
+									<span class="brand-soc">SOC</span>
+									<span class="brand-app">APP</span>
+								</a>
+							</h1>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="org-logo-details">
+							<p class="ciat-full text-muted">International Center for Tropical Agriculture</p>
+							<p class="ciat-full text-muted">Member of the CGIAR Consortium </p>
+							<p class="copyright-notice text-muted">© 2015. All Rights Resverved.</p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="org-logo">
+							<div class="cgiar-logo pull-left">
+								<a href="http://www.cgiar.org/" target="_blank"><img class="img-responsive" src="logocgiar.png" alt="CIAT"></a>
+							</div>
+							
+							<div class="ciat-logo pull-left">
+								<a href="http://ciat.cgiar.org/" target="_blank"><img class="img-responsive" src="logociat.png" alt="CIAT"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</footer> 
 </html>
