@@ -326,7 +326,7 @@
 					
 					for (i = 0; i < activity1tablecomputations.length; i++) {
 						var returnrows = activity1tablecomputations[i];
-						$('#tblsocsequence').find('tbody').append('<tr><td style="color:#C0C0C0;">' + returnrows[0] + '</td><td style="color:#C0C0C0;">' + returnrows[1] + '</td><td style="color:#C0C0C0;">' + returnrows[returnrows.length - 1] + '</td></tr>');
+						$('#tblsocsequence').find('tbody').append('<tr><td style="color:#8c8c8c;">' + returnrows[0] + '</td><td style="color:#8c8c8c;">' + returnrows[1] + '</td><td style="color:#8c8c8c;">' + returnrows[returnrows.length - 1] + '</td></tr>');
 					}
 					
 					$('#divsocsequence').css({ "display": "block" });
@@ -760,7 +760,7 @@
 								if (((i == 2 || i == 3 || i == 4) && k == 1) || ((i == 2 || i == 3) && k == 2)) {
 									rowitem += '<td class="editvalues2" contenteditable=true style="cursor:pointer;" data-title="Edit Value">' + activity2tablecomputations[i][k] + '</td>';
 								} else {
-									rowitem += '<td contenteditable=false style="color:#C0C0C0;">' + activity2tablecomputations[i][k] + '</td>';
+									rowitem += '<td contenteditable=false style="color:#8c8c8c;">' + activity2tablecomputations[i][k] + '</td>';
 								}
 							}
 							
@@ -1048,11 +1048,11 @@
 				
 				rowvalues = ["Total targeted area (Mha)", targetedarea];
 				activity3tablecomputations.push(rowvalues);
-				$('#tblactivity3computedvaluesA').find('tbody').append('<tr><td>' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#C0C0C0;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
+				$('#tblactivity3computedvaluesA').find('tbody').append('<tr><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
 				rowvalues = ["SOC seq. (t/ha)", socseq];
 				activity3tablecomputations.push(rowvalues);
-				$('#tblactivity3computedvaluesA').find('tbody').append('<tr><td>' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#C0C0C0;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
+				$('#tblactivity3computedvaluesA').find('tbody').append('<tr><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
 				//if all land is brought under swquestration
 				$('#divactivity3computedtable').append('<p>If all land is brought under swquestration</p>' +
@@ -1060,11 +1060,11 @@
 				
 				rowvalues = ["SOC-sequestration total (t)", targetedarea * socseq * 1000000];
 				activity3tablecomputations.push(rowvalues);
-				$('#tblactivity3computedvaluesB').find('tbody').append('<tr><td>' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#C0C0C0;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
+				$('#tblactivity3computedvaluesB').find('tbody').append('<tr><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
 				rowvalues = ["SOC-sequestration total (Mt)", targetedarea * socseq];
 				activity3tablecomputations.push(rowvalues);
-				$('#tblactivity3computedvaluesB').find('tbody').append('<tr><td>' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#C0C0C0;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
+				$('#tblactivity3computedvaluesB').find('tbody').append('<tr><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
 				// Increase of hectares under a SOC seq. scheme over time
 				$('#divactivity3computedtable').append('<div id="divactivity3computedvaluesC" style="display: inline-block; vertical-align:top; width:80%;"><p>If all land is brought under swquestration</p>' +
@@ -1072,15 +1072,15 @@
 				
 				rowvalues = ["rate const", rateconsfactor/1000];
 				activity3tablecomputations.push(rowvalues);
-				$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td>' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#C0C0C0;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
+				$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
 				rowvalues = ["Y_zero", 1/totalyearsglobal * 100];
 				activity3tablecomputations.push(rowvalues);
-				$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td>' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#C0C0C0;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
+				$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
 				rowvalues = ["Total Years", totalyearsglobal];
 				activity3tablecomputations.push(rowvalues);
-				$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td>' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#C0C0C0;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
+				$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
 				$('#divactivity3computedtable').append('<div id="divrangeslider" style="display: inline-block; vertical-align:top; width: 20%; text-align: right; padding-left:20px;"><input id="range_slider" type="range" min=' + minslidervalue + ' max=' + maxslidervalue + ' step="1" value=' + rateconsfactor + ' data-orientation="vertical"><output></output></div>');
 				
@@ -1318,10 +1318,10 @@
 				} else {
 					// insert
 					$('#tbltotalsocsequestration').find('tbody').append('<tr>' +
-							'<td>' + $('#txtlocality').val() + '</td>' +
-							'<td>' + $("#cmblanduse option:selected").text() + '</td>' +
-							'<td>' + totalyearsglobal + '</td>' +
-							'<td>' + area_year_soc_seq_total + '</td>' +
+							'<td style="color:#8c8c8c;">' + $('#txtlocality').val() + '</td>' +
+							'<td style="color:#8c8c8c;">' + $("#cmblanduse option:selected").text() + '</td>' +
+							'<td style="color:#8c8c8c;">' + totalyearsglobal + '</td>' +
+							'<td style="color:#8c8c8c;">' + area_year_soc_seq_total + '</td>' +
 						'</tr>');
 				}
 				
