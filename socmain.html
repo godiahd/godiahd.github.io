@@ -52,8 +52,10 @@
 			
 			
 			$(document).ready(function() {
+				$('#tblactivity1').on('click', 'input[type="button"]', function(e){
+				   $(this).closest('tr').remove();
+				});
 				
-		
 		
 				// read json file and populate locality with corresponding values in dictionary
 				
@@ -196,6 +198,7 @@
 							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter SOC">' + socstartval + '</td>' +
 							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter SOC">' + socendval + '</td>' +
 							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter Bulk Density">' + bulkdensityval + '</td>' +
+							'<td><input type="button" style="color:red;" value="X"/></td>' +
 						'</tr>');
 		
 					addindex += 1;
@@ -217,8 +220,9 @@
 			}
 			
 			
-			function removetablerow() {
-				$('#tblactivity1 tbody tr:last').remove();
+			function removetablerow($row) {
+				//$('#tblactivity1 tbody tr:last').remove();
+				$(this).parent().parent().remove();
 				if (addindex > 0) {
 					addindex-=1;
 				}
@@ -233,7 +237,7 @@
 				}
 				
 				// activity 2 computations
-				displayactivitytwovalues();
+				//displayactivitytwovalues();
 			}
 			
 			
@@ -298,7 +302,6 @@
 			
 			function displayactivityonevalues() {
 				$('#divactivity1computedtable').empty();
-				checkforgraphovershoot = false;
 				
 				// append computed values
 				activity1tablecomputations = computeactivityonevalues();
@@ -427,6 +430,8 @@
 				var activityonecomputedlist = [];
 				var r = 0;
 				
+				checkforgraphovershoot = false;
+				
 				$('#tblactivity1 tbody').find('tr').each(function () {
 					var rowlist = [];
 					var selrow = $(this);
@@ -502,12 +507,12 @@
 				
 				if (activity1tablecomputations) {
 					for (i = 0; i < activity1tablecomputations.length - 1; i++) {
-						layerdepth_range.push(parseInt(activity1tablecomputations[i][4]));
-						socstart_range.push(parseInt(activity1tablecomputations[i][5]));
-						socend_range.push(parseInt(activity1tablecomputations[i][6]));
+						layerdepth_range.push(parseFloat(activity1tablecomputations[i][4]));
+						socstart_range.push(parseFloat(activity1tablecomputations[i][5]));
+						socend_range.push(parseFloat(activity1tablecomputations[i][6]));
 					}
 					
-					var highestdepth = parseInt(graphlist[graphlist.length - 3][3]) + 5;
+					var highestdepth = parseFloat(graphlist[graphlist.length - 3][3]) + 5;
 					
 					for (depth = 0; depth < highestdepth; depth++) {
 						linesmoothenedstart = cubic_spline(layerdepth_range, socstart_range, depth);
@@ -652,7 +657,6 @@
 			function displayactivitytwovalues() {
 				$('#divactivity2computedtable').empty();
 				activity2tablecomputations = [];
-				checkforgraphovershoot = true;
 				
 				var rowvalues = ["", "Year"];
 				for (x = 1; x < $('#tblactivity1').find('tr').length; x++) {
@@ -817,6 +821,7 @@
 			
 			
 			function computeactivity2graphvalues() {
+				checkforgraphovershoot = true;
 				$('#divactivity2graphtable').empty();
 				activity2graphcomputations = [];
 				totalyearsglobal = parseInt(activity2tablecomputations[4][1]);
@@ -1032,7 +1037,6 @@
 			function displayactivitythreevalues() {
 				$('#divactivity3computedtable').empty();
 				activity3tablecomputations = [];
-				checkforgraphovershoot = false;
 				
 				var targetedarea = totalacreageglobal;
 				var socseq = parseFloat(activity1tablecomputations[activity1tablecomputations.length - 1][9]);
@@ -1123,6 +1127,7 @@
 			
 			
 			function computeactivity3graphvalues() {
+				checkforgraphovershoot = false;
 				$('#divactivity3graphtable').empty();
 				activity3graphcomputations = [];
 				var rowvalues = [];
@@ -1161,6 +1166,7 @@
 						rowvalues = [0, "", "", ""];
 						
 					} else {
+						//alert(totalyearsglobal + ", " + y_zero + ", " + rate_const + ", " +  i + ", " + activity2yearrange + ", " + activity2annualsocseq + ", " + activity1bulkdensityavg + ", " + activity1layerdepth + ", " + targetarea);
 						exp_decay = ExpDecay(y_zero, i - 1, rate_const);
 						exp_decay_total += exp_decay;
 						area_year_soc_seq = Area_Year_SOC_Seq_NEW(totalyearsglobal, y_zero, rate_const, i, activity2yearrange, activity2annualsocseq, activity1bulkdensityavg, activity1layerdepth, targetarea);
@@ -1319,6 +1325,46 @@
 						'</tr>');
 				}
 				
+				// total
+				var cnt = 0;
+				var totalsocseq = 0.0;
+				var alllanduse;
+				edittable = document.getElementById('tbltotalsocsequestration');
+				for (i = 0; i < edittable.rows.length; i++) {
+					if (edittable.rows[i].cells[0].innerHTML.toUpperCase() == $('#txtlocality').val().toUpperCase() && edittable.rows[i].cells[1].innerHTML.indexOf(",") == -1) {
+						totalsocseq += parseFloat(edittable.rows[i].cells[3].innerHTML);
+						if (!alllanduse) {
+							alllanduse = edittable.rows[i].cells[1].innerHTML;
+						} else {
+							alllanduse = alllanduse + ", " + edittable.rows[i].cells[1].innerHTML;
+						}
+						cnt+=1;
+					}
+				}
+				
+				if (cnt > 1) {
+					selrow = "";
+					edittable = document.getElementById('tbltotalsocsequestration');
+					for (i = 0; i < edittable.rows.length; i++) {
+						if (edittable.rows[i].cells[0].innerHTML.toUpperCase() == $('#txtlocality').val().toUpperCase() && edittable.rows[i].cells[1].innerHTML == alllanduse) {
+							selrow = edittable.rows[i];
+						}
+					}
+					
+					if (selrow) {
+						selrow.cells[3].innerHTML = totalsocseq;
+					
+					} else {
+						// insert
+						$('#tbltotalsocsequestration').find('tbody').append('<tr>' +
+							'<td>' + $('#txtlocality').val() + '</td>' +
+							'<td>' + alllanduse + '</td>' +
+							'<td>' + totalyearsglobal + '</td>' +
+							'<td>' + totalsocseq + '</td>' +
+						'</tr>');
+					}
+				}
+				
 				$('#divtotalsocsequestration').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
 				
@@ -1398,15 +1444,17 @@
 				
 				inputtable.find('tr').each(function () {
 					$(this).find('td').each(function () {
-						if (!$.isNumeric($(this).text())) {
-							isvalid = false;
-							$(this).css ({
-								"border": "solid 2px #FF0000"
-							});
-						} else {
-							$(this).css ({
-								"border": "solid 1px #dddddd"
-							});
+						if (!$(this).is(':last-child')) {
+							if (!$.isNumeric($(this).text())) {
+								isvalid = false;
+								$(this).css ({
+									"border": "solid 2px #FF0000"
+								});
+							} else {
+								$(this).css ({
+									"border": "solid 1px #dddddd"
+								});
+							}
 						}
 					});
 				});
@@ -1461,7 +1509,7 @@
 				
 				var xin = new Array(input_count); // ReDim xin(input_count) As Single
 				var yin = new Array(input_count); // ReDim yin(input_count) As Single
-				var c; // Integer
+				//var c; // Integer
 				
 				for (c = 0; c < input_count; c++) {
 					xin[c] = Input_x_range[c];
@@ -1472,28 +1520,27 @@
 				var n; // Integer 'n=input_count
 				var i, K; // Integer 'these are loop counting integers
 				var p, qn, sig, un; // Single
-				var U = new Array(input_count); // ReDim U(input_count - 1) As Single
+				var U = new Array(input_count - 1); // ReDim U(input_count - 1) As Single
 				var yt = new Array(input_count); //ReDim yt(input_count) As Single 'these are the 2nd deriv values
 				
-				n = input_count - 1;
+				n = input_count;
 				yt[0] = 0;
 				U[0] = 0;
 				
-				for (i = 1; i < n; i++) {
+				for (i = 1; i < n - 1; i++) {
 					sig = (xin[i] - xin[i - 1]) / (xin[i + 1] - xin[i - 1]);
 					p = sig * yt[i - 1] + 2;
 					yt[i] = (sig - 1) / p;
 					U[i] = (yin[i + 1] - yin[i]) / (xin[i + 1] - xin[i]) - (yin[i] - yin[i - 1]) / (xin[i] - xin[i - 1]);
 					U[i] = (6 * U[i] / (xin[i + 1] - xin[i - 1]) - sig * U[i - 1]) / p;
-					//alert(sig + ", " + p);
 				}
 				
 				qn = 0;
 				un = 0;
 				
-				yt[n] = (un - qn * U[n - 1]) / (qn * yt[n - 1] + 1);
+				yt[n - 1] = (un - qn * U[n - 2]) / (qn * yt[n - 2] + 1);
 				
-				for (K = n - 1; K >= 1; K--) {
+				for (K = n - 2; K >= 1; K--) {
 					yt[K] = yt[K] * yt[K + 1] + U[K];
 				}
 				
@@ -1503,10 +1550,11 @@
 				
 				// first find correct interval
 				klo = 1;
-				khi = n;
+				khi = n - 1;
 				
 				do {
 					K = khi - klo;
+					
 					if (xin[K] > X_for_which_2find_Y) {
 						khi = K;
 					} else {
@@ -1517,15 +1565,16 @@
 				}
 				while (K > 1);
 				
+				//alert(X_for_which_2find_Y + ", " + khi + ", " + klo);
 				//// RS added - preventing negative or possitive values in-between two y-values equal zero!
 				//if (yin[khi] == 0 && yin[klo] == 0) {
 				//	return 0;
 				//}
 				
+				
 				// RS added - prevent cubic spline from 'overshooting'
 				if (checkforgraphovershoot == true && graphovershootchecked == true) {
-					if (yin[khi] == yin[klo] && khi > input_count - 1) {
-						//alert(khi + ", " + input_count);
+					if (yin[khi] == yin[klo] && khi > input_count - 2) {
 						return yin[khi];
 					}
 					//End added
@@ -1537,6 +1586,8 @@
 				h = xin[khi] - xin[klo];
 				a = (xin[khi] - X_for_which_2find_Y) / h;
 				b = (X_for_which_2find_Y - xin[klo]) / h;
+				
+				//alert("X_for_which_2find_Y: " + X_for_which_2find_Y + " h: " + h + " a, " + a + " b, " + b);
 				
 				Y = a * yin[klo] + b * yin[khi] + ((Math.pow(a, 3) - a) * yt[klo] + (Math.pow(b, 3) - b) * yt[khi]) * (Math.pow(h, 2)) / 6;
 				return Y;
@@ -1554,11 +1605,12 @@
 				is added to sequestration campain
 				x is the sequestration year
 				*/
+				
 				var returnvalue = 0.0;
 				var Area_Exp_Decay = new Array(); // length = 100 Double
 				var SOC_Seq_Rate = new Array(); // length = 100 Double
-				var AreaYear = 0; // Integer
-				var SeqYear = 0; // Integer
+				//var AreaYear = 0; // Integer
+				//var SeqYear = 0; // Integer
 				var Area_Seq_Year = new Array(); // length = 100 Double
 				
 				for (AreaYear = Jahre; AreaYear >= 1; AreaYear--) {
@@ -1788,12 +1840,6 @@
 				</div>
 				
 				<div class="form-group">
-					<div class="col-sm-10">
-						<button id="btnremoverow" onclick="removetablerow()" class="btn btn-danger btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Remove</span></button>
-					</div>
-				</div>
-				
-				<div class="form-group">
 					<label for="cmblocality">Locality</label>
 					<select id="cmblocality" class="form-control" style="width:170px"></select>
 				</div>
@@ -1823,7 +1869,7 @@
 					<p><h5>User Entries (Input all values):</h5></p>
 					<table id="tblactivity1" class="table table-striped table-hover table-bordered table-condensed">
 						<thead>
-							<th>Layer Thickness (cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Bulk density (g/cm3)</th>
+							<th>Layer Thickness (cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Bulk density (g/cm3)</th><th>Remove</th>
 						</thead>
 							
 						<tbody>
