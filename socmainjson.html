@@ -49,6 +49,7 @@
 			var area_year_soc_seq_total = 0.0;
 			var serialized_faovaluedict = {};
 			var faolocalitytypedata = ["Agricultural", "Pasture"]; // same length as faovaluedict/ serialized_faovaluedict keys
+			var filepath = "faodata.json";
 			
 			
 			$(document).ready(function() {
@@ -56,21 +57,14 @@
 				   $(this).closest('tr').remove();
 				});
 				
-				// fetch json data
-				var filepath = "faodata.json";
+				// fetch FAO json data
 				$.getJSON(filepath, {
 					format: "json"
 				})
 				.done(function(data) {
 					serialized_faovaluedict = data;
 					alert(JSON.stringify(data));  
-				})
-				.fail(function( jqxhr, textStatus, error ) {
-					alert("Request Failed: " + textStatus + ", " + error);
-				});
-				
-				
-				if (serialized_faovaluedict) {
+					
 					//serialized_faovaluedict = JSON.stringify(faovaluedict, "", 4);
 					var obj = JSON.parse(serialized_faovaluedict);
 					
@@ -88,43 +82,48 @@
 							}));
 						}
 					}
-					
-					$('#cmblocality').on('change', function() {
-						$('#txtlocality').val($(this).val());
-						if ($(this).val()) {
-							$('#txtacreage').val(fetchacreage($(this).val()));
-						} else {
-							$('#txtacreage').val("");
-						}
-						
-						if ($(this).val()) {
-							$('#txtlocality').prop('readonly', true);
-						} else {
-							$('#txtlocality').prop('readonly', false);
-						}
-					});
-					
-					// land use
-					$('#cmblanduse').find('option').remove();
-					$('#cmblanduse').append($('<option>', { 
-						value: "",
-						text : "[Select Land Use]"
-					}));
-					for(i = 0; i < faolocalitytypedata.length; i++){
-						$('#cmblanduse').append($('<option>', { 
-							value: i,
-							text : faolocalitytypedata[i]
-						}));
+				})
+				.fail(function( jqxhr, textStatus, error ) {
+					alert("Request Failed: " + textStatus + ", " + error);
+				});
+				
+				
+				$('#cmblocality').on('change', function() {
+					$('#txtlocality').val($(this).val());
+					if ($(this).val()) {
+						$('#txtacreage').val(fetchacreage($(this).val()));
+					} else {
+						$('#txtacreage').val("");
 					}
 					
-					$('#cmblanduse').on('change', function() {
-						if ($('#cmblocality').val() && $(this).val()) {
-							$('#txtacreage').val(fetchacreage($('#cmblocality').val()));
-						} else {
-							$('#txtacreage').val("");
-						}
-					});
+					if ($(this).val()) {
+						$('#txtlocality').prop('readonly', true);
+					} else {
+						$('#txtlocality').prop('readonly', false);
+					}
+				});
+				
+				// land use
+				$('#cmblanduse').find('option').remove();
+				$('#cmblanduse').append($('<option>', { 
+					value: "",
+					text : "[Select Land Use]"
+				}));
+				for(i = 0; i < faolocalitytypedata.length; i++){
+					$('#cmblanduse').append($('<option>', { 
+						value: i,
+						text : faolocalitytypedata[i]
+					}));
 				}
+				
+				$('#cmblanduse').on('change', function() {
+					if ($('#cmblocality').val() && $(this).val()) {
+						$('#txtacreage').val(fetchacreage($('#cmblocality').val()));
+					} else {
+						$('#txtacreage').val("");
+					}
+				});
+				
 				
 				
 				
