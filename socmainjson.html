@@ -53,6 +53,8 @@
 			
 			
 			$(document).ready(function() {
+				addtablerow(5);
+				
 				$('#tblactivity1').on('click', 'input[type="button"]', function(e){
 				   $(this).closest('tr').remove();
 				});
@@ -63,14 +65,14 @@
 				})
 				.done(function(data) {
 					serialized_faovaluedict = data;
-					alert(JSON.stringify(data));  
+					alert(JSON.stringify(data)); ///////////////////////////////////////////////// alert
 					
 					//serialized_faovaluedict = JSON.stringify(faovaluedict, "", 4);
 					var obj = JSON.parse(serialized_faovaluedict);
 					
 					// locality
 					$('#cmblocality').find('option').remove();
-					$('#cmblocality').append($('<option>', { 
+					$('#cmblocality').append($('<option>', {
 						value: "",
 						text : "[Select Locality]"
 					}));
@@ -83,13 +85,12 @@
 						}
 					}
 				})
-				.fail(function( jqxhr, textStatus, error ) {
+				.fail(function(jqxhr, textStatus, error) {
 					alert("Request Failed: " + textStatus + ", " + error);
+					return;
 				});
 				
-				
 				$('#cmblocality').on('change', function() {
-					$('#txtlocality').val($(this).val());
 					if ($(this).val()) {
 						$('#txtacreage').val(fetchacreage($(this).val()));
 					} else {
@@ -97,9 +98,13 @@
 					}
 					
 					if ($(this).val()) {
+						$('#txtlocality').val($(this).val());
 						$('#txtlocality').prop('readonly', true);
+						$('#divlocality').css({"display": "none"});
 					} else {
+						$('#txtlocality').val("");
 						$('#txtlocality').prop('readonly', false);
+						$('#divlocality').css({"display": "inline-block"});
 					}
 				});
 				
@@ -122,6 +127,16 @@
 					} else {
 						$('#txtacreage').val("");
 					}
+					
+					if ($(this).val()) {
+						$('#txtlanduse').val($("#cmblanduse option:selected").text());
+						$('#txtlanduse').prop('readonly', true);
+						$('#divlanduse').css({"display": "none"});
+					} else {
+						$('#txtlanduse').val("");
+						$('#txtlanduse').prop('readonly', false);
+						$('#divlanduse').css({"display": "inline-block"});
+					}
 				});
 				
 				
@@ -143,12 +158,7 @@
 			}
 			
 			
-			function addtablerow() {
-				var thicknessval;
-				var socstartval;
-				var socendval;
-				var bulkdensityval;
-				
+			function addtablerowclick() {
 				// if input is numeric
 				if (!$.isNumeric($('#txtaddrow').val())) {
 					$('#txtaddrow').css({ "border": "solid 2px #FF0000" });
@@ -156,8 +166,18 @@
 				}
 				
 				$('#txtaddrow').css({ "border": "solid 1px #dddddd" });
+			
+				addtablerow(parseInt($('#txtaddrow').val()));
+			}
+			
+			
+			function addtablerow(noofrows) {
+				var thicknessval;
+				var socstartval;
+				var socendval;
+				var bulkdensityval;
 				
-				for (i = 0; i < parseInt($('#txtaddrow').val()); i++) {
+				for (i = 0; i < noofrows; i++) {
 					switch(addindex) {
 						case 0:
 							thicknessval = 6;
@@ -224,7 +244,6 @@
 			
 			
 			function removetablerow($row) {
-				//$('#tblactivity1 tbody tr:last').remove();
 				$(this).parent().parent().remove();
 				if (addindex > 0) {
 					addindex-=1;
@@ -251,18 +270,18 @@
 				}
 				$('#txtlocality').css({ "border": "solid 1px #dddddd" });
 				
+				if (!$('#txtlanduse').val()) {
+					$('#txtlanduse').css({ "border": "solid 2px #FF0000" });
+					return;
+				}
+				$('#txtlanduse').css({ "border": "solid 1px #dddddd" });
+				
 				if (!$.isNumeric($('#txtacreage').val())) {
 					$('#txtacreage').css({ "border": "solid 2px #FF0000" });
 					return;
 				}
 				$('#txtacreage').css({ "border": "solid 1px #dddddd" });
 				totalacreageglobal = parseFloat($('#txtacreage').val());
-				
-				if (!$('#cmblanduse').val()) {
-					$('#cmblanduse').css({ "border": "solid 2px #FF0000" });
-					return;
-				}
-				$('#cmblanduse').css({ "border": "solid 1px #dddddd" });
 				
 				if ($('#checkcomps').is(':checked')) {
 					showcomputations = true;
@@ -780,6 +799,7 @@
 							}
 						}
 					});
+					
 					$('.editvalues2').on('hidden', function (e, params) {
 						activity2tablevalueschanged(e.target);
 					});
@@ -1034,7 +1054,6 @@
 				// activity 3 computations
 				displayactivitythreevalues();
 			}
-			
 			
 			
 			function displayactivitythreevalues() {
@@ -1322,7 +1341,7 @@
 					// insert
 					$('#tbltotalsocsequestration').find('tbody').append('<tr>' +
 							'<td style="color:#8c8c8c;">' + $('#txtlocality').val() + '</td>' +
-							'<td style="color:#8c8c8c;">' + $("#cmblanduse option:selected").text() + '</td>' +
+							'<td style="color:#8c8c8c;">' + $("#txtlanduse").val() + '</td>' +
 							'<td style="color:#8c8c8c;">' + totalyearsglobal + '</td>' +
 							'<td style="color:#8c8c8c;">' + area_year_soc_seq_total + '</td>' +
 						'</tr>');
@@ -1480,7 +1499,6 @@
 			}
 			
 			
-			
 			// From VBA codes
 			function SOC_Konv(SOC_percent, BD, Layer_Thickness_cm) { // SOC_percent As Double, BD As Double, Layer_Thickness_cm As Double
 				// BD in g cm-3, Layer thickness in cm, SOC as soil organc _carbon_ in percent
@@ -1488,16 +1506,12 @@
 			}
 			
 			
-			/*********************  Cubic_Spline by SRS1 Software ****************
-			Version 1.01*/
-
+			/*********************  Cubic_Spline by SRS1 Software **************** Version 1.01*/
 			function cubic_spline(Input_x_range, Input_y_range, X_for_which_2find_Y) { // Input_x_range As Range, Input_y_range As Range, X_for_which_2find_Y As Double
-				
 				/*Purposecubic_spline:   Given a data set consisting of a list of x values
 						   and y values, this function will smoothly interpolate
 						   a resulting output (y) value from a given input (x) value */
 
-				
 				// This counts how many points are in "input" and "output" set of data
 				var input_count; // Integer
 				var output_count; // Integer
@@ -1574,7 +1588,6 @@
 				//	return 0;
 				//}
 				
-				
 				// RS added - prevent cubic spline from 'overshooting'
 				if (checkforgraphovershoot == true && graphovershootchecked == true) {
 					if (yin[khi] == yin[klo] && khi > input_count - 2) {
@@ -1596,10 +1609,12 @@
 				return Y;
 			}
 			
+			
 			// get exponential
 			function ExpDecay(Y_t0, Jahr, rate_const) { // Y_t0 As Double, Jahr As Double, rate_const As Double
 				return Y_t0 * (Math.exp(Math.log(rate_const) * Jahr));
 			}
+			
 			
 			function Area_Year_SOC_Seq_NEW(Jahre, Area_Time0, Area_rate_const, x, CubicSpline_X_range, CubicSpline_Y_range, BD, SoilDepth, Total_Area) { // Jahre As Integer, Area_Time0 As Double, Area_rate_const As Double, x As Double, CubicSpline_X_range As Range, CubicSpline_Y_range As Range, BD As Double, SoilDepth As Double, Total_Area As Double
 				
@@ -1642,14 +1657,16 @@
 				return returnvalue;
 			}
 			
+			
 			function Four_Param_Sigmoid(x, a, b, x0, Y0) { // x As Double, a As Double, b As Double, x0 As Double, Y0 As Double  
 				return Y0 + a / (1 + Math.exp(-(x - x0) / b));
-
 			}
+			
 			
 			function FourSigm_a(x, b, x0, Y0, SOCx) { // x As Double, b As Double, x0 As Double, Y0 As Double, SOCx As Double
 				return (SOCx - Y0) * (1 + Math.exp((x0 - x) / b));
 			}
+			
 			
 			function Annual_SOC_Seq_Rate(x, x_minus_1, a, b, x0, Y0, BD, SoilDepth) { // x As Double, x_minus_1 As Double, a As Double, b As Double, x0 As Double, Y0 As Double, BD As Double, SoilDepth As Double
 				/*
@@ -1735,6 +1752,7 @@
 				float: right;
 				color: grey;
 			}
+			
 			.panel-heading a.collapsed:after {
 				content:"\e080";
 			}
@@ -1762,9 +1780,11 @@
 				margin: 0px;
 				padding: 0px;
 			}
+			
 			.brand-soc {
 				color: #000;
 			}
+			
 			.brand-app {
 				color: #5CB85C;
 			}
@@ -1772,9 +1792,11 @@
 			.cgiar-logo img {
 				padding: 23px 10px 0px 0px;
 			}
+			
 			.ciat-logo {
 				padding: 23px 10px 0px 0px;
 			}
+			
 			.pull-left {
 				float: left !important;
 			}
@@ -1821,7 +1843,7 @@
 		
 		<div style="clear:both; height:60px;"></div>
 		
-		<div id="divintroduction" style="display: none;">
+		<div id="divintroduction">
 			<p>
 			There has been quite some debate about the scope for mitigating climate change by soil organic carbon (SOC) sequestration. 
 			However, it seems there is a general lack of understanding of quantities and the time-dimension, as well as the possible contribution 
@@ -1839,7 +1861,7 @@
 					<input type="text" class="form-control input-sm" id="txtaddrow" placeholder="No of Layers" style="width:100px">
 				</div>
 				<div class="form-group">
-					<button id="btnaddrow" onclick="addtablerow()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Add layers</span></button>
+					<button id="btnaddrow" onclick="addtablerowclick()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Add layers</span></button>
 				</div>
 				
 				<div class="form-group">
@@ -1847,8 +1869,8 @@
 					<select id="cmblocality" class="form-control" style="width:170px"></select>
 				</div>
 				
-				<div class="form-group">
-					<input type="text" class="form-control input-sm" id="txtlocality" placeholder="Locality" style="width:170px">
+				<div class="form-group" id="divlocality">
+					<input type="text" class="form-control input-sm" id="txtlocality" placeholder="Input Locality" style="width:170px">
 				</div>
 				
 				<div class="form-group">
@@ -1856,8 +1878,12 @@
 					<select id="cmblanduse" class="form-control" style="width:170px"></select>
 				</div>
 				
+				<div class="form-group" id="divlanduse">
+					<input type="text" class="form-control input-sm" id="txtlanduse" placeholder="Input Landuse" style="width:170px">
+				</div>
+				
 				<div class="form-group">
-					<input type="text" class="form-control input-sm" id="txtacreage" placeholder="Acreage (Mha)" style="width:130px">
+					<input type="text" class="form-control input-sm" id="txtacreage" placeholder="Acreage (Mha)" style="width:120px">
 				</div>
 				
 				<div class="checkbox"><label><input type="checkbox" id="checkcomps" value=""></label></div>
