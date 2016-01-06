@@ -65,9 +65,6 @@
 				})
 				.done(function(data) {
 					serialized_faovaluedict = data;
-					alert(JSON.stringify(data)); ///////////////////////////////////////////////// alert
-					
-					//serialized_faovaluedict = JSON.stringify(faovaluedict, "", 4);
 					var obj = serialized_faovaluedict;
 					
 					// locality
@@ -150,7 +147,6 @@
 				var sellanduse = $("#cmblanduse option:selected").text();
 				if (sellanduse) {
 					var obj = serialized_faovaluedict;
-					alert(obj[selectdlocality]);
 					return obj[selectdlocality][sellanduse];
 				
 				} else {
