@@ -150,6 +150,7 @@
 				var sellanduse = $("#cmblanduse option:selected").text();
 				if (sellanduse) {
 					var obj = serialized_faovaluedict;
+					alert(obj[selectdlocality]);
 					return obj[selectdlocality][sellanduse];
 				
 				} else {
