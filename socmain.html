@@ -1324,9 +1324,9 @@
 				var selrow;
 				var edittable = document.getElementById('tbltotalsocsequestration');
 				for (i = 0; i < edittable.rows.length; i++) {
-					if (edittable.rows[i].cells[0].innerHTML.toUpperCase() == $('#txtlocality').val().toUpperCase() && edittable.rows[i].cells[1].innerHTML.toUpperCase() == $("#cmblanduse option:selected").text().toUpperCase()) {
+					if (edittable.rows[i].cells[0].innerHTML.toUpperCase() == $('#txtlocality').val().toUpperCase() && edittable.rows[i].cells[1].innerHTML.toUpperCase() == $("#txtlanduse").val().toUpperCase()) {
 						selrow = edittable.rows[i];
-					} 
+					}
 				}
 				
 				if (selrow) {
