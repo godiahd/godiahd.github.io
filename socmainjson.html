@@ -149,7 +149,7 @@
 			function fetchacreage(selectdlocality) {
 				var sellanduse = $("#cmblanduse option:selected").text();
 				if (sellanduse) {
-					var obj = JSON.parse(serialized_faovaluedict);
+					var obj = serialized_faovaluedict;
 					return obj[selectdlocality][sellanduse];
 				
 				} else {
