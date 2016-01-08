@@ -128,18 +128,18 @@
 					}
 				});
 				
-				
 				$('#btnprinttotalseq').on('click', function(){
-					var docprint = window.open("about:blank", "_blank"); 
-					var oTable = document.getElementById("tbltotalsocsequestration");
-					docprint.document.open(); 
-					docprint.document.write('<html><head><title>Total Sequestration</title>'); 
-					docprint.document.write('</head><body><center>');
-					docprint.document.write(oTable.parentNode.innerHTML);
-					docprint.document.write('</center></body></html>'); 
-					docprint.document.close(); 
-					docprint.print();
-					docprint.close();
+					var pageTitle = 'Total Sequestration';
+					var stylesheet = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
+					var win = window.open('', 'Print Total Sequestration');
+					
+					win.document.write('<html><head><title>' + pageTitle + '</title>' +
+						'<link rel="stylesheet" href="' + stylesheet + '">' +
+						'</head><body>' + $('#tbltotalsocsequestration')[0].outerHTML + '</body></html>');
+					win.document.close();
+					win.print();
+					win.close();
+					return false;
 				});
 				
 				
@@ -1721,8 +1721,6 @@
 		</script>
 		
 		<style type="text/css">
-			
-
 			.div-outer {
 				width: 100%;
 				overflow: auto;
@@ -1992,8 +1990,11 @@
 							<h5 class="panel-title">
 							  <a data-toggle="collapse" href="#panel-finaltable">Total SOC-Sequestration</a>
 							</h5>
-							<button id="btnprinttotalseq" class="btn btn-success btn-sm ladda-button pull-right" type="submit">Print</button>
 						</div>
+						<div style="padding: 5px 10px 0px 5px; width:100%;">
+							<button id="btnprinttotalseq" class="btn btn-success btn-sm ladda-button pull-right" type="submit">Print Results</button>
+						</div>
+						<div style="clear:both; height:5px;"></div>
 						
 						<div id="panel-finaltable" class="panel-body panel-collapse collapse in" style="padding:10px">
 							<div id="divtotalsocsequestration" class="div-compute-table">
