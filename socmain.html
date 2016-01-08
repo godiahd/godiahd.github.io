@@ -93,6 +93,23 @@
 					return;
 				});
 				
+				$('#cmblocality').on('change', function() {
+					if ($(this).val()) {
+						$('#txtacreage').val(fetchacreage($(this).val()));
+						$('#txtlocality').val($(this).val());
+						$('#txtlocality').prop('readonly', true);
+						$('#divlocality').css({"display": "none"});
+						
+					} else {
+						$('#txtacreage').val("");
+						$('#txtlocality').val("");
+						$('#txtlocality').prop('readonly', false);
+						$('#divlocality').css({"display": "inline-block"});
+					}
+					
+					fetchlanduse($(this).val());
+				});
+				
 				$('#cmblanduse').on('change', function() {
 					if ($('#cmblocality').val() && $(this).val()) {
 						$('#txtacreage').val(fetchacreage($('#cmblocality').val()));
@@ -111,23 +128,19 @@
 					}
 				});
 				
-				$('#cmblocality').on('change', function() {
-					if ($(this).val()) {
-						$('#txtacreage').val(fetchacreage($(this).val()));
-						$('#txtlocality').val($(this).val());
-						$('#txtlocality').prop('readonly', true);
-						$('#divlocality').css({"display": "none"});
-						
-					} else {
-						$('#txtacreage').val("");
-						$('#txtlocality').val("");
-						$('#txtlocality').prop('readonly', false);
-						$('#divlocality').css({"display": "inline-block"});
-					}
-					
-					fetchlanduse($(this).val());
-				});
 				
+				$('#btnprinttotalseq').on('click', function(){
+					var pageTitle = 'Total Sequestration',
+						stylesheet = '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css',
+						win = window.open('', 'Print', 'width=500,height=300');
+					win.document.write('<html><head><title>' + pageTitle + '</title>' +
+						'<link rel="stylesheet" href="' + stylesheet + '">' +
+						'</head><body>' + $('#tbltotalsocsequestration').outerHTML + '</body></html>');
+					win.document.close();
+					win.print();
+					win.close();
+					return false;
+				});
 				
 				
 				
@@ -164,13 +177,12 @@
 						}
 					}
 				}
+				
 				$('#txtlanduse').val("");
 				$('#txtlanduse').prop('readonly', false);
 				$('#divlanduse').css({"display": "inline-block"});
 				$('#txtacreage').val("");
 			}
-			
-			
 			
 			
 			function addtablerowclick() {
@@ -1513,6 +1525,8 @@
 				}
 			}
 			
+
+			
 			
 			// From VBA codes
 			function SOC_Konv(SOC_percent, BD, Layer_Thickness_cm) { // SOC_percent As Double, BD As Double, Layer_Thickness_cm As Double
@@ -1978,9 +1992,10 @@
 							<h5 class="panel-title">
 							  <a data-toggle="collapse" href="#panel-finaltable">Total SOC-Sequestration</a>
 							</h5>
+							<button id="btnprinttotalseq" class="btn btn-success btn-sm ladda-button pull-right" type="submit">Print</button>
 						</div>
 						
-						<div id="panel-finaltable" class="panel-collapse collapse in" style="padding:10px">
+						<div id="panel-finaltable" class="panel-body panel-collapse collapse in" style="padding:10px">
 							<div id="divtotalsocsequestration" class="div-compute-table">
 								<table id="tbltotalsocsequestration" class="table table-striped table-hover table-bordered table-condensed">
 									<thead>
