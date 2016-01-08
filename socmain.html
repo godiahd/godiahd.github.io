@@ -48,7 +48,7 @@
 			var rateconsfactor = 998;
 			var area_year_soc_seq_total = 0.0;
 			var serialized_faovaluedict = {};
-			var faolocalitytypedata = ["Agricultural", "Pasture"]; // same length as faovaluedict/ serialized_faovaluedict keys
+			//var faolocalitytypedata = ["Agricultural", "Pasture"]; // same length as faovaluedict/ serialized_faovaluedict keys
 			var filepath = "faodata.json";
 			
 			
@@ -90,33 +90,21 @@
 				$('#cmblocality').on('change', function() {
 					if ($(this).val()) {
 						$('#txtacreage').val(fetchacreage($(this).val()));
-					} else {
-						$('#txtacreage').val("");
-					}
-					
-					if ($(this).val()) {
 						$('#txtlocality').val($(this).val());
 						$('#txtlocality').prop('readonly', true);
 						$('#divlocality').css({"display": "none"});
+						
+						
+						
 					} else {
+						$('#txtacreage').val("");
 						$('#txtlocality').val("");
 						$('#txtlocality').prop('readonly', false);
 						$('#divlocality').css({"display": "inline-block"});
 					}
+					
+					fetchlanduse($(this).val());
 				});
-				
-				// land use
-				$('#cmblanduse').find('option').remove();
-				$('#cmblanduse').append($('<option>', { 
-					value: "",
-					text : "[Select Land Use]"
-				}));
-				for(i = 0; i < faolocalitytypedata.length; i++){
-					$('#cmblanduse').append($('<option>', { 
-						value: i,
-						text : faolocalitytypedata[i]
-					}));
-				}
 				
 				$('#cmblanduse').on('change', function() {
 					if ($('#cmblocality').val() && $(this).val()) {
@@ -146,13 +134,37 @@
 			function fetchacreage(selectdlocality) {
 				var sellanduse = $("#cmblanduse option:selected").text();
 				if (sellanduse) {
-					var obj = serialized_faovaluedict;
-					return obj[selectdlocality][sellanduse];
+					return serialized_faovaluedict[selectdlocality][sellanduse];
 				
 				} else {
 					return "";
 				}
 			}
+			
+			
+			function fetchlanduse(selectdlocality) {
+				if (selectdlocality) {
+					$('#cmblanduse').find('option').remove();
+					$('#cmblanduse').append($('<option>', {
+						value: "",
+						text : "[Select Land Use]"
+					}));
+					
+					var obj = serialized_faovaluedict[selectdlocality]
+					
+					for(var key in obj){
+						if (obj.hasOwnProperty(key)){
+							$('#cmblanduse').append($('<option>', { 
+								value: key,
+								text : key //obj[key]
+							}));
+						}
+					}
+					
+				}
+			}
+			
+			
 			
 			
 			function addtablerowclick() {
