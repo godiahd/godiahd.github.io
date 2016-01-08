@@ -81,6 +81,12 @@
 							}));
 						}
 					}
+					
+					$('#cmblanduse').find('option').remove();
+					$('#cmblanduse').append($('<option>', {
+						value: "",
+						text : "[Select Land Use]"
+					}));
 				})
 				.fail(function(jqxhr, textStatus, error) {
 					alert("Request Failed: " + textStatus + ", " + error);
@@ -90,10 +96,8 @@
 				$('#cmblanduse').on('change', function() {
 					if ($('#cmblocality').val() && $(this).val()) {
 						$('#txtacreage').val(fetchacreage($('#cmblocality').val()));
-						alert("both");
 					} else {
 						$('#txtacreage').val("");
-						alert("none of them");
 					}
 					
 					if ($(this).val()) {
@@ -161,6 +165,8 @@
 					}
 					
 				}
+				
+				$("#cmblanduse option:first").attr('selected','selected');
 			}
 			
 			
