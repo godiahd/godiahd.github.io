@@ -87,30 +87,13 @@
 					return;
 				});
 				
-				$('#cmblocality').on('change', function() {
-					if ($(this).val()) {
-						$('#txtacreage').val(fetchacreage($(this).val()));
-						$('#txtlocality').val($(this).val());
-						$('#txtlocality').prop('readonly', true);
-						$('#divlocality').css({"display": "none"});
-						
-						
-						
-					} else {
-						$('#txtacreage').val("");
-						$('#txtlocality').val("");
-						$('#txtlocality').prop('readonly', false);
-						$('#divlocality').css({"display": "inline-block"});
-					}
-					
-					fetchlanduse($(this).val());
-				});
-				
 				$('#cmblanduse').on('change', function() {
 					if ($('#cmblocality').val() && $(this).val()) {
 						$('#txtacreage').val(fetchacreage($('#cmblocality').val()));
+						alert("both");
 					} else {
 						$('#txtacreage').val("");
+						alert("none of them");
 					}
 					
 					if ($(this).val()) {
@@ -124,6 +107,22 @@
 					}
 				});
 				
+				$('#cmblocality').on('change', function() {
+					if ($(this).val()) {
+						$('#txtacreage').val(fetchacreage($(this).val()));
+						$('#txtlocality').val($(this).val());
+						$('#txtlocality').prop('readonly', true);
+						$('#divlocality').css({"display": "none"});
+						
+					} else {
+						$('#txtacreage').val("");
+						$('#txtlocality').val("");
+						$('#txtlocality').prop('readonly', false);
+						$('#divlocality').css({"display": "inline-block"});
+					}
+					
+					fetchlanduse($(this).val());
+				});
 				
 				
 				
