@@ -109,8 +109,6 @@
 						$('#txtlanduse').prop('readonly', false);
 						$('#divlanduse').css({"display": "inline-block"});
 					}
-					
-					alert("cmblanduse change " + $('#cmblanduse').val());
 				});
 				
 				$('#cmblocality').on('change', function() {
@@ -166,8 +164,7 @@
 						}
 					}
 				}
-				alert("fetchlanduse " + $('#cmblanduse').val());
-				//$("#cmblanduse option:first").attr('selected','selected');
+				$('#txtacreage').val("");
 			}
 			
 			
