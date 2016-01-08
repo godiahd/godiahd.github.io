@@ -109,6 +109,8 @@
 						$('#txtlanduse').prop('readonly', false);
 						$('#divlanduse').css({"display": "inline-block"});
 					}
+					
+					alert("cmblanduse change " + $('#cmblanduse').val());
 				});
 				
 				$('#cmblocality').on('change', function() {
@@ -134,10 +136,10 @@
 			});
 			
 			
-			function fetchacreage(selectdlocality) {
+			function fetchacreage(selectedlocality) {
 				var sellanduse = $("#cmblanduse option:selected").text();
 				if (sellanduse) {
-					return serialized_faovaluedict[selectdlocality][sellanduse];
+					return serialized_faovaluedict[selectedlocality][sellanduse];
 				
 				} else {
 					return "";
@@ -145,15 +147,15 @@
 			}
 			
 			
-			function fetchlanduse(selectdlocality) {
+			function fetchlanduse(selectedlocality) {
 				$('#cmblanduse').find('option').remove();
 				$('#cmblanduse').append($('<option>', {
 					value: "",
 					text : "[Select Land Use]"
 				}));
 				
-				if (selectdlocality) {
-					var obj = serialized_faovaluedict[selectdlocality]
+				if (selectedlocality) {
+					var obj = serialized_faovaluedict[selectedlocality]
 					
 					for(var key in obj){
 						if (obj.hasOwnProperty(key)){
@@ -163,10 +165,9 @@
 							}));
 						}
 					}
-					
 				}
-				
-				$("#cmblanduse option:first").attr('selected','selected');
+				alert("fetchlanduse " + $('#cmblanduse').val());
+				//$("#cmblanduse option:first").attr('selected','selected');
 			}
 			
 			
