@@ -143,13 +143,13 @@
 			
 			
 			function fetchlanduse(selectdlocality) {
+				$('#cmblanduse').find('option').remove();
+				$('#cmblanduse').append($('<option>', {
+					value: "",
+					text : "[Select Land Use]"
+				}));
+				
 				if (selectdlocality) {
-					$('#cmblanduse').find('option').remove();
-					$('#cmblanduse').append($('<option>', {
-						value: "",
-						text : "[Select Land Use]"
-					}));
-					
 					var obj = serialized_faovaluedict[selectdlocality]
 					
 					for(var key in obj){
