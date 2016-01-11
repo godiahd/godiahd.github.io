@@ -308,7 +308,7 @@
 					return;
 				}
 				$('#txtacreage').css({ "border": "solid 1px #dddddd" });
-				totalacreageglobal = parseFloat($('#txtacreage').val());
+				totalacreageglobal = parseFloat($('#txtacreage').val())/1000000.0;
 				
 				if ($('#checkcomps').is(':checked')) {
 					showcomputations = true;
@@ -1095,7 +1095,7 @@
 				$('#divactivity3computedtable').append('<p>SOC-sequestration over time</p>' +
 					'<table id="tblactivity3computedvaluesA" class="table table-striped table-hover table-bordered table-condensed"><thead><th>Item</th><th>Value</th></thead><tbody></tbody>');
 				
-				rowvalues = ["Total targeted area (Mha)", targetedarea];
+				rowvalues = ["Total targeted area (MHa)", targetedarea];
 				activity3tablecomputations.push(rowvalues);
 				$('#tblactivity3computedvaluesA').find('tbody').append('<tr><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td style="color:#8c8c8c;">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
@@ -1910,7 +1910,7 @@
 				</div>
 				
 				<div class="form-group">
-					<input type="text" class="form-control input-sm" id="txtacreage" placeholder="Acreage (Mha)" style="width:120px">
+					<input type="text" class="form-control input-sm" id="txtacreage" placeholder="Acreage (Ha)" style="width:120px">
 				</div>
 				
 				<div class="checkbox"><label><input type="checkbox" id="checkcomps" value=""></label></div>
