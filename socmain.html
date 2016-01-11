@@ -143,6 +143,7 @@
 				});
 				
 				
+				
 			});
 			
 			
@@ -430,9 +431,9 @@
 								$('#tblactivity1graphvalues').find('tbody').append(item);
 							}
 							
-							labelsdata.push(returnrows[0]);
-							linesmoothenedstart.push(returnrows[1]);
-							linesmoothenedend.push(returnrows[2]);
+							labelsdata.push(parseFloat(returnrows[0]));
+							linesmoothenedstart.push(parseFloat(returnrows[1]));
+							linesmoothenedend.push(parseFloat(returnrows[2]));
 						}
 						
 						if (showcomputations == true) {
@@ -443,8 +444,8 @@
 						// get marker values
 						for (i = 1; i < activity1tablecomputations.length - 2; i++) {
 							var returnrows = activity1tablecomputations[i];
-							markerliststart.push(returnrows[5]);
-							markerlistend.push(returnrows[6]);
+							markerliststart.push(parseFloat(returnrows[5]));
+							markerlistend.push(parseFloat(returnrows[6]));
 						}
 						
 						// draw graph
@@ -953,16 +954,16 @@
 				var markerlistsock = [];
 				
 				for (n = 1; n < activity2graphcomputations.length; n++) {
-					yearslabel.push(activity2graphcomputations[n][0]);
-					soclayer1values.push(activity2graphcomputations[n][1]);
+					yearslabel.push(parseFloat(activity2graphcomputations[n][0]));
+					soclayer1values.push(parseFloat(activity2graphcomputations[n][1]));
 					
 					if (n > 1) {
-						socseqlayer1values.push(activity2graphcomputations[n][activity2graphcomputations[0].length - 1]);
+						socseqlayer1values.push(parseFloat(activity2graphcomputations[n][activity2graphcomputations[0].length - 1]));
 					}
 				}
 				
 				for (j = 0; j < 4; j++) {
-					markerlistsock.push(activity2tablecomputations[j+1][2]);
+					markerlistsock.push(parseFloat(activity2tablecomputations[j+1][2]));
 				}
 				
 				// draw graph
@@ -1069,6 +1070,7 @@
 									}
 								}
 							});
+							
 							lastvalupdated = seriessock.data[j].y;
 						}
 					}
@@ -1209,8 +1211,8 @@
 				for (i = 0; i <= totalyearsglobal; i++) {
 					if (i == 0) {
 						yearslabel.push(i);
-						exp_decay_list.push("");
-						area_year_soc_seq_list.push("");
+						exp_decay_list.push(null);
+						area_year_soc_seq_list.push(null);
 						rowvalues = [0, "", "", ""];
 						
 					} else {
@@ -1315,7 +1317,7 @@
 					plotOptions: {
 						series: {
 							marker: {
-								enabled: true
+								enabled: false
 							}
 						}
 					},
@@ -1825,6 +1827,24 @@
 			
 			.pull-left {
 				float: left !important;
+			}
+			
+			.cgiar-logo img{
+				width: 50px;
+				height: 59px;
+			}
+
+			.ciat-logo img{
+				width: 130px;
+				height: 36px;
+			}
+
+			.cgiar-logo {
+				padding: 0 25px 0 0;
+			}
+
+			.ciat-logo {
+				padding: 23px 10px 0 0;
 			}
 			
 			
