@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>CIAT SOC APPLICATION</title>
+		<title>CIAT SOC Application - Computations</title>
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
@@ -16,7 +16,6 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-		
 		
 		<!-- Editable cell -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css">
@@ -45,17 +44,20 @@
 			var showcomputations = false;
 			var clickedcell;
 			var totalacreageglobal;
-			var totalyearsglobal = 60; // default year
-			var minslidervalue = 800;
-			var maxslidervalue = 1000;
-			var rateconsfactor = 998;
+			var totalyearsglobal = 60; // default values
+			var minslidervalue = 800; // default values
+			var maxslidervalue = 1000; // default values
+			var rateconsfactor = 998; // default values
 			var area_year_soc_seq_total = 0.0;
 			var serialized_faovaluedict = {};
-			//var faolocalitytypedata = ["Agricultural", "Pasture"]; // same length as faovaluedict/ serialized_faovaluedict keys
 			var filepath = "faodata.json";
 			
 			
 			$(document).ready(function() {
+				$('#btnaddrow').tooltip();
+				$('#btncomputeactivity').tooltip();
+				$('#btnprinttotalseq').tooltip();
+				
 				addtablerow(5);
 				
 				$('#tblactivity1').on('click', 'input[type="button"]', function(e){
@@ -146,8 +148,15 @@
 				});
 				
 				
-				
+				$('#divfooter').css({ "height": getfooterheight() + "px" });
 			});
+			
+			
+			function getfooterheight() {
+				var topposition = $("#divfooter").offset().top;
+				var windowheight = $(window).height();
+				return (windowheight - topposition);
+			}
 			
 			
 			function fetchacreage(selectedlocality) {
@@ -1521,13 +1530,7 @@
 			}
 			
 			
-			function displayabout() {
-				if ($('#divintroduction').css('display') == 'none') {
-				   $('#divintroduction').css({ "display": "block" });
-				} else {
-					$('#divintroduction').css({ "display": "none" });
-				}
-			}
+			
 			
 
 			
@@ -1680,6 +1683,7 @@
 					Area_Seq_Year[AreaYear] = SOC_Seq_Rate[SeqYear] * Area_Exp_Decay[AreaYear] * Total_Area;
 					//Area_Year_SOC_Seq_NEW = Area_Year_SOC_Seq_NEW + Area_Seq_Year(AreaYear)
 					//alert(AreaYear + ", " + Area_Seq_Year[AreaYear]);
+					//alert(AreaYear + ", " + Area_Seq_Year[AreaYear]);
 					returnvalue += Area_Seq_Year[AreaYear];
 					SeqYear -= 1;
 					if (SeqYear < 1) {
@@ -1732,8 +1736,8 @@
 		  <div class="container-fluid" style="background-color: #000; color: white;">
 			<div id="navbar" class="navbar-collapse collapse" style="padding: 5px">
 			  <ul class="nav navbar-nav navbar-right">
-				<li><a id="aboutlink" href="#" onclick="displayabout()">About</a></li>
-				<li><a href="#">Contact Us</a></li>
+				<li><a id="aboutlink" href="socapp.html">About</a></li>
+				<li><a id="computationslink" href="soccomputations.html">Computations</a></li>
 			  </ul>
 			</div>
 			
@@ -1748,27 +1752,10 @@
 			</a>
             </div>    -->      
 			
-			
-			
-			
-			
-			
 		  </div>
 		</nav>
 		
 		<div style="clear:both; height:60px;"></div>
-		
-		<div id="divintroduction">
-			<p>
-			There has been quite some debate about the scope for mitigating climate change by soil organic carbon (SOC) sequestration. 
-			However, it seems there is a general lack of understanding of quantities and the time-dimension, as well as the possible contribution 
-			that SOC-seq. can play. This web application provides a platform where users can visualize the organic carbon content of a soil of 
-			their choice, as well as the quantitative impact of soil conserving management practices on sequestration, how such sequestration 
-			would unfold over time and what would be the magnitude of SOC seq. if the anticipated practice (to foster SOC seq.) would be scaled 
-			out to countries, sub-continents or the entire world. The basis of the idea is the publication from Sommer and Bossio 2014 
-			(Dynamics and climate change mitigation potential of soil organic carbon sequestration. J. Environm. Management 144, 83-87.)
-			</p>
-		</div>
 		
 		<div class="container-fluid" style="padding: 10px; background-color: #d9d9d9;">
 			<div class="form-inline" style="padding-left :10px; padding-right :10px;">
@@ -1776,7 +1763,7 @@
 					<input type="text" class="form-control input-sm" id="txtaddrow" placeholder="No of Layers" style="width:100px">
 				</div>
 				<div class="form-group">
-					<button id="btnaddrow" onclick="addtablerowclick()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Add layers</span></button>
+					<button id="btnaddrow" onclick="addtablerowclick()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="bottom" title="Add Layers"><span class="ladda-label">Add layers</span></button>
 				</div>
 				
 				<div class="form-group">
@@ -1802,12 +1789,11 @@
 				</div>
 				
 				<div class="checkbox"><label><input type="checkbox" id="checkcomps" value=""></label></div>
-				<button id="btncomputeactivity" onclick="displayactivityvalues()" class="btn btn-success btn-sm ladda-button" data-style="expand-left"><span class="ladda-label">Compute</span></button>
+				<button id="btncomputeactivity" onclick="displayactivityvalues()" class="btn btn-success btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="bottom" title="Compute"><span class="ladda-label">Compute</span></button>
 			</div>
 		</div>
 	
 		<div id="divmain" class="container-fluid" style="font-size:12px">
-			
 			<div class="content-wrapper">
 				<div id="divactivity1table" class="float-left" style="width:70%; display: none;">
 					<p><h5>User Entries (Input all values):</h5></p>
@@ -1880,12 +1866,12 @@
 							</h5>
 						</div>
 						<div style="padding: 5px 10px 0px 5px; width:100%;">
-							<button id="btnprinttotalseq" class="btn btn-success btn-sm ladda-button pull-right" type="submit">Print Results</button>
+							<button id="btnprinttotalseq" class="btn btn-success btn-sm ladda-button pull-right" type="submit" data-toggle="tooltip" data-placement="bottom" title="Print Results">Print Results</button>
 						</div>
 						<div style="clear:both; height:5px;"></div>
 						
 						<div id="panel-finaltable" class="panel-body panel-collapse collapse in" style="padding:10px">
-							<div id="divtotalsocsequestration" class="div-compute-table">
+							<div id="divtotalsocsequestration" style="width: 100%; overflow: auto; display: none; font-size: 12px;">
 								<table id="tbltotalsocsequestration" class="table table-striped table-hover table-bordered table-condensed">
 									<thead>
 										<th>Locality</th><th>Land Use</th><th>Years of seq.</th><th>SOC-sequestration (Mg C)</th>
@@ -1904,7 +1890,7 @@
 	</body>
 	
 	<footer>
-		<div class = "page-footer">
+		<div id="divfooter" class = "page-footer">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-3">
