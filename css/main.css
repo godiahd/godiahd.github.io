@@ -71,6 +71,7 @@ output {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	display: block;
+	width: 100%;
 }
 
 .img-responsive {
