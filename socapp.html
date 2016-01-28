@@ -44,7 +44,7 @@
 			
 			function getpageheight() {
 				var topposition = $("#divintroduction").offset().top;
-				var windowheight = $(window).height();
+				var windowheight = $(window).outerHeight();
 				return (windowheight - topposition);
 			}
 
