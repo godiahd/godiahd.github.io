@@ -25,10 +25,6 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.0.5/rangeslider.min.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.0.5/rangeslider.min.js"></script>
 		
-		
-		
-		
-		
 		<!-- Local Styleshet-->
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		
@@ -66,6 +62,7 @@
 				
 				$('#tblactivity1').on('click', 'input[type="button"]', function(e){
 				   $(this).closest('tr').remove();
+				   repositionfooter();
 				});
 				
 				// fetch FAO json data
@@ -153,6 +150,7 @@
 				
 				
 				
+				
 			});
 			
 			
@@ -202,7 +200,6 @@
 				}
 				
 				$('#txtaddrow').css({ "border": "solid 1px #dddddd" });
-			
 				addtablerow(parseInt($('#txtaddrow').val()));
 			}
 			
@@ -264,6 +261,7 @@
 				}
 				
 				$('#divactivity1table').css({"display": "block"});
+				repositionfooter();
 				
 				$('.editvalues1').editable({
 					mode: "popup",
@@ -276,14 +274,6 @@
 				$('.editvalues1').on('hidden', function (e, params) {
 					displayactivityvalues();
 				});
-			}
-			
-			
-			function removetablerow($row) {
-				$(this).parent().parent().remove();
-				if (addindex > 0) {
-					addindex-=1;
-				}
 			}
 			
 			
@@ -402,6 +392,7 @@
 						}
 						
 						$('#divactivity1computedtable').css({ "display": "block" });
+						repositionfooter();
 					}
 					
 					// create graph values (for second table)
@@ -447,6 +438,7 @@
 						
 						if (showcomputations == true) {
 							$('#divactivity1graphtable').css({ "display": "block" });
+							repositionfooter();
 						}
 						
 						
@@ -841,6 +833,7 @@
 					});
 					
 					$('#divactivity2computedtable').css({ "display": "block" });
+					repositionfooter();
 					
 					// compute graph values
 					computeactivity2graphvalues();
@@ -954,6 +947,7 @@
 						}
 					
 						$('#divactivity2graphtable').css({ "display": "block" });
+						repositionfooter();
 					}
 				}
 				
@@ -1162,6 +1156,7 @@
 				  
 				$('#divactivity3computedtable').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
+				repositionfooter();
 				 
 				// compute graph values
 				computeactivity3graphvalues();
@@ -1267,6 +1262,7 @@
 						}
 						
 						$('#divactivity3graphtable').css({ "display": "block" });
+						repositionfooter();
 					}
 				}
 				
@@ -1426,14 +1422,13 @@
 				
 				$('#divtotalsocsequestration').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
+				repositionfooter();
 				
 				$('.panel-collapse').collapse('show');
 				
 				$('#ct-chartactivity1').highcharts().reflow();
 				$('#ct-chartactivity2').highcharts().reflow();
 				$('#ct-chartactivity3').highcharts().reflow();
-				
-				$("#divfooter").css({ "position": "static" });
 			}
 			
 			
@@ -1529,7 +1524,14 @@
 			}
 			
 			
-			
+			function repositionfooter() {
+				if (($('body').outerHeight() + $('footer').outerHeight()) < $(window).outerHeight()) {
+					$('footer').css({"bottom": 0 });
+				
+				} else {
+					$('footer').css({"top": $('body').outerHeight() });
+				}
+			}
 			
 
 			
@@ -1747,7 +1749,6 @@
 								<li><a id="computationslink" href="soccomputations.html">Computations</a></li>
 							</ul>
 						</div>
-				
 					</div>
 				</div>
 			</nav>
@@ -1793,9 +1794,9 @@
 			<div id="divmain" class="container-fluid">
 				<div id="divinnermain" class="container-fluid">
 					<div class="content-wrapper">
-						<div id="divactivity1table" class="float-left" style="width:70%; display: none;">
+						<div id="divactivity1table" class="float-left table-responsive" style="width:70%; display: none;">
 							<p><h5>User Entries (Input all values):</h5></p>
-							<table id="tblactivity1" class="table table-striped table-hover table-bordered table-condensed">
+							<table id="tblactivity1" class="table table-striped table-hover table-bordered table-condensed table-hover">
 								<thead>
 									<th>Layer Thickness (cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Bulk density (g/cm3)</th><th>Remove</th>
 								</thead>
@@ -1805,6 +1806,7 @@
 								</tbody>
 							</table>
 						</div>
+						
 						
 						<div id="divsocsequence" class="float-right" style="width:25%"></div>
 					</div>
