@@ -1,10 +1,32 @@
+body {
+	background-color: #eeeaea;
+}
+
 .div-outer {
 	width: 100%;
 	overflow: auto;
 	padding: 5px;
 	display: none;
 }
-			
+
+#divmain {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	padding-left: 50px;
+	padding-right: 50px;
+	width: 100%;
+}
+
+#divinnermain {
+	padding-top: 20px;
+	padding-bottom: 0px;
+	padding-left: 20px;
+	padding-right: 20px;
+	width: 100%;
+	font-size:12px;
+	background-color: white;
+}
+
 .div-compute-table {
 	 width: 100%;
 	 height: 270px;
@@ -21,7 +43,9 @@
 }
 
 #divintroduction {
-	background-color: #f2f2f2;
+	background-image: url(../img/soilsample.png);
+	background-size:cover;
+	color: white;
 	font-size: 14px; 
 	width: 100%;
 	padding: 5px;
@@ -31,7 +55,6 @@
 	width: 100%;
 	text-align: center;
 	display: block;
-	padding: 5px;
 }
 
 .float-left {
@@ -66,12 +89,20 @@ output {
 	padding: 0;
 }
 
-.page-footer {
+#divfooter {
 	background-color: #EDF0D8;
-	padding-top: 10px;
-	padding-bottom: 10px;
 	display: block;
 	width: 100%;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	bottom:0;
+	position: absolute;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: #808080;
+    color: #FFFFFF;
+	font-weight: bold;
 }
 
 .img-responsive {
@@ -84,6 +115,10 @@ output {
 	line-height: 1;
 	margin: 0px;
 	padding: 0px;
+}
+
+.form-group, .form-control {
+	font-size: 12px;
 }
 
 .brand-soc {

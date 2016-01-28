@@ -18,8 +18,27 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		
 		<script>
+			var filepath = "stringconstants.json";
+			var serialized_constantsdict = {};
+			
+		
 			$(document).ready(function() {
 				$('#divintroduction').css({ "height": getpageheight() + "px" });
+				
+				// fetch json data
+				$.getJSON(filepath, {
+					format: "json"
+				})
+				.done(function(data) {
+					serialized_constantsdict = data;
+					$('#divintroduction').text(serialized_constantsdict["introductionkey"].join(" "));
+				})
+				.fail(function(jqxhr, textStatus, error) {
+					alert("Request Failed: " + textStatus + ", " + error);
+					return;
+				});
+				
+				
 			});
 			
 			
@@ -28,49 +47,39 @@
 				var windowheight = $(window).height();
 				return (windowheight - topposition);
 			}
+
 		</script>
 	</head>
 	
 	<body>
-		<!-- Fixed navbar -->
-		<nav class="navbar navbar-default navbar-fixed-top">
-		  <div class="container-fluid" style="background-color: #000; color: white;">
-			<div id="navbar" class="navbar-collapse collapse" style="padding: 5px">
-			  <ul class="nav navbar-nav navbar-right">
-				<li><a id="aboutlink" href="socapp.html">About</a></li>
-				<li><a id="computationslink" href="soccomputations.html">Computations</a></li>
-			  </ul>
-			</div>
+		<div id="divallbodyelements">
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container" style="width:100%;">
+					<div class="row row-list" style="background-color: #FFFFFF; color: #000000; width:100%;">
+						<div id="navbar-left" class="navbar-collapse collapse col-lg-6" style="padding-left: 20px; width:50%;">
+							<h1 class="soc-logo">
+								<a href="socapp.html">
+									<span class="brand-soc">SOC</span>
+									<span class="brand-app">APP</span>
+								</a>
+							</h1>
+						</div>
+						
+						<div id="navbar-right" class="navbar-collapse collapse col-lg-6" style="padding-right: 20px; width:50%;">
+							<ul class="nav navbar-nav navbar-right">
+								<li><a id="aboutlink" href="socapp.html">About</a></li>
+								<li><a id="computationslink" href="soccomputations.html">Computations</a></li>
+							</ul>
+						</div>
+				
+					</div>
+				</div>
+			</nav>
 			
-			<!-- <div class="pull-left">
-			<a class="navbar-brand" href="index.html">
-				<h1>
-					<span class="brand-land-tp">LAND</span>
-					<span class="brand-rest">REST</span>
-				</h1>
-			</a>
-            </div>    -->      
-		  </div>
-		</nav>
-		
-		<div style="clear:both; height:60px;"></div>
-		
-		<div id="divintroduction">
-			<p>
-			There has been quite some debate about the scope for mitigating climate change by soil organic carbon (SOC) sequestration. 
-			However, it seems there is a general lack of understanding of quantities and the time-dimension, as well as the possible contribution 
-			that SOC-seq. can play. This web application provides a platform where users can visualize the organic carbon content of a soil of 
-			their choice, as well as the quantitative impact of soil conserving management practices on sequestration, how such sequestration 
-			would unfold over time and what would be the magnitude of SOC seq. if the anticipated practice (to foster SOC seq.) would be scaled 
-			out to countries, sub-continents or the entire world. The basis of the idea is the publication from Sommer and Bossio 2014 
-			(Dynamics and climate change mitigation potential of soil organic carbon sequestration. J. Environm. Management 144, 83-87.)
-			</p>
-		</div>
-		
-		<div>
+			<div style="clear:both; height:70px;"></div>
 			
+			<div id="divintroduction"></div>
 		</div>
-	
 	</body>
 	
 </html>
