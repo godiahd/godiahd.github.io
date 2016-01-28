@@ -357,7 +357,7 @@
 					// if display tables
 					if (showcomputations == true) {
 						$('#divactivity1computedtable').append('<p>Computed Values:</p>' +
-						'<table id="tblactivity1computedvalues" class="table table-striped table-hover table-bordered table-condensed">');
+						'<table id="tblactivity1computedvalues" class="table table-striped table-hover table-bordered table-condensed table-hover">');
 						
 						$('#tblactivity1computedvalues').append('<thead>' +
 							'<th>Layer</th><th>Layer Thickness (cm)</th><th>Layer, top depth(cm)</th><th>Layer, bottom depth(cm)</th><th>Layer, mid depth(cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Delta SOC (g/kg)</th><th>Bulk density (g/cm3)</th><th>SOC-seq (Mg/ha/depth)</th>' +
@@ -369,7 +369,7 @@
 					}
 				
 					// new div on the right
-					$('#divsocsequence').append('<div><table id ="tblsocsequence" class="table table-striped table-hover table-bordered table-condensed"><p><h5>SOC Sequestration</h5></p></div>');
+					$('#divsocsequence').append('<div><table id ="tblsocsequence" class="table table-striped table-hover table-bordered table-condensed table-hover"><p><h5>SOC Sequestration</h5></p></div>');
 					$('#tblsocsequence').append('<thead><th>Layer</th><th>Thickness (cm)</th><th>SOC-Seq (Mg/ha/depth)</th></thead><tbody></tbody>');
 					
 					for (i = 0; i < activity1tablecomputations.length; i++) {
@@ -406,7 +406,7 @@
 					if (activity1graphcomputations) {
 						// if display tables
 						if (showcomputations == true) {
-							$('#divactivity1graphtable').append('<table id="tblactivity1graphvalues" class="table table-striped table-hover table-bordered table-condensed">');
+							$('#divactivity1graphtable').append('<table id="tblactivity1graphvalues" class="table table-striped table-hover table-bordered table-condensed table-hover">');
 								
 								$('#tblactivity1graphvalues').append('<thead>' +
 									'<th>Depth(cm)</th><th>Line, smoothened - START</th><th>Line, smoothened - END</th>' +
@@ -789,7 +789,7 @@
 					for (i = 0; i < activity2tablecomputations.length; i++) {
 						if (i == 0) {
 							$('#divactivity2computedtable').append('<p><div style="float:left;"><h5>Computed Values</h5></div><div class="checkbox" style="float:right;"><input type="checkbox" id="checkgraphovershoot" onchange="checkgraphovershootchange()" value="Prevent Overshooting">Prevent Overshooting<br></div></p>' +
-							'<table id="tblactivity2computedvalues" class="table table-striped table-hover table-bordered table-condensed">');
+							'<table id="tblactivity2computedvalues" class="table table-striped table-hover table-bordered table-condensed table-hover">');
 							
 							if (graphovershootchecked == true) {
 								$('#checkgraphovershoot').prop('checked', true);
@@ -925,7 +925,7 @@
 					for (i = 0; i < activity2graphcomputations.length; i++) {
 						if (i == 0) {
 							$('#divactivity2graphtable').append('<p>Computed Graph Values:</p>' +
-							'<table id="tblactivity2graphvalues" class="table table-striped table-hover table-bordered table-condensed">');
+							'<table id="tblactivity2graphvalues" class="table table-striped table-hover table-bordered table-condensed table-hover">');
 							
 							var headeritem = '<thead>';
 							for (j = 0; j < activity2graphcomputations[i].length; j++) {
@@ -1097,7 +1097,7 @@
 				var rowvalues = [];
 				
 				$('#divactivity3computedtable').append('<p>SOC-sequestration over time</p>' +
-					'<table id="tblactivity3computedvaluesA" class="table table-striped table-hover table-bordered table-condensed"><thead><th>Item</th><th>Value</th></thead><tbody></tbody>');
+					'<table id="tblactivity3computedvaluesA" class="table table-striped table-hover table-bordered table-condensed table-hover"><thead><th>Item</th><th>Value</th></thead><tbody></tbody>');
 				
 				rowvalues = ["Total targeted area (MHa)", targetedarea];
 				activity3tablecomputations.push(rowvalues);
@@ -1109,7 +1109,7 @@
 				
 				//if all land is brought under swquestration
 				$('#divactivity3computedtable').append('<p>If all land is brought under swquestration</p>' +
-					'<table id="tblactivity3computedvaluesB" class="table table-striped table-hover table-bordered table-condensed"><thead><th>Item</th><th>Value</th></thead><tbody></tbody>');
+					'<table id="tblactivity3computedvaluesB" class="table table-striped table-hover table-bordered table-condensed table-hover"><thead><th>Item</th><th>Value</th></thead><tbody></tbody>');
 				
 				rowvalues = ["SOC-sequestration total (t)", targetedarea * socseq * 1000000];
 				activity3tablecomputations.push(rowvalues);
@@ -1121,7 +1121,7 @@
 				
 				// Increase of hectares under a SOC seq. scheme over time
 				$('#divactivity3computedtable').append('<div id="divactivity3computedvaluesC" style="display: inline-block; vertical-align:top; width:80%;"><p>If all land is brought under swquestration</p>' +
-					'<table id="tblactivity3computedvaluesC" class="table table-striped table-hover table-bordered table-condensed"><thead><th>Item</th><th>Value</th></thead><tbody></tbody></div>');
+					'<table id="tblactivity3computedvaluesC" class="table table-striped table-hover table-bordered table-condensed table-hover"><thead><th>Item</th><th>Value</th></thead><tbody></tbody></div>');
 				
 				rowvalues = ["rate const", rateconsfactor/1000];
 				activity3tablecomputations.push(rowvalues);
@@ -1240,7 +1240,7 @@
 					for (i = 0; i < activity3graphcomputations.length; i++) {
 						if (i == 0) {
 							$('#divactivity3graphtable').append('<p>Computed Graph Values:</p>' +
-							'<table id="tblactivity3graphvalues" class="table table-striped table-hover table-bordered table-condensed">');
+							'<table id="tblactivity3graphvalues" class="table table-striped table-hover table-bordered table-condensed table-hover">');
 							
 							var headeritem = '<thead>';
 							for (j = 0; j < activity3graphcomputations[i].length; j++) {
@@ -1373,11 +1373,20 @@
 				} else {
 					// insert
 					$('#tbltotalsocsequestration').find('tbody').append('<tr>' +
-							'<td style="color:#8c8c8c;">' + $('#txtlocality').val() + '</td>' +
-							'<td style="color:#8c8c8c;">' + $("#txtlanduse").val() + '</td>' +
-							'<td style="color:#8c8c8c;">' + totalyearsglobal + '</td>' +
-							'<td style="color:#8c8c8c;">' + area_year_soc_seq_total + '</td>' +
+							'<td>' + $('#txtlocality').val() + '</td>' +
+							'<td>' + $("#txtlanduse").val() + '</td>' +
+							'<td>' + totalyearsglobal + '</td>' +
+							'<td>' + area_year_soc_seq_total + '</td>' +
 						'</tr>');
+						
+						
+					//// insert
+					//$('#tbltotalsocsequestration').find('tbody').append('<tr>' +
+					//		'<td style="color:#8c8c8c;">' + $('#txtlocality').val() + '</td>' +
+					//		'<td style="color:#8c8c8c;">' + $("#txtlanduse").val() + '</td>' +
+					//		'<td style="color:#8c8c8c;">' + totalyearsglobal + '</td>' +
+					//		'<td style="color:#8c8c8c;">' + area_year_soc_seq_total + '</td>' +
+					//	'</tr>');
 				}
 				
 				// total
@@ -1872,7 +1881,7 @@
 								
 								<div id="panel-finaltable" class="panel-body panel-collapse collapse in" style="padding:10px">
 									<div id="divtotalsocsequestration" style="width: 100%; overflow: auto; display: none; font-size: 12px;">
-										<table id="tbltotalsocsequestration" class="table table-striped table-hover table-bordered table-condensed">
+										<table id="tbltotalsocsequestration" class="table table-striped table-hover table-bordered table-condensed table-hover">
 											<thead>
 												<th>Locality</th><th>Land Use</th><th>Years of seq.</th><th>SOC-sequestration (Mg C)</th>
 											</thead>
