@@ -1254,7 +1254,7 @@
 						rowvalues = [0, "", "", ""];
 						
 					} else {
-						exp_decay = ExpDecay(y_zero, i - 1, rate_const);
+						exp_decay = (ExpDecay(y_zero, i - 1, rate_const) * 100);
 						exp_decay_total += exp_decay;
 						area_year_soc_seq = Area_Year_SOC_Seq_NEW(totalyearsglobal, y_zero, rate_const, i, activity2yearrange, activity2annualsocseq, activity1bulkdensityavg, activity1layerdepth, targetarea);
 						
@@ -1298,7 +1298,7 @@
 						repositionfooter();
 					}
 				}
-				
+				alert(exp_decay_list);
 				// draw graph
 				drawactivitythreegraph(yearslabel, exp_decay_list, area_year_soc_seq_list);
 			}
