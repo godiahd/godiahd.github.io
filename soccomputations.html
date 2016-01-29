@@ -920,6 +920,7 @@
 						
 						//alert("yearrange " + yearrange);
 						//alert("layerrange " + layerrange);
+						//("year " + i);
 						
 						//if (i < yearrange[0]) {
 						//	colval = layerrange[0];
@@ -931,7 +932,7 @@
 						//	colval = cubic_spline(yearrange, layerrange, i);
 						//}
 						
-						colval = cubic_spline(yearrange, layerrange, i);
+						colval = cubic_spline2(yearrange, layerrange, i);
 						rowvalues.push(colval);
 					}
 					
@@ -1298,7 +1299,7 @@
 						repositionfooter();
 					}
 				}
-				alert(exp_decay_list);
+				
 				// draw graph
 				drawactivitythreegraph(yearslabel, exp_decay_list, area_year_soc_seq_list);
 			}
@@ -1688,6 +1689,114 @@
 				return Y;
 				
 			}
+			
+			
+			
+			/*********************  Cubic_Spline by SRS1 Software **************** Version 1.01*/
+			function cubic_spline2(Input_x_range, Input_y_range, X_for_which_2find_Y) { // Input_x_range As Range, Input_y_range As Range, X_for_which_2find_Y As Double
+				/*Purposecubic_spline:   Given a data set consisting of a list of x values
+						   and y values, this function will smoothly interpolate
+						   a resulting output (y) value from a given input (x) value */
+				
+				// This counts how many points are in "input" and "output" set of data
+				var input_count; // Integer
+				var output_count; // Integer
+				
+				var input_count = Input_x_range.length; // row count
+				var output_count = Input_y_range.length; // row count
+				
+				// Next check to be sure that "input" # points = "output" # points
+				if (input_count != output_count) {
+					return "Something's messed up!  The number of indices number of input x and y ranges don't match!";
+				}
+				
+				var xin = new Array(input_count); // ReDim xin(input_count) As Single
+				var yin = new Array(input_count); // ReDim yin(input_count) As Single
+				//var c; // Integer
+				
+				for (c = 0; c < input_count; c++) {
+					xin[c] = Input_x_range[c];
+					yin[c] = Input_y_range[c];
+				}
+				
+				// values are populated
+				var n; // Integer 'n=input_count
+				var i, K; // Integer 'these are loop counting integers
+				var p, qn, sig, un; // Single
+				var U = new Array(input_count - 1); // ReDim U(input_count - 1) As Single
+				var yt = new Array(input_count); //ReDim yt(input_count) As Single 'these are the 2nd deriv values
+				
+				n = input_count;
+				yt[0] = 0;
+				U[0] = 0;
+				
+				for (i = 1; i < n - 1; i++) {
+					sig = (xin[i] - xin[i - 1]) / (xin[i + 1] - xin[i - 1]);
+					p = sig * yt[i - 1] + 2;
+					yt[i] = (sig - 1) / p;
+					U[i] = (yin[i + 1] - yin[i]) / (xin[i + 1] - xin[i]) - (yin[i] - yin[i - 1]) / (xin[i] - xin[i - 1]);
+					U[i] = (6 * U[i] / (xin[i + 1] - xin[i - 1]) - sig * U[i - 1]) / p;
+				}
+				
+				qn = 0;
+				un = 0;
+				
+				yt[n - 1] = (un - qn * U[n - 2]) / (qn * yt[n - 2] + 1);
+				
+				for (K = n - 2; K >= 1; K--) {
+					yt[K] = yt[K] * yt[K + 1] + U[K];
+				}
+				
+				// now eval spline at one point
+				var klo, khi; // Integer
+				var h, b, a; // Single
+				
+				// first find correct interval
+				klo = 1;
+				khi = n - 1;
+				
+				do {
+					K = khi - klo;
+					//alert(xin[K] + " " + X_for_which_2find_Y + " " + khi + " " + klo + " " + K);
+					if (xin[K] > X_for_which_2find_Y) {
+						khi = K;
+					} else {
+						klo = K;
+					}
+					
+					K = khi - klo;
+				}
+				while (K > 1);
+				
+				//alert(X_for_which_2find_Y + ", " + khi + ", " + klo);
+				//// RS added - preventing negative or possitive values in-between two y-values equal zero!
+				//if (yin[khi] == 0 && yin[klo] == 0) {
+				//	return 0;
+				//}
+				
+				// RS added - prevent cubic spline from 'overshooting'
+				if (checkforgraphovershoot == true && graphovershootchecked == true) {
+					if (yin[khi] == yin[klo] && khi > input_count - 2) {
+						return yin[khi];
+					}
+					//End added
+				}
+				
+				var Y; // Double
+				
+				// ********* check if multiplication should be float
+				h = xin[khi] - xin[klo];
+				a = (xin[khi] - X_for_which_2find_Y) / h;
+				b = (X_for_which_2find_Y - xin[klo]) / h;
+				
+				//alert("X_for_which_2find_Y: " + X_for_which_2find_Y + " h: " + h + " a, " + a + " b, " + b);
+				
+				Y = a * yin[klo] + b * yin[khi] + ((Math.pow(a, 3) - a) * yt[klo] + (Math.pow(b, 3) - b) * yt[khi]) * (Math.pow(h, 2)) / 6;
+				return Y;
+				
+			}
+			
+			
 			
 			
 			// get exponential
