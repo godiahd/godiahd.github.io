@@ -114,6 +114,11 @@ output {
 	padding-bottom: 5px;
 }
 
+.italicfont {
+	font-style: italic;
+	
+}
+
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
     background-color: #808080;
     color: #FFFFFF;

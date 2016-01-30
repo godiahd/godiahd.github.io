@@ -60,9 +60,17 @@
 				
 				addtablerow(5);
 				
+				window.onresize = function() {
+					repositionnavbar();
+					repositionfooter();
+				}
+				
 				$('#tblactivity1').on('click', 'input[type="button"]', function(e){
-				   $(this).closest('tr').remove();
-				   repositionfooter();
+					$(this).closest('tr').remove();
+					if (addindex > 0) {
+						addindex-=1;
+					}
+					repositionfooter();
 				});
 				
 				// fetch FAO json data
@@ -77,13 +85,13 @@
 					$('#cmblocality').find('option').remove();
 					$('#cmblocality').append($('<option>', {
 						value: "",
-						text : "[Select Locality]"
+						text : "Select or Input Locality"
 					}));
 					for(var key in obj){
 						if (obj.hasOwnProperty(key)){
 							$('#cmblocality').append($('<option>', { 
 								value: key,
-								text : key //obj[key]
+								text : key
 							}));
 						}
 					}
@@ -91,7 +99,7 @@
 					$('#cmblanduse').find('option').remove();
 					$('#cmblanduse').append($('<option>', {
 						value: "",
-						text : "[Select Land Use]"
+						text : "Input Land Use"
 					}));
 				})
 				.fail(function(jqxhr, textStatus, error) {
@@ -149,9 +157,18 @@
 				});
 				
 				
-				
-				
 			});
+			
+			
+			$(window).load(function() {
+				repositionnavbar();
+				repositionfooter();
+			});
+			
+			
+			function repositionnavbar() {
+				$('#divcleartop').css({"height": $('#navtopbar').height()});
+			}
 			
 			
 			function fetchacreage(selectedlocality) {
@@ -166,10 +183,18 @@
 			
 			
 			function fetchlanduse(selectedlocality) {
+				var txtlanduse;
+				
+				if ($('#cmblocality').val()) {
+					txtlanduse = "Select or Input Land Use";
+				} else {
+					txtlanduse = "Input Land Use";
+				}
+				
 				$('#cmblanduse').find('option').remove();
 				$('#cmblanduse').append($('<option>', {
 					value: "",
-					text : "[Select Land Use]"
+					text : txtlanduse
 				}));
 				
 				if (selectedlocality) {
@@ -179,7 +204,7 @@
 						if (obj.hasOwnProperty(key)){
 							$('#cmblanduse').append($('<option>', { 
 								value: key,
-								text : key //obj[key]
+								text : key
 							}));
 						}
 					}
@@ -205,6 +230,7 @@
 			
 			
 			function addtablerow(noofrows) {
+				var layer;
 				var thicknessval;
 				var socstartval;
 				var socendval;
@@ -249,16 +275,23 @@
 							bulkdensityval = "??";
 					}
 					
+					layer = $('#tblactivity1').find('tbody').find('tr').length + 1;
+					
 					$('#tblactivity1').find('tbody').append('<tr>' +
+							'<td contenteditable=false style="cursor:pointer;">' + layer + '</td>' +
 							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter Thickness">' + thicknessval + '</td>' +
 							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter SOC">' + socstartval + '</td>' +
 							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter SOC">' + socendval + '</td>' +
 							'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter Bulk Density">' + bulkdensityval + '</td>' +
-							'<td><input type="button" style="color:red;" value="X"/></td>' +
+							'<td contenteditable=false style="cursor:pointer;"></td>' +
+							'<td><input type="button" class="removerowbtn" title="Remove" style="color:red;" value="Remove" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="right"/></td>' +
+							
 						'</tr>');
 		
 					addindex += 1;
 				}
+				
+				$('.removerowbtn').tooltip();
 				
 				$('#divactivity1table').css({"display": "block"});
 				repositionfooter();
@@ -340,9 +373,6 @@
 					$('#ct-chartactivity2').css({"display": "none"});
 					$('#ct-chartactivity3').css({"display": "none"});
 					
-					$('#divsocsequence').empty();
-					$('#divsocsequence').css({"display": "none"});
-					
 					displayactivityonevalues();
 				}
 			}
@@ -368,16 +398,20 @@
 						'</tbody>');
 					}
 				
-					// new div on the right
-					$('#divsocsequence').append('<div><table id ="tblsocsequence" class="table table-striped table-hover table-bordered table-condensed table-hover"><p><h5>SOC Sequestration</h5></p></div>');
-					$('#tblsocsequence').append('<thead><th>Layer</th><th>Thickness (cm)</th><th>SOC-Seq (Mg/ha/depth)</th></thead><tbody></tbody>');
 					
-					for (i = 0; i < activity1tablecomputations.length; i++) {
+					for (i = 1; i < activity1tablecomputations.length - 2; i++) {
 						var returnrows = activity1tablecomputations[i];
-						$('#tblsocsequence').find('tbody').append('<tr><td style="color:#8c8c8c;">' + returnrows[0] + '</td><td style="color:#8c8c8c;">' + returnrows[1] + '</td><td style="color:#8c8c8c;">' + returnrows[returnrows.length - 1] + '</td></tr>');
+						document.getElementById('tblactivity1').rows[i].cells[5].innerHTML = returnrows[returnrows.length - 1];
 					}
 					
-					$('#divsocsequence').css({ "display": "block" });
+					var totbulkdensity = activity1tablecomputations[activity1tablecomputations.length - 1][8];
+					var totsocseq = activity1tablecomputations[activity1tablecomputations.length - 1][9];
+					
+					$("#tblactivity1").find('tfoot').remove();
+					
+					var foot = $('<tfoot>').appendTo("#tblactivity1");
+					
+					foot.append($('<td><b>Total</b></td><td></td><td></td><td></td><td><b>' + totbulkdensity + '</b></td><td><b>' + totsocseq + '</b></td><td></td>'));
 					
 					// if display tables
 					if (showcomputations == true) {
@@ -487,25 +521,25 @@
 					var selrow = $(this);
 					
 					if (r == 0){
-						socstart = selrow.find('td').eq(1).html();
-						socend = selrow.find('td').eq(2).html();
+						socstart = selrow.find('td').eq(2).html();
+						socend = selrow.find('td').eq(3).html();
 						rowlist = [layer, layerthickness, topdepth, bottomdepth, middepth, socstart, socend, deltasoc, bulkdensity, socseq];
 						activityonecomputedlist.push(rowlist);
 						
 						rowlist = [];
 						layer = r + 1;
 						
-						layerthickness = parseInt(selrow.find('td').eq(0).html());
+						layerthickness = parseInt(selrow.find('td').eq(1).html());
 						topdepth = 0;
 						bottomdepth = layerthickness + topdepth;
 						middepth = (topdepth + bottomdepth)/2;
-						socstart = parseInt(selrow.find('td').eq(1).html());
-						socend = parseInt(selrow.find('td').eq(2).html());
+						socstart = parseInt(selrow.find('td').eq(2).html());
+						socend = parseInt(selrow.find('td').eq(3).html());
 						deltasoc = (socend - socstart)
-						bulkdensity = parseFloat(selrow.find('td').eq(3).html());
+						bulkdensity = parseFloat(selrow.find('td').eq(4).html());
 						
 						// compute
-						socseq = (parseFloat(selrow.find('td').eq(0).html()) * deltasoc * bulkdensity)/10.0;
+						socseq = (parseFloat(selrow.find('td').eq(1).html()) * deltasoc * bulkdensity)/10.0;
 						sumlayerthickness += parseInt(layerthickness);
 						sumbulkdensity += parseFloat(layerthickness) * parseFloat(bulkdensity);
 						sumsocseq += parseFloat(socseq);
@@ -515,17 +549,17 @@
 						
 					} else {
 						layer = r + 1;
-						layerthickness = parseInt(selrow.find('td').eq(0).html());
+						layerthickness = parseInt(selrow.find('td').eq(1).html());
 						topdepth = bottomdepth; // previous
 						bottomdepth = layerthickness + topdepth;
 						middepth = (topdepth + bottomdepth)/2;
-						socstart = parseInt(selrow.find('td').eq(1).html());
-						socend = parseInt(selrow.find('td').eq(2).html());
+						socstart = parseInt(selrow.find('td').eq(2).html());
+						socend = parseInt(selrow.find('td').eq(3).html());
 						deltasoc = (socend - socstart)
-						bulkdensity = parseFloat(selrow.find('td').eq(3).html());
+						bulkdensity = parseFloat(selrow.find('td').eq(4).html());
 						
 						// compute
-						socseq = (parseFloat(selrow.find('td').eq(0).html()) * deltasoc * bulkdensity)/10.0;
+						socseq = (parseFloat(selrow.find('td').eq(1).html()) * deltasoc * bulkdensity)/10.0;
 						sumlayerthickness += parseInt(layerthickness);
 						sumbulkdensity += parseFloat(layerthickness) * parseFloat(bulkdensity);
 						sumsocseq += parseFloat(socseq);
@@ -739,7 +773,7 @@
 				
 				$('#tblactivity1 tbody').find('tr').each(function () {
 					selrow = $(this);
-					layerrows = [selrow.find('td').eq(1).html(), "", "", selrow.find('td').eq(2).html(), selrow.find('td').eq(3).html(), selrow.find('td').eq(0).html()];
+					layerrows = [selrow.find('td').eq(2).html(), "", "", selrow.find('td').eq(3).html(), selrow.find('td').eq(4).html(), selrow.find('td').eq(1).html()];
 					layerarray.push(layerrows);
 				});
 				
@@ -932,7 +966,7 @@
 						//	colval = cubic_spline(yearrange, layerrange, i);
 						//}
 						
-						colval = cubic_spline2(yearrange, layerrange, i);
+						colval = cubic_spline(yearrange, layerrange, i);
 						rowvalues.push(colval);
 					}
 					
@@ -1221,7 +1255,7 @@
 				activity3graphcomputations = [];
 				var rowvalues = [];
 				
-				rowvalues = ["Year", "Area under Seq. - Added", "Area under Seq. - Total", "SOC-Seq (Mt/yr)"];
+				rowvalues = ["Year", "Area under Seq. - Added (%)", "Area under Seq. - Total (%)", "SOC-Seq (Mt/yr)"];
 				activity3graphcomputations.push(rowvalues);
 				
 				totalyearsglobal = activity3tablecomputations[activity3tablecomputations.length - 1][1];
@@ -1543,7 +1577,8 @@
 				
 				inputtable.find('tr').each(function () {
 					$(this).find('td').each(function () {
-						if (!$(this).is(':last-child')) {
+						if (!$(this).is(':nth-last-child(1)') && !$(this).is(':nth-last-child(2)')) {
+							
 							if (!$.isNumeric($(this).text())) {
 								isvalid = false;
 								$(this).css ({
@@ -1687,116 +1722,7 @@
 				
 				Y = a * yin[klo] + b * yin[khi] + ((Math.pow(a, 3) - a) * yt[klo] + (Math.pow(b, 3) - b) * yt[khi]) * (Math.pow(h, 2)) / 6;
 				return Y;
-				
 			}
-			
-			
-			
-			/*********************  Cubic_Spline by SRS1 Software **************** Version 1.01*/
-			function cubic_spline2(Input_x_range, Input_y_range, X_for_which_2find_Y) { // Input_x_range As Range, Input_y_range As Range, X_for_which_2find_Y As Double
-				/*Purposecubic_spline:   Given a data set consisting of a list of x values
-						   and y values, this function will smoothly interpolate
-						   a resulting output (y) value from a given input (x) value */
-				
-				// This counts how many points are in "input" and "output" set of data
-				var input_count; // Integer
-				var output_count; // Integer
-				
-				var input_count = Input_x_range.length; // row count
-				var output_count = Input_y_range.length; // row count
-				
-				// Next check to be sure that "input" # points = "output" # points
-				if (input_count != output_count) {
-					return "Something's messed up!  The number of indices number of input x and y ranges don't match!";
-				}
-				
-				var xin = new Array(input_count); // ReDim xin(input_count) As Single
-				var yin = new Array(input_count); // ReDim yin(input_count) As Single
-				//var c; // Integer
-				
-				for (c = 0; c < input_count; c++) {
-					xin[c] = Input_x_range[c];
-					yin[c] = Input_y_range[c];
-				}
-				
-				// values are populated
-				var n; // Integer 'n=input_count
-				var i, K; // Integer 'these are loop counting integers
-				var p, qn, sig, un; // Single
-				var U = new Array(input_count - 1); // ReDim U(input_count - 1) As Single
-				var yt = new Array(input_count); //ReDim yt(input_count) As Single 'these are the 2nd deriv values
-				
-				n = input_count;
-				yt[0] = 0;
-				U[0] = 0;
-				
-				for (i = 1; i < n - 1; i++) {
-					sig = (xin[i] - xin[i - 1]) / (xin[i + 1] - xin[i - 1]);
-					p = sig * yt[i - 1] + 2;
-					yt[i] = (sig - 1) / p;
-					U[i] = (yin[i + 1] - yin[i]) / (xin[i + 1] - xin[i]) - (yin[i] - yin[i - 1]) / (xin[i] - xin[i - 1]);
-					U[i] = (6 * U[i] / (xin[i + 1] - xin[i - 1]) - sig * U[i - 1]) / p;
-				}
-				
-				qn = 0;
-				un = 0;
-				
-				yt[n - 1] = (un - qn * U[n - 2]) / (qn * yt[n - 2] + 1);
-				
-				for (K = n - 2; K >= 1; K--) {
-					yt[K] = yt[K] * yt[K + 1] + U[K];
-				}
-				
-				// now eval spline at one point
-				var klo, khi; // Integer
-				var h, b, a; // Single
-				
-				// first find correct interval
-				klo = 1;
-				khi = n - 1;
-				
-				do {
-					K = khi - klo;
-					//alert(xin[K] + " " + X_for_which_2find_Y + " " + khi + " " + klo + " " + K);
-					if (xin[K] > X_for_which_2find_Y) {
-						khi = K;
-					} else {
-						klo = K;
-					}
-					
-					K = khi - klo;
-				}
-				while (K > 1);
-				
-				//alert(X_for_which_2find_Y + ", " + khi + ", " + klo);
-				//// RS added - preventing negative or possitive values in-between two y-values equal zero!
-				//if (yin[khi] == 0 && yin[klo] == 0) {
-				//	return 0;
-				//}
-				
-				// RS added - prevent cubic spline from 'overshooting'
-				if (checkforgraphovershoot == true && graphovershootchecked == true) {
-					if (yin[khi] == yin[klo] && khi > input_count - 2) {
-						return yin[khi];
-					}
-					//End added
-				}
-				
-				var Y; // Double
-				
-				// ********* check if multiplication should be float
-				h = xin[khi] - xin[klo];
-				a = (xin[khi] - X_for_which_2find_Y) / h;
-				b = (X_for_which_2find_Y - xin[klo]) / h;
-				
-				//alert("X_for_which_2find_Y: " + X_for_which_2find_Y + " h: " + h + " a, " + a + " b, " + b);
-				
-				Y = a * yin[klo] + b * yin[khi] + ((Math.pow(a, 3) - a) * yt[klo] + (Math.pow(b, 3) - b) * yt[khi]) * (Math.pow(h, 2)) / 6;
-				return Y;
-				
-			}
-			
-			
 			
 			
 			// get exponential
@@ -1883,7 +1809,7 @@
 	
 	<body class="offsetfootermargin">
 		<div id="divallbodyelements">
-			<nav class="navbar navbar-default navbar-fixed-top">
+			<nav id="navtopbar" class="navbar navbar-default navbar-fixed-top">
 				<div class="container" style="width:100%;">
 					<div class="row row-list" style="background-color: #FFFFFF; color: #000000; width:100%;">
 						<div id="navbar-left" class="navbar-collapse collapse col-lg-6" style="padding-left: 20px; width:50%;">
@@ -1905,12 +1831,12 @@
 				</div>
 			</nav>
 			
-			<div style="clear:both; height:70px;"></div>
+			<div id="divcleartop" style="clear:both; height:70px;"></div>
 			
 			<div class="container-fluid" style="padding: 10px; background-color: #eeeaea;">
 				<div class="form-inline" style="padding-left :10px; padding-right :10px;">
 					<div class="form-group">
-						<input type="text" class="form-control input-sm" id="txtaddrow" placeholder="No of Layers" style="width:100px">
+						<input type="text" class="form-control input-sm" id="txtaddrow" placeholder="No of Layers" style="width:90px">
 					</div>
 					<div class="form-group">
 						<button id="btnaddrow" onclick="addtablerowclick()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="top" title="Add Layers"><span class="ladda-label">Add layers</span></button>
@@ -1918,7 +1844,7 @@
 					
 					<div class="form-group">
 						<label for="cmblocality">Locality</label>
-						<select id="cmblocality" class="form-control" style="width:170px"></select>
+						<select id="cmblocality" class="form-control" style="width:180px"></select>
 					</div>
 					
 					<div class="form-group" id="divlocality">
@@ -1927,7 +1853,7 @@
 					
 					<div class="form-group">
 						<label for="cmblanduse">Land Use</label>
-						<select id="cmblanduse" class="form-control" style="width:170px"></select>
+						<select id="cmblanduse" class="form-control" style="width:180px"></select>
 					</div>
 					
 					<div class="form-group" id="divlanduse">
@@ -1935,32 +1861,27 @@
 					</div>
 					
 					<div class="form-group">
-						<input type="text" class="form-control input-sm" id="txtacreage" placeholder="Acreage (ha)" style="width:120px">
+						<input type="text" class="form-control input-sm" id="txtacreage" placeholder="Input Acreage (ha)" style="width:120px">
 					</div>
 					
 					<div class="checkbox"><label><input type="checkbox" id="checkcomps" value=""></label></div>
 					<button id="btncomputeactivity" onclick="displayactivityvalues()" class="btn btn-success btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="top" title="Compute"><span class="ladda-label">Compute</span></button>
 				</div>
 			</div>
-		
+			
 			<div id="divmain" class="container-fluid">
 				<div id="divinnermain" class="container-fluid">
 					<div class="content-wrapper">
-						<div id="divactivity1table" class="float-left table-responsive" style="width:70%; display: none;">
-							<p><h5>User Entries (Input all values):</h5></p>
+						<div id="divactivity1table" class="float-left table-responsive" style="width:100%; display: none;">
+							<p><h5 class="italicfont">Input values for: Layer Thickness (cm), SOC conc. (g/kg) - START, SOC conc. (g/kg) - END and Bulk density (g/cm3) for each layer below.</h5></p>
 							<table id="tblactivity1" class="table table-striped table-hover table-bordered table-condensed table-hover">
 								<thead>
-									<th>Layer Thickness (cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Bulk density (g/cm3)</th><th>Remove</th>
+									<th>Layer</th><th>Layer Thickness (cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Bulk density (g/cm3)</th><th>SOC-Seq (Mg/ha/depth)</th><th>Remove</th>
 								</thead>
 									
-								<tbody>
-									
-								</tbody>
+								<tbody></tbody>
 							</table>
 						</div>
-						
-						
-						<div id="divsocsequence" class="float-right" style="width:25%"></div>
 					</div>
 					<div style="clear:both; height:10px;"></div>
 					
