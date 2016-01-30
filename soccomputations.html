@@ -50,7 +50,11 @@
 			var rateconsfactor = 998; // default values
 			var area_year_soc_seq_total = 0.0;
 			var serialized_faovaluedict = {};
-			var filepath = "faodata.json";
+			var serialized_constantsdict = {};
+			var filepathfaodata = "faodata.json";
+			var filepathconstantsdata = "stringconstants.json";
+			var updatemaintablekey;
+			var updateactivitytwotablekey;
 			
 			
 			$(document).ready(function() {
@@ -74,7 +78,7 @@
 				});
 				
 				// fetch FAO json data
-				$.getJSON(filepath, {
+				$.getJSON(filepathfaodata, {
 					format: "json"
 				})
 				.done(function(data) {
@@ -101,6 +105,22 @@
 						value: "",
 						text : "Input Land Use"
 					}));
+				})
+				.fail(function(jqxhr, textStatus, error) {
+					alert("Request Failed: " + textStatus + ", " + error);
+					return;
+				});
+				
+				// fetch json data
+				$.getJSON(filepathconstantsdata, {
+					format: "json"
+				})
+				.done(function(data) {
+					serialized_constantsdict = data;
+					updatemaintablekey = serialized_constantsdict["updatemaintablekey"];
+					updateactivitytwotablekey = serialized_constantsdict["updateactivitytwotablekey"];
+					
+					$('#hupdatemaintable').text(updatemaintablekey);
 				})
 				.fail(function(jqxhr, textStatus, error) {
 					alert("Request Failed: " + textStatus + ", " + error);
@@ -843,7 +863,7 @@
 				if (activity2tablecomputations) {
 					for (i = 0; i < activity2tablecomputations.length; i++) {
 						if (i == 0) {
-							$('#divactivity2computedtable').append('<p><div style="float:left;"><h5 class="italicfont">You can edit values in blue in the table below</h5></div><div class="checkbox" style="float:right;"><input type="checkbox" id="checkgraphovershoot" onchange="checkgraphovershootchange()" value="Prevent Overshooting">Prevent Overshooting<br></div></p>' +
+							$('#divactivity2computedtable').append('<p><div style="float:left;"><h5 class="italicfont">' + updateactivitytwotablekey + '</h5></div><div class="checkbox" style="float:right;"><input type="checkbox" id="checkgraphovershoot" onchange="checkgraphovershootchange()" value="Prevent Overshooting">Prevent Overshooting<br></div></p>' +
 							'<table id="tblactivity2computedvalues" class="table table-striped table-bordered table-condensed">');
 							
 							if (graphovershootchecked == true) {
@@ -1180,8 +1200,8 @@
 				activity3tablecomputations.push(rowvalues);
 				$('#tblactivity3computedvaluesA').find('tbody').append('<tr><td class="uneditvalues">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td class="uneditvalues">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
-				//if all land is brought under swquestration
-				$('#divactivity3computedtable').append('<p>If all land is brought under swquestration</p>' +
+				//if all land is brought under sequestration
+				$('#divactivity3computedtable').append('<p>If all land is brought under sequestration</p>' +
 					'<table id="tblactivity3computedvaluesB" class="table table-striped table-bordered table-condensed"><thead><th>Item</th><th>Value</th></thead><tbody></tbody>');
 				
 				rowvalues = ["SOC-sequestration total (t)", targetedarea * socseq * 1000000];
@@ -1193,7 +1213,7 @@
 				$('#tblactivity3computedvaluesB').find('tbody').append('<tr><td class="uneditvalues">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td class="uneditvalues">' + activity3tablecomputations[activity3tablecomputations.length - 1][1] + '</td></tr>');
 				
 				// Increase of hectares under a SOC seq. scheme over time
-				$('#divactivity3computedtable').append('<div id="divactivity3computedvaluesC" style="display: inline-block; vertical-align:top; width:80%;"><p>If all land is brought under swquestration</p>' +
+				$('#divactivity3computedtable').append('<div id="divactivity3computedvaluesC" style="display: inline-block; vertical-align:top; width:80%;"><p>If all land is brought under sequestration</p>' +
 					'<table id="tblactivity3computedvaluesC" class="table table-striped table-bordered table-condensed"><thead><th>Item</th><th>Value</th></thead><tbody></tbody></div>');
 				
 				rowvalues = ["rate const", rateconsfactor/1000];
@@ -1880,7 +1900,7 @@
 				<div id="divinnermain" class="container-fluid">
 					<div class="content-wrapper">
 						<div id="divactivity1table" class="float-left table-responsive" style="width:100%; display: none;">
-							<p><h5 class="italicfont">Update values in blue for Layer Thickness (cm), SOC conc. (g/kg) - START, SOC conc. (g/kg) - END and Bulk density (g/cm3) for each layer below</h5></p>
+							<p><h5 id="hupdatemaintable" class="italicfont"></h5></p>
 							<table id="tblactivity1" class="table table-striped table-bordered table-condensed">
 								<thead>
 									<th>Layer</th><th>Layer Thickness (cm)</th><th>SOC conc. (g/kg) - START</th><th>SOC conc. (g/kg) - END</th><th>Bulk density (g/cm3)</th><th>SOC-Seq (Mg/ha/depth)</th><th>Remove</th>
@@ -1893,7 +1913,6 @@
 					<div style="clear:both; height:10px;"></div>
 					
 					<div id="outerdiv" class="div-outer">
-						<h4>Results</h4>
 						<div class="panel-group" id="accordion">
 							<div class="panel panel-default">
 								<div class="panel-heading">

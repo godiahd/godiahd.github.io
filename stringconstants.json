@@ -5,8 +5,11 @@
 				"their choice, as well as the quantitative impact of soil conserving management practices on sequestration, how such sequestration",
 				"would unfold over time and what would be the magnitude of SOC seq. if the anticipated practice (to foster SOC seq.) would be scaled",
 				"out to countries, sub-continents or the entire world. The basis of the idea is the publication from Sommer and Bossio 2014",
-				"(Dynamics and climate change mitigation potential of soil organic carbon sequestration. J. Environm. Management 144, 83-87.)"]
+				"(Dynamics and climate change mitigation potential of soil organic carbon sequestration. J. Environm. Management 144, 83-87.)"],
 				
-				
+	"updatemaintablekey": "Update values in blue for Layer Thickness (cm), SOC conc. (g/kg) - START, SOC conc. (g/kg) - END and Bulk density (g/cm3) for each layer below",
+	
+	"updateactivitytwotablekey": "You can edit values in blue in the table below"
+	
 }
     
