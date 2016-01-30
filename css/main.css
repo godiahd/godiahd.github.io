@@ -68,6 +68,20 @@ footer {
     color: red;
 }
 
+.editvalues1 {
+	color: blue;
+	
+}
+
+.editvalues2 {
+	color: blue;
+	
+}
+
+.uneditvalues {
+	color:#8c8c8c;
+}
+
 .content-wrapper {
 	width: 100%;
 	text-align: center;
