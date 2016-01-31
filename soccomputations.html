@@ -48,6 +48,9 @@
 			var minslidervalue = 800; // default values
 			var maxslidervalue = 1000; // default values
 			var rateconsfactor = 998; // default values
+			var graphactivity1height = 550;
+			var graphactivity2height = 500;
+			var graphactivity3height = 450;
 			var area_year_soc_seq_total = 0.0;
 			var serialized_faovaluedict = {};
 			var serialized_constantsdict = {};
@@ -55,6 +58,7 @@
 			var filepathconstantsdata = "stringconstants.json";
 			var updatemaintablekey;
 			var updateactivitytwotablekey;
+			var selectoptionskey;
 			
 			
 			$(document).ready(function() {
@@ -117,10 +121,13 @@
 				})
 				.done(function(data) {
 					serialized_constantsdict = data;
+					selectoptionskey = serialized_constantsdict["selectoptionskey"];
 					updatemaintablekey = serialized_constantsdict["updatemaintablekey"];
 					updateactivitytwotablekey = serialized_constantsdict["updateactivitytwotablekey"];
 					
+					$('#hselectoptions').text(selectoptionskey);
 					$('#hupdatemaintable').text(updatemaintablekey);
+					
 				})
 				.fail(function(jqxhr, textStatus, error) {
 					alert("Request Failed: " + textStatus + ", " + error);
@@ -768,8 +775,10 @@
 					}
 				}
 				
+				$('#ct-chartactivity1').css({ "height": graphactivity1height +"px" });
 				$('#ct-chartactivity1').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
+				$('#ct-chartactivity1').highcharts().reflow();
 				
 				// activity 2 computations
 				displayactivitytwovalues();
@@ -1172,8 +1181,10 @@
 					}
 				}
 				
+				$('#ct-chartactivity2').css({ "height": graphactivity2height +"px" });
 				$('#ct-chartactivity2').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
+				$('#ct-chartactivity2').highcharts().reflow();
 				
 				// activity 3 computations
 				displayactivitythreevalues();
@@ -1441,8 +1452,10 @@
 					}]
 				});
 				
+				$('#ct-chartactivity3').css({ "height": graphactivity3height });
 				$('#ct-chartactivity3').css({ "display": "block" });
 				$('#outerdiv').css({ "display": "block" });
+				$('#ct-chartactivity3').highcharts().reflow();
 				
 				// final table computations
 				displayfinaltablevalues();
@@ -1530,9 +1543,9 @@
 				
 				$('.panel-collapse').collapse('show');
 				
-				$('#ct-chartactivity1').highcharts().reflow();
-				$('#ct-chartactivity2').highcharts().reflow();
-				$('#ct-chartactivity3').highcharts().reflow();
+				//$('#ct-chartactivity1').highcharts().reflow();
+				//$('#ct-chartactivity2').highcharts().reflow();
+				//$('#ct-chartactivity3').highcharts().reflow();
 			}
 			
 			
@@ -1861,12 +1874,16 @@
 			<div id="divcleartop" style="clear:both; height:70px;"></div>
 			
 			<div class="container-fluid" style="padding: 10px; background-color: #eeeaea;">
+				<div>
+					<p><h5 id="hselectoptions" class="italicfont"></h5></p>
+				</div>
+			
 				<div class="form-inline" style="padding-left :10px; padding-right :10px;">
 					<div class="form-group">
 						<input type="text" class="form-control input-sm" id="txtaddrow" placeholder="No of Layers" style="width:90px">
 					</div>
 					<div class="form-group">
-						<button id="btnaddrow" onclick="addtablerowclick()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="top" title="Add Layers"><span class="ladda-label">Add layers</span></button>
+						<button id="btnaddrow" onclick="addtablerowclick()" class="btn btn-primary btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="right" title="Add Layers"><span class="ladda-label">Add layers</span></button>
 					</div>
 					
 					<div class="form-group">
@@ -1892,7 +1909,7 @@
 					</div>
 					
 					<div class="checkbox"><label><input type="checkbox" id="checkcomps" value=""></label></div>
-					<button id="btncomputeactivity" onclick="displayactivityvalues()" class="btn btn-success btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="top" title="Compute"><span class="ladda-label">Compute</span></button>
+					<button id="btncomputeactivity" onclick="displayactivityvalues()" class="btn btn-success btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="right" title="Compute"><span class="ladda-label">Compute</span></button>
 				</div>
 			</div>
 			
@@ -1965,7 +1982,7 @@
 									</h5>
 								</div>
 								<div style="padding: 5px 10px 0px 5px; width:100%;">
-									<button id="btnprinttotalseq" class="btn btn-success btn-sm ladda-button pull-right" type="submit" data-toggle="tooltip" data-placement="top" title="Print Results">Print Results</button>
+									<button id="btnprinttotalseq" class="btn btn-success btn-sm ladda-button pull-right" type="submit" data-toggle="tooltip" data-placement="right" title="Print Results">Print</button>
 								</div>
 								<div style="clear:both; height:5px;"></div>
 								

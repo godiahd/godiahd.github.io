@@ -7,9 +7,11 @@
 				"out to countries, sub-continents or the entire world. The basis of the idea is the publication from Sommer and Bossio 2014",
 				"(Dynamics and climate change mitigation potential of soil organic carbon sequestration. J. Environm. Management 144, 83-87.)"],
 				
-	"updatemaintablekey": "Update values in blue for Layer Thickness (cm), SOC conc. (g/kg) - START, SOC conc. (g/kg) - END and Bulk density (g/cm3) for each layer below",
+	"selectoptionskey": "* To add aditional layers, input the number of layers to add and click Add Layers button. You can eelect Locality and Land use from drop down list or input your own",
 	
-	"updateactivitytwotablekey": "You can edit values in blue in the table below"
+	"updatemaintablekey": "* Update values in blue for Layer Thickness (cm), SOC conc. (g/kg) - START, SOC conc. (g/kg) - END and Bulk density (g/cm3) for each layer below, then click Compute button",
+	
+	"updateactivitytwotablekey": "* You can edit values in blue in the table below"
 	
 }
     
