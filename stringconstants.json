@@ -9,7 +9,7 @@
 				
 	"selectoptionskey": "* To add aditional layers, input the number of layers to add and click Add Layers button. You can eelect Locality and Land use from drop down list or input your own",
 	
-	"updatemaintablekey": "* Update values in blue for Layer Thickness (cm), SOC conc. (g/kg) - START, SOC conc. (g/kg) - END and Bulk density (g/cm3) for each layer below, then click Compute button",
+	"updatemaintablekey": "* Given values in blue are just examples. Please update these values for layer thickness (cm), SOC conc. (g/kg) - START, SOC conc. (g/kg) - END and bulk density (g/cm3) for each layer below, then click Compute!",
 	
 	"updateactivitytwotablekey": "* You can edit values in blue in the table below"
 	

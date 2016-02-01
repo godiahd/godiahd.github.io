@@ -130,7 +130,7 @@ output {
 
 .italicfont {
 	font-style: italic;
-	
+	text-align: left;
 }
 
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
