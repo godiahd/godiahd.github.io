@@ -9,8 +9,11 @@
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oxygen:300">
 		
-		<script src="https://code.highcharts.com/highcharts.js"></script>
-		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<!-- Highcharts -->
+	
+		<script src="https://github.highcharts.com/master/highcharts.src.js"></script>
+		<script src="https://github.highcharts.com/master/highcharts-more.js"></script>
+		<script src="https://github.highcharts.com/master/modules/exporting.src.js"></script>
 		
 		<!-- Bootstrap -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -528,6 +531,8 @@
 						var linesmoothenedend = [];
 						var markerliststart = []; // holds values to display with marker
 						var markerlistend = []; // holds values to display with marker
+						var middepthliststart = [];
+						var middepthlistend = [];
 						
 						if (activity1graphcomputations) {
 							// if display tables
@@ -586,19 +591,24 @@
 							var beinningsameYstart = checkbeginningsameY(x_range, y_start_range);
 							var beinningsameYend = checkbeginningsameY(x_range, y_end_range);
 							
+							var lastsameYstart = checklastsameY(x_range, y_start_range);
+							var lastsameYend = checklastsameY(x_range, y_end_range);
+							
 							for (i = 0; i < activity1tablecomputations.length - 1; i++) {
 								var returnrows = activity1tablecomputations[i];
-								if (returnrows[4] >= beinningsameYstart[0]) {
+								if (returnrows[4] >= beinningsameYstart[0] && returnrows[4] <= lastsameYstart[0]) {
+									middepthliststart.push(parseFloat(returnrows[4]));
 									markerliststart.push(parseFloat(returnrows[5]));
 								}
 								
-								if (returnrows[4] >= beinningsameYend[0]) {
+								if (returnrows[4] >= beinningsameYend[0] && returnrows[4] <= lastsameYend[0]) {
+									middepthlistend.push(parseFloat(returnrows[4]));
 									markerlistend.push(parseFloat(returnrows[6]));
 								}
 							}
 							
 							// draw graph
-							drawactivityonegraph(labelsdata, linesmoothenedstart, linesmoothenedend, markerliststart, markerlistend, Math.floor(beinningsameYstart[0]), Math.floor(beinningsameYend[0]));
+							drawactivityonegraph(labelsdata, linesmoothenedstart, linesmoothenedend, markerliststart, markerlistend, middepthliststart, middepthlistend);
 							
 						} else {
 							alert("No values for graph display.");
@@ -765,7 +775,7 @@
 			}
 			
 			
-			function drawactivityonegraph(labelsdata, linesmoothenedstart, linesmoothenedend, markerliststart, markerlistend, begYstart, begYend) {
+			function drawactivityonegraph(labelsdata, linesmoothenedstart, linesmoothenedend, markerliststart, markerlistend, middepthliststart, middepthlistend) {
 				var lowest_linesmoothened = 0;
 				
 				try {
@@ -841,63 +851,123 @@
 						}]
 					});
 					
+					var chartseries;
+					var middepthpointstoadd;
+					var markerpointstoadd;
+					
 					// update series 1 chart
-					var seriesend = chart.series[1];
-					if (seriesend.data.length) {
-						var lastvalupdated;
-						
-						for (j = begYend; j < seriesend.data.length; j++) {
-							if ((markerlistend.indexOf(seriesend.data[j].y) >= 0) && (seriesend.data[j].y != lastvalupdated)) {
-								seriesend.data[j].update({
-									marker:{
-										enabled: true,
-										symbol: 'square',
-										radius: 5.5,
-										fillColor: 'white',
-										lineColor: '#FF0000',
-										lineWidth: 1,
-										states: {
-											allowPointSelect: true,
-											hover: {
-												fillColor: 'red',
-												lineColor: 'red'                                	
-											}
+					chartseries = chart.series[1];
+					middepthpointstoadd = middepthlistend;
+					markerpointstoadd = markerlistend;
+					
+					for (j = 0; j < chartseries.data.length; j++) {
+						if (middepthlistend.indexOf(chartseries.data[j].x) >= 0 && markerlistend.indexOf(chartseries.data[j].y) >= 0) {
+							chartseries.data[j].update({
+								marker:{
+									enabled: true,
+									symbol: 'square',
+									radius: 5.5,
+									fillColor: 'white',
+									lineColor: '#FF0000',
+									lineWidth: 1,
+									states: {
+										allowPointSelect: true,
+										hover: {
+											fillColor: 'red',
+											lineColor: 'red'                                	
 										}
 									}
-								});
-								lastvalupdated = seriesend.data[j].y;
-							}
+								}
+							});
+							
+							middepthpointstoadd.splice(middepthpointstoadd.indexOf(chartseries.data[j].x), 1);
+							markerpointstoadd.splice(markerpointstoadd.indexOf(chartseries.data[j].y), 1);
+						} 
+					}
+					
+					if (middepthpointstoadd.length > 0) {
+						var endpnt;
+						
+						for (j = 0; j < middepthpointstoadd.length; j++) {
+							chartseries.addPoint({
+								x: middepthpointstoadd[j],
+								y: markerpointstoadd[j],
+								marker:{
+									enabled: true,
+									symbol: 'square',
+									radius: 5.5,
+									fillColor: 'white',
+									lineColor: '#FF0000',
+									lineWidth: 1,
+									states: {
+										allowPointSelect: true,
+										hover: {
+											fillColor: 'red',
+											lineColor: 'red'                                	
+										}
+									}
+								}
+							}, false);
 						}
 					}
 					
 					// update series 0 chart
-					var seriesstart = chart.series[0];
-					if (seriesstart.data.length) {
-						var lastvalupdated;
-						
-						for (j = begYstart; j < seriesstart.data.length; j++) {
-							if ((markerliststart.indexOf(seriesstart.data[j].y) >= 0) && (seriesstart.data[j].y != lastvalupdated)) {
-								seriesstart.data[j].update({
-									marker:{
-										enabled: true,
-										symbol: 'circle',
-										radius: 7,
-										fillColor: 'white',
-										lineColor: '#000000',
-										lineWidth: 1,
-										states: {
-											allowPointSelect: true,
-											hover: {
-												fillColor: '#000000',
-												lineColor: '#000000'                                	
-											}
+					chartseries = chart.series[0];
+					middepthpointstoadd = middepthliststart;
+					markerpointstoadd = markerliststart;
+					
+					for (j = 0; j < chartseries.data.length; j++) {
+						if (middepthliststart.indexOf(chartseries.data[j].x) >= 0 && markerliststart.indexOf(chartseries.data[j].y) >= 0) {
+							chartseries.data[j].update({
+								marker:{
+									enabled: true,
+									symbol: 'circle',
+									radius: 7,
+									fillColor: 'white',
+									lineColor: '#000000',
+									lineWidth: 1,
+									states: {
+										allowPointSelect: true,
+										hover: {
+											fillColor: '#000000',
+											lineColor: '#000000'                                	
 										}
 									}
-								});
-								lastvalupdated = seriesstart.data[j].y;
-							}
+								}
+							});
+							
+							middepthpointstoadd.splice(middepthpointstoadd.indexOf(chartseries.data[j].x), 1);
+							markerpointstoadd.splice(markerpointstoadd.indexOf(chartseries.data[j].y), 1);
 						}
 					}
+					
+					if (middepthpointstoadd.length > 0) {
+						var endpnt;
+						
+						for (j = 0; j < middepthpointstoadd.length; j++) {
+							chartseries.addPoint({
+								x: middepthpointstoadd[j],
+								y: markerpointstoadd[j],
+								marker:{
+									enabled: true,
+									symbol: 'circle',
+									radius: 7,
+									fillColor: 'white',
+									lineColor: '#000000',
+									lineWidth: 1,
+									states: {
+										allowPointSelect: true,
+										hover: {
+											fillColor: '#000000',
+											lineColor: '#000000'                                	
+										}
+									}
+								}
+							});
+						}
+					}
+					
+					chart.redraw();
 					
 					$('#ct-chartactivity1').css({ "height": graphactivity1height +"px" });
 					$('#ct-chartactivity1').css({ "display": "inline-block" });
@@ -1388,6 +1458,8 @@
 							}
 						}
 					}
+					
+					chart.redraw();
 					
 					$('#ct-chartactivity2').css({ "height": graphactivity2height +"px" });
 					$('#ct-chartactivity2').css({ "display": "inline-block" });
@@ -2460,8 +2532,10 @@
 									  <a data-toggle="collapse" href="#panel-finaltable">Total SOC-Sequestration – Summary Table</a>
 									</h5>
 								</div>
-								<div style="padding: 5px 10px 0px 5px; width:100%;">
-									<button id="btnprinttotalseq" class="btn btn-success btn-sm ladda-button pull-right" type="submit" data-toggle="tooltip" data-placement="right" title="Print Results">Print</button>
+								<div style="padding: 5px 10px 0px 5px; width:100%; text-align:right;">
+									
+									<input type="image" id="btnprinttotalseq" src="./img/print.png" title="Print" height="40" data-toggle="tooltip" data-placement="right"/>
+								
 								</div>
 								<div style="clear:both; height:5px;"></div>
 								
