@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>CIAT Soil Sequestration App (CSSA) - About</title>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oxygen:300">
+		
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		
+		<!-- Local Styleshet-->
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+		
+		
+		<script>
+			var filepath = "stringconstants.json";
+			var serialized_constantsdict = {};
+			var socappdetailskey;
+			var copyrightkey;
+			
+		
+			$(document).ready(function() {
+				window.onresize = function() {
+					repositionnavbar();
+					repositionfooter();
+				}
+			
+				// fetch json data
+				$.getJSON(filepath, {
+					format: "json"
+				})
+				.done(function(data) {
+					serialized_constantsdict = data;
+					
+					socappdetailskey = serialized_constantsdict["introductionkey"];
+					copyrightkey = serialized_constantsdict["copyrightkey"];
+					
+					$('#psocappdetails').text(socappdetailskey);
+					$('#hcopyright').text(copyrightkey);
+					
+				})
+				.fail(function(jqxhr, textStatus, error) {
+					alert("Request Failed: " + textStatus + ", " + error);
+					return;
+				});
+				
+				
+			});
+				
+			
+			$(window).load(function() {
+				repositionnavbar();
+				repositionfooter();
+			});
+
+			
+			function repositionnavbar() {
+				try {
+					$('#divcleartop').css({"height": $('#navtopbar').height()});
+				}
+				
+				catch (err) {
+					alert("An error has occured: " + err.message);
+				}
+			}
+			
+			
+			function repositionfooter() {
+				try {
+					if (($('body').outerHeight() + $('footer').outerHeight()) < $(window).outerHeight()) {
+						$('footer').css({"bottom": 0 });
+					
+					} else {
+						$('footer').css({"top": $('body').outerHeight() });
+					}
+				}
+				
+				catch (err) {
+					alert("An error has occured: " + err.message);
+				}
+			}
+			
+			
+
+		</script>
+	</head>
+	
+	<body class="offsetfootermargin">
+		<div id="divallbodyelements">
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container-fluid" style="width:100%;">
+					<div class="row row-list" style="background-color: #FFFFFF; color: #000000; width:100%;">
+						<div id="navbar-left" class="navbar-collapse collapse col-lg-6" style="padding-left: 20px; width:50%;">
+							<h1 class="soc-logo">
+								<a href="socapp.html">
+									<span class="brand-soc">SOC</span>
+									<span class="brand-app">APP</span>
+								</a>
+							</h1>
+						</div>
+						
+						<div id="navbar-right" class="navbar-collapse collapse col-lg-6" style="padding-right: 20px; width:50%;">
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a role="button" href="socapp.html">
+										Home
+									</a>
+								</li>
+								
+								<li class="dropdown">
+									<a class="dropdown-toggle" role="button" data-hover="dropdown" href="#" aria-expanded="false">
+										About
+									<b class="caret"></b>
+									</a>
+									
+									<ul class="dropdown-menu">
+										<li>
+											<a href="#hsocapp">SOCAPP</a>
+										</li>
+										<li>
+											<a href="#hteam">The Team</a>
+										</li>
+										<li>
+											<a href="#hcopyright">Copyright</a>
+										</li>
+									</ul>
+								</li>
+								
+								<li>
+									<a role="button" href="soccomputations.html">
+										Computations
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+			
+			<div id="divcleartop" style="clear:both; height:70px;"></div>
+			
+			<div id="divmain" class="container-fluid">
+				<div id="divinnermain" class="container-fluid">
+					<div class="socapp-content">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<h3 id="hsocapp">About SOCAPP</h3>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-12 sub-page-content">
+									<p id="psocappdetails"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div class="team-content">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<h3 id="hteam">The Team</h3>
+								</div>
+								<div class="col-md-12 sub-page-content">
+									<p>Our team is made up of 4 most dedicated soils and geoinformation specialists. </p>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="team-details">
+									<div class="row">
+										<div class="col-sm-6 col-md-4">
+											<img class="img-circle img-responsive" style="max-width: 180px; height: auto" src="./img/profile_placeholder.jpg">
+											<h4 class="team-name">Sommer Rolf</h4>
+											<p class="team-title text-muted">Senior Scientist, Soils Research Area - CIAT</p>
+										</div>
+										<div class="col-sm-6 col-md-4">
+											<img class="img-circle img-responsive" style="max-width: 180px; height: auto" src="./img/profile_placeholder.jpg">
+											<h4 class="team-name">Koech Nicholas</h4>
+											<p class="team-title text-muted">Remote Sensing/GIS Analyst , Soils Research Area/DAPA - CIAT</p>
+										</div>
+										<div class="col-sm-6 col-md-4">
+											<img class="img-circle img-responsive" style="max-width: 180px; height: auto" src="./img/profile_david.jpg">
+											<h4 class="team-name">David Godiah</h4>
+											<p class="team-title text-muted">Consultant - Web Developer</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div class="copyright-content">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<h3>Copyright</h3>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-12 sub-page-content">
+									<p id="hcopyright"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	
+	<footer>
+		<div id="divfooter" class="page-footer">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-8">
+						<div class="org-logo-details">
+							<p class="ciat-full text-muted">International Center for Tropical Agriculture</p>
+							<p class="ciat-full text-muted">Member of the CGIAR Consortium </p>
+							<p class="copyright-notice text-muted">© 2015. All Rights Resverved.</p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="org-logo">
+							<div class="cgiar-logo pull-left">
+								<a href="http://www.cgiar.org/" target="_blank"><img class="img-responsive" src="./img/logocgiar.png" alt="CIAT"></a>
+							</div>
+							
+							<div class="ciat-logo pull-left">
+								<a href="http://ciat.cgiar.org/" target="_blank"><img class="img-responsive" src="./img/logociat.png" alt="CIAT"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer> 
+</html>
