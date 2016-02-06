@@ -13,6 +13,11 @@ footer {
 	height: 100px; /* same as body margin: 0 0 100px */
 }
 
+.editable-popup{
+	
+	
+}
+
 .div-outer {
 	width: 100%;
 	overflow: auto;
@@ -67,12 +72,10 @@ footer {
 
 .editvalues1 {
 	color: blue;
-	
 }
 
 .editvalues2 {
 	color: blue;
-	
 }
 
 .uneditvalues {

@@ -435,14 +435,18 @@ function SocApp() {
 			
 			$('.editvalues1').editable({
 				mode: "popup",
+				
 				validate: function(value) {
 					if (!$.isNumeric($.trim(value))) {
 						return "Enter numeric value";
 					}
 				}
 			});
-			$('.editvalues1').on('hidden', function (e, params) {
-				displayactivityvalues();
+			
+			$(".editable").click(function (e) {
+				$(".editable-submit").click(function (e) {
+					displayactivityvalues();
+				});
 			});
 		}
 
