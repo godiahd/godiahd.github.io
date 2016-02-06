@@ -22,9 +22,9 @@
 			var filepath = "stringconstants.json";
 			var serialized_constantsdict = {};
 			var socappdetailskey;
+			var socappfundingkey;
 			var copyrightkey;
 			
-		
 			$(document).ready(function() {
 				window.onresize = function() {
 					repositionnavbar();
@@ -39,9 +39,11 @@
 					serialized_constantsdict = data;
 					
 					socappdetailskey = serialized_constantsdict["introductionkey"];
+					socappfundingkey = serialized_constantsdict["socappfundingkey"];
 					copyrightkey = serialized_constantsdict["copyrightkey"];
 					
 					$('#psocappdetails').text(socappdetailskey);
+					$('#psocappfunding').text(socappfundingkey);
 					$('#hcopyright').text(copyrightkey);
 					
 				})
@@ -112,7 +114,6 @@
 										Home
 									</a>
 								</li>
-								
 								<li class="dropdown">
 									<a class="dropdown-toggle" role="button" data-hover="dropdown" href="#" aria-expanded="false">
 										About
@@ -124,6 +125,9 @@
 											<a href="#hsocapp">SOCAPP</a>
 										</li>
 										<li>
+											<a href="#hfunding">Funding Support</a>
+										</li>
+										<li>
 											<a href="#hteam">The Team</a>
 										</li>
 										<li>
@@ -131,7 +135,6 @@
 										</li>
 									</ul>
 								</li>
-								
 								<li>
 									<a role="button" href="soccomputations.html">
 										Computations
@@ -158,6 +161,29 @@
 							<div class="row">
 								<div class="col-md-12 sub-page-content">
 									<p id="psocappdetails"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div class="socapp-funding">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<h3 id="hfunding">Funding Support</h3>
+								</div>
+							</div>
+							<div class="row">
+								<div class="row">
+									<div class="col-md-12 sub-page-content">
+										<p id="psocappfunding"></p>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6 col-md-12">
+										<img class="img-responsive" style="max-width: 180px; height: auto" src="./img/logo_funding.png">
+										<p class="team-title text-muted">[Organization YYYY]</p>
+									</div>
 								</div>
 							</div>
 						</div>

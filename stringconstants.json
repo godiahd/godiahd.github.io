@@ -13,6 +13,8 @@
 	
 	"soctotalseqsummaryheadingkey": "Total SOC-Sequestration – Summary Table",
 	
+	"socappfundingkey": "CIAT is grateful for the support received from [Organization YYYY] towards the development of SOCAPP.",
+	
 	"copyrightkey": "CIAT SOCAPP is a Soil Organic Content computation tool that cpmputes SOC concentration and sequestration of a given soil, and outputs the results in graphic and table formats. The tool is intended for use by individuals, governments, NGOs, researchers, communities, and others seeking to compute SOC."
 }
     
