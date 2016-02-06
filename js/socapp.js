@@ -47,6 +47,8 @@ function SocApp() {
 		$('#btnaddrow').tooltip();
 		$('#btncomputeactivity').tooltip();
 		$('#btnprinttotalseq').tooltip();
+		
+		
 
 		window.onresize = function() {
 			repositionnavbar();
@@ -172,9 +174,10 @@ function SocApp() {
 			return false;
 		});
 
-
+				
+				
 	});
-
+		
 
 	$(window).load(function() {
 		repositionnavbar();
@@ -430,12 +433,17 @@ function SocApp() {
 				addindex += 1;
 			}
 			
+			//renderdatatable('tblactivity1', false);
+			
+			//$('#tblactivity1').on('length.dt', function (e, settings, len) {
+			//	repositionfooter();
+			//});
+			
 			$('.removerowbtn').tooltip();
 			$('#divactivity1table').css({"display": "inline-block"});
 			
 			$('.editvalues1').editable({
 				mode: "popup",
-				
 				validate: function(value) {
 					if (!$.isNumeric($.trim(value))) {
 						return "Enter numeric value";
@@ -443,10 +451,10 @@ function SocApp() {
 				}
 			});
 			
-			$(".editable").click(function (e) {
-				$(".editable-submit").click(function (e) {
+			$('.editvalues1').on('hidden', function (e, params) {
+				if (params == "save") {
 					displayactivityvalues();
-				});
+				}
 			});
 		}
 
@@ -507,6 +515,11 @@ function SocApp() {
 					}
 					
 					$('#divactivity1computedtable').css({ "display": "inline-block" });
+					renderdatatable('tblactivity1computedvalues', 'divactivity1computedtable', true);
+					
+					$('#tblactivity1computedvalues').on('length.dt', function (e, settings, len) {
+						repositionfooter();
+					});
 				}
 				
 				// create graph values (for second table)
@@ -559,6 +572,11 @@ function SocApp() {
 					
 					if (showcomputations == true) {
 						$('#divactivity1graphtable').css({ "display": "inline-block" });
+						renderdatatable('tblactivity1graphvalues', 'divactivity1graphtable', true);
+						
+						$('#tblactivity1graphvalues').on('length.dt', function (e, settings, len) {
+							repositionfooter();
+						});
 					}
 					
 					// get marker values
@@ -1091,6 +1109,12 @@ function SocApp() {
 					}
 				}
 				
+				//renderdatatable('tblactivity2computedvalues', true);
+				
+				//$('#tblactivity2computedvalues').on('length.dt', function (e, settings, len) {
+				//	repositionfooter();
+				//});
+				
 				$('.editvalues2').editable({
 					mode: "popup",
 					validate: function(value) {
@@ -1101,7 +1125,9 @@ function SocApp() {
 				});
 				
 				$('.editvalues2').on('hidden', function (e, params) {
-					activity2tablevalueschanged(e.target);
+					if (params == "save") {
+						activity2tablevalueschanged(e.target);
+					}
 				});
 				
 				$('#divactivity2computedtable').css({ "display": "inline-block" });
@@ -1241,9 +1267,14 @@ function SocApp() {
 						rowitem += '</tr>';
 						$('#tblactivity2graphvalues').find('tbody').append(rowitem);
 					}
-				
-					$('#divactivity2graphtable').css({ "display": "inline-block" });
 				}
+				
+				$('#divactivity2graphtable').css({ "display": "inline-block" });
+				renderdatatable('tblactivity2graphvalues', 'divactivity2graphtable', true);
+				
+				$('#tblactivity2graphvalues').on('length.dt', function (e, settings, len) {
+					repositionfooter();
+				});
 			}
 			
 			var yearslabel = [];
@@ -1698,9 +1729,14 @@ function SocApp() {
 						rowitem += '</tr>';
 						$('#tblactivity3graphvalues').find('tbody').append(rowitem);
 					}
-					
-					$('#divactivity3graphtable').css({ "display": "inline-block" });
 				}
+				
+				$('#divactivity3graphtable').css({ "display": "inline-block" });
+				renderdatatable('tblactivity3graphvalues', 'divactivity3graphtable', true);
+				
+				$('#tblactivity3graphvalues').on('length.dt', function (e, settings, len) {
+					repositionfooter();
+				});
 			}
 			
 			// draw graph
@@ -1922,6 +1958,14 @@ function SocApp() {
 			}
 			
 			$('#divtotalsocsequestration').css({ "display": "inline-block" });
+			if ($('#tbltotalsocsequestration').find('tbody tr').length == 1) {
+				renderdatatable('tbltotalsocsequestration', 'divtotalsocsequestration', false);
+				
+				$('#tbltotalsocsequestration').on('length.dt', function (e, settings, len) {
+					repositionfooter();
+				});
+			}
+			
 			resizebodycontents();
 		}
 
@@ -2188,7 +2232,40 @@ function SocApp() {
 			return "";
 		}
 	}
-
+	
+	
+	function renderdatatable(tableid, divid, destroy) {
+		if (destroy == false) {
+			$('#' + tableid).DataTable(
+				{
+					// Disable sorting on the no-sort class
+					"sPaginationType": "full_numbers",
+					"bDestroy" : true,
+					"ordering": false,
+					"bFilter": false,
+					"bInfo": true,
+					"bLengthChange": false,
+					"aLengthMenu": [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, "All"]],
+					"pageLength": 10
+			});
+			
+		} else {
+			$('#' + tableid).DataTable(
+				{
+					// Disable sorting on the no-sort class
+					"sPaginationType": "full_numbers",
+					"bDestroy" : false,
+					"ordering": false,
+					"bFilter": false,
+					"bInfo": true,
+					"aLengthMenu": [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, "All"]],
+					"pageLength": 10
+			});
+		}
+		
+		
+	}
+	
 
 	// From VBA codes
 	function SOC_Konv(SOC_percent, BD, Layer_Thickness_cm) { // SOC_percent As Double, BD As Double, Layer_Thickness_cm As Double

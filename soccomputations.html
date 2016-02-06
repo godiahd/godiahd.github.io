@@ -33,6 +33,21 @@
 		<!-- SOCAPP js -->
 		<script src="js/socapp.js"></script>
 		
+		<!-- dataTable -->
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.0.1/css/responsive.bootstrap.min.css">
+		
+		<!-- dataTable -->
+		<script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+		<script src="https://cdn.datatables.net/responsive/2.0.1/js/dataTables.responsive.min.js"></script>
+		<script src="https://cdn.datatables.net/responsive/2.0.1/js/responsive.bootstrap.min.js"></script>
+		
+		
+		
+		
+		
+		
 		<script>
 			var _socapp = new SocApp();
 			
@@ -229,14 +244,12 @@
 									</h5>
 								</div>
 								<div style="padding: 5px 10px 0px 5px; width:100%; text-align:right;">
-									
 									<input type="image" id="btnprinttotalseq" src="./img/print.png" title="Print" height="40" data-toggle="tooltip" data-placement="right"/>
-								
 								</div>
 								<div style="clear:both; height:5px;"></div>
 								
 								<div id="panel-finaltable" class="panel-body panel-collapse collapse in" style="padding:10px">
-									<div id="divtotalsocsequestration" style="width: 100%; overflow: auto; display: none; font-size: 12px;">
+									<div id="divtotalsocsequestration" style="width: 100%; overflow: auto; display: none; font-size: 12px;" class="dataTables_wrapper form-inline dt-bootstrap">
 										<table id="tbltotalsocsequestration" class="table table-striped table-bordered table-condensed table-hover">
 											<thead>
 												<th>Locality</th><th>Land Use</th><th>Years of seq.</th><th>SOC-sequestration (Mt C)</th>
