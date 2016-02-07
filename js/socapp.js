@@ -435,10 +435,6 @@ function SocApp() {
 			
 			//renderdatatable('tblactivity1', false);
 			
-			//$('#tblactivity1').on('length.dt', function (e, settings, len) {
-			//	repositionfooter();
-			//});
-			
 			$('.removerowbtn').tooltip();
 			$('#divactivity1table').css({"display": "inline-block"});
 			
@@ -516,10 +512,6 @@ function SocApp() {
 					
 					$('#divactivity1computedtable').css({ "display": "inline-block" });
 					renderdatatable('tblactivity1computedvalues', 'divactivity1computedtable', true);
-					
-					$('#tblactivity1computedvalues').on('length.dt', function (e, settings, len) {
-						repositionfooter();
-					});
 				}
 				
 				// create graph values (for second table)
@@ -573,10 +565,6 @@ function SocApp() {
 					if (showcomputations == true) {
 						$('#divactivity1graphtable').css({ "display": "inline-block" });
 						renderdatatable('tblactivity1graphvalues', 'divactivity1graphtable', true);
-						
-						$('#tblactivity1graphvalues').on('length.dt', function (e, settings, len) {
-							repositionfooter();
-						});
 					}
 					
 					// get marker values
@@ -1110,11 +1098,7 @@ function SocApp() {
 				}
 				
 				//renderdatatable('tblactivity2computedvalues', true);
-				
-				//$('#tblactivity2computedvalues').on('length.dt', function (e, settings, len) {
-				//	repositionfooter();
-				//});
-				
+	
 				$('.editvalues2').editable({
 					mode: "popup",
 					validate: function(value) {
@@ -1271,10 +1255,6 @@ function SocApp() {
 				
 				$('#divactivity2graphtable').css({ "display": "inline-block" });
 				renderdatatable('tblactivity2graphvalues', 'divactivity2graphtable', true);
-				
-				$('#tblactivity2graphvalues').on('length.dt', function (e, settings, len) {
-					repositionfooter();
-				});
 			}
 			
 			var yearslabel = [];
@@ -1733,10 +1713,6 @@ function SocApp() {
 				
 				$('#divactivity3graphtable').css({ "display": "inline-block" });
 				renderdatatable('tblactivity3graphvalues', 'divactivity3graphtable', true);
-				
-				$('#tblactivity3graphvalues').on('length.dt', function (e, settings, len) {
-					repositionfooter();
-				});
 			}
 			
 			// draw graph
@@ -1960,10 +1936,6 @@ function SocApp() {
 			$('#divtotalsocsequestration').css({ "display": "inline-block" });
 			if ($('#tbltotalsocsequestration').find('tbody tr').length == 1) {
 				renderdatatable('tbltotalsocsequestration', 'divtotalsocsequestration', false);
-				
-				$('#tbltotalsocsequestration').on('length.dt', function (e, settings, len) {
-					repositionfooter();
-				});
 			}
 			
 			resizebodycontents();
