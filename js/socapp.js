@@ -2245,7 +2245,7 @@ function SocApp() {
 					"bFilter": false,
 					"bInfo": true,
 					"bLengthChange": false,
-					"aLengthMenu": [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, "All"]],
+					//"aLengthMenu": [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, "All"]],
 					"pageLength": 10
 			});
 			
@@ -2258,12 +2258,11 @@ function SocApp() {
 					"ordering": false,
 					"bFilter": false,
 					"bInfo": true,
-					"aLengthMenu": [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, "All"]],
+					"bLengthChange": false,
+					//"aLengthMenu": [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, "All"]],
 					"pageLength": 10
 			});
 		}
-		
-		
 	}
 	
 
