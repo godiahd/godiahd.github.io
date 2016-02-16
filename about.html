@@ -27,6 +27,11 @@
 			var copyrightkey;
 			
 			$(document).ready(function() {
+				if (!window.jQuery) {  
+					alert("Your internet connection is not reliable. Computations not possible.")
+					return;
+				}
+				
 				window.onresize = function() {
 					repositionnavbar();
 					repositionfooter();
@@ -103,8 +108,9 @@
 					<div class="row row-list" style="background-color: #FFFFFF; color: #000000; width:100%;">
 						<div id="navbar-left" class="navbar-collapse collapse col-lg-6" style="padding-left: 20px; width:50%;">
 							<h1 class="soc-logo">
-								<a href="socapp.html">
-									<span class="brand-soc">SOC</span>
+								<a href="about.html">
+									<span class="brand-ciat">CIAT</span>
+									<span class="brand-app">SOC</span>
 									<span class="brand-app">APP</span>
 								</a>
 							</h1>
@@ -117,27 +123,6 @@
 										About
 									</a>
 								</li>
-								<!--<li class="dropdown">
-									<a class="dropdown-toggle" role="button" data-hover="dropdown" href="#" aria-expanded="false">
-										About
-									<b class="caret"></b>
-									</a>
-									
-									<ul class="dropdown-menu">
-										<li>
-											<a href="#hsocapp">SOCAPP</a>
-										</li>
-										<li>
-											<a href="#hfunding">Funding Support</a>
-										</li>
-										<li>
-											<a href="#hteam">The Team</a>
-										</li>
-										<li>
-											<a href="#hcopyright">Copyright</a>
-										</li>
-									</ul>
-								</li>-->
 								<li>
 									<a role="button" href="soccomputations.html">
 										Computations
@@ -175,23 +160,15 @@
 					<hr>
 					<div class="socapp-funding">
 						<div class="container-fluid">
-							<!--<div class="row">
+							<div class="row">
 								<div class="col-md-12">
 									<h3 id="hfunding">Funding Support</h3>
 								</div>
-							</div>-->
+							</div>
 							<div class="row">
-								
-									<div class="col-md-12 sub-page-content">
-										<p id="psocappfunding"></p>
-									</div>
-								
-								<!--<div class="row">
-									<div class="col-sm-6 col-md-12">
-										<img class="img-responsive" style="max-width: 180px; height: auto" src="./img/logo_funding.png">
-										<p class="team-title text-muted">[Organization YYYY]</p>
-									</div>
-								</div>-->
+								<div class="col-md-12 sub-page-content">
+									<p id="psocappfunding"></p>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -199,45 +176,23 @@
 					<div class="team-content">
 						<div class="container-fluid">
 							<div class="row">
-								<!--<div class="col-md-12">
+								<div class="col-md-12">
 									<h3 id="hteam">The Team</h3>
-								</div>-->
+								</div>
 								<div class="col-md-12 sub-page-content">
 									<p id="psocappteam"></p>
 								</div>
 							</div>
-							
-							<!--<div class="row">
-								<div class="team-details">
-									<div class="row">
-										<div class="col-sm-6 col-md-4">
-											<img class="img-circle img-responsive" style="max-width: 180px; height: auto" src="./img/profile_placeholder.jpg">
-											<h4 class="team-name">Sommer Rolf</h4>
-											<p class="team-title text-muted">Senior Scientist, Soils Research Area - CIAT</p>
-										</div>
-										<div class="col-sm-6 col-md-4">
-											<img class="img-circle img-responsive" style="max-width: 180px; height: auto" src="./img/profile_placeholder.jpg">
-											<h4 class="team-name">Koech Nicholas</h4>
-											<p class="team-title text-muted">Remote Sensing/GIS Analyst , Soils Research Area/DAPA - CIAT</p>
-										</div>
-										<div class="col-sm-6 col-md-4">
-											<img class="img-circle img-responsive" style="max-width: 180px; height: auto" src="./img/profile_david.jpg">
-											<h4 class="team-name">David Godiah</h4>
-											<p class="team-title text-muted">Consultant - Web Developer</p>
-										</div>
-									</div>
-								</div>
-							</div>-->
 						</div>
 					</div>
 					<hr>
 					<div class="copyright-content">
 						<div class="container-fluid">
-							<!--<div class="row">
+							<div class="row">
 								<div class="col-md-12">
 									<h3>Copyright</h3>
 								</div>
-							</div>-->
+							</div>
 							<div class="row">
 								<div class="col-md-12 sub-page-content">
 									<p id="hcopyright"></p>
