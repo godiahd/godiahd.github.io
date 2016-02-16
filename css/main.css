@@ -70,11 +70,19 @@ footer {
     color: red;
 }
 
-.editvalues1 {
+.editvaluesinitialinput {
 	color: blue;
 }
 
-.editvalues2 {
+.editvaluessocseq {
+	color: blue;
+}
+
+.editvaluesrateconstant {
+	color: blue;
+}
+
+.editvaluespertotalarea {
 	color: blue;
 }
 
@@ -222,12 +230,12 @@ output {
 	font-size: 12px;
 }
 
-.brand-soc {
-	color: #000;
+.brand-ciat {
+	color: #5CB85C;
 }
 
 .brand-app {
-	color: #5CB85C;
+	color: #000;
 }
 
 .cgiar-logo img {

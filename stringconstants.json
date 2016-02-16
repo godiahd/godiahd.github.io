@@ -1,7 +1,9 @@
 {
-	"introductionkey": "There has been quite some debate about the scope for mitigating climate change by soil organic carbon (SOC) sequestration. However, it seems there is a general lack of understanding of quantities and the time-dimension, as well as the possible contribution, that SOC-seq. can play. This web application provides a platform where users can visualize the organic carbon content of a soil of, their choice, as well as the quantitative impact of soil conserving management practices on sequestration, how such sequestration, would unfold over time and what would be the magnitude of SOC seq. if the anticipated practice (to foster SOC seq.) would be scaled, out to countries, sub-continents or the entire world. The basis of the idea is the publication from Sommer and Bossio 2014, (Dynamics and climate change mitigation potential of soil organic carbon sequestration. J. Environm. Management 144, 83-87.)",
+	"introductionkey": "There has been quite some debate about the scope for mitigating climate change by soil organic carbon (SOC) sequestration. However, it seems there is a general lack of understanding of quantities and the time-dimension, as well as the possible contribution that SOC sequestration can play. This web application provides a platform where users can visualize the organic carbon content of a soil of their choice, as well as the quantitative impact of soil conserving management practices on sequestration, how such sequestration would unfold over time and what would be the magnitude of SOC sequestration if the anticipated practice (to foster SOC seq.) would be scaled out to countries, sub-continents or the entire world. The basis of the idea is the publication from Sommer and Bossio 2014 (Dynamics and climate change mitigation potential of soil organic carbon sequestration. J. Environm. Management 144, 83-87).",
 				
-	"selectoptionskey": "* To add aditional layers, input the number of layers to add and click Add Layers button. You can eelect Locality and Land use from drop down list or input your own",
+	"selectoptionskey": "* To add aditional layers, input the number of layers to add and click Add Layers button. You can select Locality and Land use from drop down list or input your own. Acreage values for corresponding selected locality and land use are ",
+	
+	"faostatlinkkey": "http://faostat3.fao.org/download/G2/*/E?",
 	
 	"updatemaintablekey": "* Given values in blue are just examples. Please update these values for layer thickness (cm), SOC conc. (g/kg) - START, SOC conc. (g/kg) - END and bulk density (g/cm3) for each layer below, then click Compute!",
 	
@@ -13,8 +15,10 @@
 	
 	"soctotalseqsummaryheadingkey": "Total SOC-Sequestration – Summary Table",
 	
-	"socappfundingkey": "CIAT is grateful for the support received from [Organization YYYY] towards the development of SOCAPP.",
+	"socappteamkey": "This application was developed by David Godiah (godiah.david@gmail.com), Rolf Sommer (r.sommer@cgiar.org) and Nicolas Koech (n.koech@cgiar.org).",
 	
-	"copyrightkey": "CIAT SOCAPP is a Soil Organic Content computation tool that cpmputes SOC concentration and sequestration of a given soil, and outputs the results in graphic and table formats. The tool is intended for use by individuals, governments, NGOs, researchers, communities, and others seeking to compute SOC."
+	"socappfundingkey": "CIAT is grateful for the financial support from the Deutsche Gesellschaft für Internationale Zusammenarbeit, GIZ, for developing this application.",
+	
+	"copyrightkey": "Copyright: The CIAT SOC APP is a soil organic content computation tool that computes SOC concentration and sequestration of a given soil, and outputs the results in graphic and table formats. The tool is open-access to be use by individuals, governments, NGOs, researchers, communities, and others. We are happy to share the source code upon enquiry."
 }
     

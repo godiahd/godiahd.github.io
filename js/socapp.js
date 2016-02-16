@@ -39,6 +39,7 @@ function SocApp() {
 	var socseqovertimeheadingkey;
 	var soctotalseqsummaryheadingkey;
 	var selectoptionskey;
+	var faostatlinkkey;
 	var decplaces = 3;
 	var decplacesdetails = 11;
 
@@ -111,6 +112,7 @@ function SocApp() {
 			socseqheadingkey = serialized_constantsdict["socseqheadingkey"];
 			socseqovertimeheadingkey = serialized_constantsdict["socseqovertimeheadingkey"];
 			soctotalseqsummaryheadingkey = serialized_constantsdict["soctotalseqsummaryheadingkey"];
+			faostatlinkkey = serialized_constantsdict["faostatlinkkey"];
 			
 			$('#hselectoptions').text(selectoptionskey);
 			$('#hupdatemaintable').text(updatemaintablekey);
@@ -118,6 +120,8 @@ function SocApp() {
 			$('#asocseqheading').text(socseqheadingkey);
 			$('#asocseqovertimeheading').text(socseqovertimeheadingkey);
 			$('#asoctotalseqsummaryheading').text(soctotalseqsummaryheadingkey);
+			$('#hfaostatlink').attr("href", faostatlinkkey);
+			
 			
 		})
 		.fail(function(jqxhr, textStatus, error) {
@@ -422,10 +426,10 @@ function SocApp() {
 				
 				$('#tblactivity1').find('tbody').append('<tr>' +
 						'<td class="uneditvalues" contenteditable=false style="cursor:pointer;">' + layer + '</td>' +
-						'<td class="editvalues1" contenteditable=true title="Add Layers" style="cursor:pointer;" data-title="Enter Thickness">' + thicknessval + '</td>' +
-						'<td class="editvalues1" contenteditable=true title="Add Layers" style="cursor:pointer;" data-title="Enter SOC">' + socstartval + '</td>' +
-						'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter SOC">' + socendval + '</td>' +
-						'<td class="editvalues1" contenteditable=true style="cursor:pointer;" data-title="Enter Bulk Density">' + bulkdensityval + '</td>' +
+						'<td class="editvaluesinitialinput" contenteditable=true title="Add Layers" style="cursor:pointer;" data-title="Enter Thickness">' + thicknessval + '</td>' +
+						'<td class="editvaluesinitialinput" contenteditable=true title="Add Layers" style="cursor:pointer;" data-title="Enter SOC">' + socstartval + '</td>' +
+						'<td class="editvaluesinitialinput" contenteditable=true style="cursor:pointer;" data-title="Enter SOC">' + socendval + '</td>' +
+						'<td class="editvaluesinitialinput" contenteditable=true style="cursor:pointer;" data-title="Enter Bulk Density">' + bulkdensityval + '</td>' +
 						'<td class="uneditvalues" contenteditable=false style="cursor:pointer;"></td>' +
 						'<td style="align:center; padding:0px; margin:0px;"><input type="image" src="./img/delete.png" class="removerowbtn" title="Remove" height="24" data-toggle="tooltip" data-placement="right"/></td>' +
 					'</tr>');
@@ -438,7 +442,7 @@ function SocApp() {
 			$('.removerowbtn').tooltip();
 			$('#divactivity1table').css({"display": "inline-block"});
 			
-			$('.editvalues1').editable({
+			$('.editvaluesinitialinput').editable({
 				mode: "popup",
 				validate: function(value) {
 					if (!$.isNumeric($.trim(value))) {
@@ -447,7 +451,7 @@ function SocApp() {
 				}
 			});
 			
-			$('.editvalues1').on('hidden', function (e, params) {
+			$('.editvaluesinitialinput').on('hidden', function (e, params) {
 				if (params == "save") {
 					displayactivityvalues();
 				}
@@ -1086,7 +1090,7 @@ function SocApp() {
 						
 						for (k = 0; k < activity2tablecomputations[i].length; k++) {
 							if (((i == 2 || i == 3 || i == 4) && k == 1) || ((i == 2 || i == 3) && k == 2)) {
-								rowitem += '<td class="editvalues2" contenteditable=true style="cursor:pointer;" data-title="Edit Value">' + activity2tablecomputations[i][k] + '</td>';
+								rowitem += '<td class="editvaluessocseq" contenteditable=true style="cursor:pointer;" data-title="Edit Value">' + activity2tablecomputations[i][k] + '</td>';
 							} else {
 								rowitem += '<td contenteditable=false class="uneditvalues">' + activity2tablecomputations[i][k] + '</td>';
 							}
@@ -1099,7 +1103,7 @@ function SocApp() {
 				
 				//renderdatatable('tblactivity2computedvalues', true);
 	
-				$('.editvalues2').editable({
+				$('.editvaluessocseq').editable({
 					mode: "popup",
 					validate: function(value) {
 						if (!$.isNumeric($.trim(value))) {
@@ -1108,7 +1112,7 @@ function SocApp() {
 					}
 				});
 				
-				$('.editvalues2').on('hidden', function (e, params) {
+				$('.editvaluessocseq').on('hidden', function (e, params) {
 					if (params == "save") {
 						activity2tablevalueschanged(e.target);
 					}
@@ -1515,11 +1519,11 @@ function SocApp() {
 			
 			rowvalues = ["Rate Constant", rateconsfactor/1000];
 			activity3tablecomputations.push(rowvalues);
-			$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td class="uneditvalues">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td class="uneditvalues">' + formatNumber(activity3tablecomputations[activity3tablecomputations.length - 1][1], decplaces) + '</td></tr>');
+			$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td class="uneditvalues">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td class="editvaluesrateconstant" contenteditable=true title="Rate Constant" style="cursor:pointer;" data-title="Edit Rate Constant">' + formatNumber(activity3tablecomputations[activity3tablecomputations.length - 1][1], decplaces) + '</td></tr>');
 			
 			rowvalues = ["% Total land area at year 1", perctotalareafactor/1000];
 			activity3tablecomputations.push(rowvalues);
-			$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td class="uneditvalues">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td class="uneditvalues">' + formatNumber(activity3tablecomputations[activity3tablecomputations.length - 1][1], decplaces) + '</td></tr>');
+			$('#tblactivity3computedvaluesC').find('tbody').append('<tr><td class="uneditvalues">' + activity3tablecomputations[activity3tablecomputations.length - 1][0] + '</td><td class="editvaluespertotalarea" contenteditable=true title="% Total Area at Year 1" style="cursor:pointer;" data-title="Edit % Total Area at Year 1">' + formatNumber(activity3tablecomputations[activity3tablecomputations.length - 1][1], decplaces) + '</td></tr>');
 			
 			rowvalues = ["Total Years", totalyearsglobal];
 			activity3tablecomputations.push(rowvalues);
@@ -1545,6 +1549,28 @@ function SocApp() {
 			  .on('input', function() {
 				updateOutput($outputtop_rateconst[0], "Rate");
 			  });
+			  
+			$('.editvaluesrateconstant').editable({
+				mode: "popup",
+				validate: function(value) {
+					// validate entry
+					if (!$.isNumeric($.trim(value))) {
+						return "Enter numeric value";
+					}
+					if (parseFloat($.trim(value)) < (minslidervalue_rateconst/1000) || parseFloat($.trim(value)) > (maxslidervalue_rateconst/1000)) {
+						return "Invalid entry. Value must be between " + minslidervalue_rateconst/1000 + " and " + maxslidervalue_rateconst/1000;
+					}
+				}
+			});
+			
+			$('.editvaluesrateconstant').on('hidden', function (e, params) {
+				if (params == "save") {
+					var newval = parseFloat(e.target.innerHTML)*1000;
+					$element_rateconst.val(newval).change();
+					
+					updateactivity3graphvalues(0, newval);
+				}
+			});
 			
 			var $element_yzero = $('input[id="range_slider_yzero"]');
 			var $outputtop_yzero = $('outputtop_yzero');
@@ -1563,6 +1589,28 @@ function SocApp() {
 				updateOutput($outputtop_yzero[0], "%Area");
 			  });
 			  
+			$('.editvaluespertotalarea').editable({
+				mode: "popup",
+				validate: function(value) {
+					// validate entry
+					if (!$.isNumeric($.trim(value))) {
+						return "Enter numeric value";
+					}
+					if (parseFloat($.trim(value)) < (minslidervalue_yzero/1000) || parseFloat($.trim(value)) > (maxslidervalue_yzero/1000)) {
+						return "Invalid entry. Value must be between " + minslidervalue_yzero/1000 + " and " + maxslidervalue_yzero/1000;
+					}
+				}
+			});
+			
+			$('.editvaluespertotalarea').on('hidden', function (e, params) {
+				if (params == "save") {
+					var newval = parseFloat(e.target.innerHTML)*1000;
+					$element_yzero.val(newval).change();
+					
+					updateactivity3graphvalues(1, newval);
+				}
+			});
+			
 			$('#divactivity3computedtable').css({ "display": "inline-block" });
 			
 			// compute graph values
@@ -1599,7 +1647,7 @@ function SocApp() {
 			alert("An error has occured: " + err.message);
 		}
 	}
-
+	
 
 	function updateOutput(el, val) {
 		el.textContent = val;
