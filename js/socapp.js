@@ -1,5 +1,8 @@
-/* Simple tool to compute SOC concentration and sequestration
-* This notice must stay intact for usage 
+/* This web application provides a platform where users can visualize the organic carbon content of a soil of their choice, 
+as well as the quantitative impact of soil conserving management practices on sequestration, how such sequestration would unfold 
+over time and what would be the magnitude of SOC sequestration if the anticipated practice (to foster SOC seq.) would be scaled 
+out to countries, sub-continents or the entire world. The basis of the idea is the publication from Sommer and Bossio 
+2014 (Dynamics and climate change mitigation potential of soil organic carbon sequestration. J. Environm. Management 144, 83-87).
 * Author: CIAT
 */
 
@@ -94,7 +97,7 @@ function SocApp() {
 			}));
 		})
 		.fail(function(jqxhr, textStatus, error) {
-			alert("Request Failed: " + textStatus + ", " + error);
+			messiprompt(textStatus + ", " + error, "Request Failed", "messierror");
 			return;
 		});
 
@@ -122,7 +125,7 @@ function SocApp() {
 			$('#hfaostatlink').attr("href", faostatlinkkey);
 		})
 		.fail(function(jqxhr, textStatus, error) {
-			alert("Request Failed: " + textStatus + ", " + error);
+			messiprompt(textStatus + ", " + error, "Request Failed", "messierror");
 			return;
 		});
 
@@ -184,7 +187,7 @@ function SocApp() {
 	
 	window.onload = function() {
 		if (!window.Highcharts || !window.jQuery) {  
-			alert("Your internet connection is not reliable. Computations not possible.")
+			messiprompt("Your internet connection is not reliable. Computations not possible.", "Internet Connection", "messierror");
 			return;
 		}
 	}
@@ -203,7 +206,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 	
@@ -265,7 +268,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 	
@@ -283,7 +286,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 	
@@ -301,7 +304,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 	
@@ -312,7 +315,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -329,7 +332,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 			return "";
 		}
 	}
@@ -371,7 +374,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -460,7 +463,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -607,16 +610,16 @@ function SocApp() {
 					drawactivityonegraph(labelsdata, linesmoothenedstart, linesmoothenedend, markerliststart, markerlistend, middepthliststart, middepthlistend);
 					
 				} else {
-					alert("No values for graph display.");
+					messiprompt("No values for graph display", "Graph", "messiwarning");
 				}
 				
 			} else {
-				alert("Some values not computed.");
+				messiprompt("Some values are not computed", "Values", "messiwarning");
 			}
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -705,7 +708,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 			return activityonecomputedlist;
 		}
 	}
@@ -765,7 +768,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 			return activityonecomputedgraphlist;
 		}
 	}
@@ -975,7 +978,7 @@ function SocApp() {
 
 		catch (err) {
 			resizebodycontents();
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -1051,16 +1054,16 @@ function SocApp() {
 				var valuesupdated = updateactivity2layercomputations();
 				
 				if (yearsupdated == false) {
-					alert("User input values invalid.");
+					messiprompt("User input values are invalid", "Input Values", "messiwarning");
 					return;
 				}
 				if (valuesupdated == false) {
-					alert("User input values invalid.");
+					messiprompt("User input values are invalid", "Input Values", "messiwarning");
 					return;
 				}
 				
 			} else {
-				alert("Values failed to compute.");
+				messiprompt("Values failed to compute", "Values", "messierror");
 				return;
 			}
 			
@@ -1125,13 +1128,13 @@ function SocApp() {
 				computeactivity2graphvalues();
 				
 			} else {
-				alert("Some values not computed.");
+				messiprompt("Some values not computed", "Values", "messiwarning");
 			}
 		}
 
 		catch (err) {
 			resizebodycontents();
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -1150,7 +1153,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 			return false;
 		}
 	}
@@ -1173,7 +1176,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 			return false;
 		}
 	}
@@ -1307,7 +1310,7 @@ function SocApp() {
 
 		catch (err) {
 			resizebodycontents();
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -1476,7 +1479,7 @@ function SocApp() {
 
 		catch (err) {
 			resizebodycontents();
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -1566,11 +1569,16 @@ function SocApp() {
 				}
 			});
 			
+			$('.editvaluesrateconstant').on('shown', function(e, editable) {
+				if ($.isNumeric(e.target.innerHTML)) {
+					editable.input.$input.val(e.target.innerHTML);
+				}
+			});
+			
 			$('.editvaluesrateconstant').on('hidden', function (e, params) {
 				if (params == "save") {
 					var newval = parseFloat(e.target.innerHTML)*1000;
 					$element_rateconst.val(newval).change();
-					
 					updateactivity3graphvalues(0, newval);
 				}
 			});
@@ -1605,11 +1613,16 @@ function SocApp() {
 				}
 			});
 			
+			$('.editvaluespertotalarea').on('shown', function(e, editable) {
+				if ($.isNumeric(e.target.innerHTML)) {
+					editable.input.$input.val(e.target.innerHTML);
+				}
+			});
+			
 			$('.editvaluespertotalarea').on('hidden', function (e, params) {
 				if (params == "save") {
 					var newval = parseFloat(e.target.innerHTML)*1000;
 					$element_yzero.val(newval).change();
-					
 					updateactivity3graphvalues(1, newval);
 				}
 			});
@@ -1622,7 +1635,7 @@ function SocApp() {
 
 		catch (err) {
 			resizebodycontents();
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -1647,7 +1660,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 	
@@ -1772,7 +1785,7 @@ function SocApp() {
 
 		catch (err) {
 			resizebodycontents();
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -1905,7 +1918,7 @@ function SocApp() {
 
 		catch (err) {
 			resizebodycontents();
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -1994,7 +2007,7 @@ function SocApp() {
 
 		catch (err) {
 			resizebodycontents();
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -2058,7 +2071,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -2094,7 +2107,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 			return isvalid;
 		}
 	}
@@ -2116,7 +2129,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -2154,7 +2167,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 			return returnvalue;
 		}
 	}
@@ -2188,7 +2201,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 			return returnvalue;
 		}
 	}
@@ -2215,7 +2228,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 			return returval;
 		}
 	}
@@ -2236,7 +2249,7 @@ function SocApp() {
 		}
 
 		catch (err) {
-			alert("An error has occured: " + err.message);
+			messiprompt("An error has occured: " + err.message, "Error", "messierror");
 		}
 	}
 
@@ -2292,6 +2305,26 @@ function SocApp() {
 			});
 		}
 	}
+	
+	
+	function messiprompt(msg, title, titleanimation) {
+            var titleclass;
+
+            if (titleanimation == "messisuccess") {
+                titleclass = 'success';
+
+            } else if (titleanimation == "messiinfo") {
+                titleclass = 'info';
+
+            } else if (titleanimation == "messiwarning") {
+                titleclass = 'anim warning';
+
+            } else if (titleanimation == "messierror") {
+                titleclass = 'anim error';
+            }
+
+            new Messi(msg, { title: title, titleClass: titleclass, modal: true });
+        }
 	
 
 	// From VBA codes

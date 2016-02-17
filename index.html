@@ -17,18 +17,26 @@
 		<!-- Local Styleshet-->
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		
+		<!-- Local Styleshet-->
+		<link rel="stylesheet" type="text/css" href="js/Messi-master/messi.min.css">
+		
+		<!-- SOCAPP js -->
+		<script src="js/Messi-master/messi.min.js"></script>
+		
 		
 		<script>
 			var filepath = "stringconstants.json";
 			var serialized_constantsdict = {};
 			var socappdetailskey;
-			var socappfundingkey;
+			var socappfundingkey1;
+			var socappfundingkey2;
+			var socappfundingkey3;
 			var socappteamkey;
 			var copyrightkey;
 			
 			$(document).ready(function() {
-				if (!window.jQuery) {  
-					alert("Your internet connection is not reliable. Computations not possible.")
+				if (!window.jQuery) {
+					messiprompt("Your internet connection is not reliable. Computations not possible.", "Internet Connection", "messierror");
 					return;
 				}
 				
@@ -45,18 +53,22 @@
 					serialized_constantsdict = data;
 					
 					socappdetailskey = serialized_constantsdict["introductionkey"];
-					socappfundingkey = serialized_constantsdict["socappfundingkey"];
+					socappfundingkey1 = serialized_constantsdict["socappfundingkey1"];
+					socappfundingkey2 = serialized_constantsdict["socappfundingkey2"];
+					socappfundingkey3 = serialized_constantsdict["socappfundingkey3"];
 					socappteamkey = serialized_constantsdict["socappteamkey"];
 					copyrightkey = serialized_constantsdict["copyrightkey"];
 					
 					$('#psocappdetails').text(socappdetailskey);
-					$('#psocappfunding').text(socappfundingkey);
+					$('#psocappfunding1').text(socappfundingkey1);
+					$('#psocappfunding2').text(socappfundingkey2);
+					$('#psocappfunding3').text(socappfundingkey3);
 					$('#psocappteam').text(socappteamkey);
 					$('#hcopyright').text(copyrightkey);
 					
 				})
 				.fail(function(jqxhr, textStatus, error) {
-					alert("Request Failed: " + textStatus + ", " + error);
+					messiprompt(textStatus + ", " + error, "Request Failed", "messierror");
 					return;
 				});
 				
@@ -76,7 +88,7 @@
 				}
 				
 				catch (err) {
-					alert("An error has occured: " + err.message);
+					messiprompt("An error has occured: " + err.message, "Error", "messierror");
 				}
 			}
 			
@@ -92,12 +104,29 @@
 				}
 				
 				catch (err) {
-					alert("An error has occured: " + err.message);
+					messiprompt("An error has occured: " + err.message, "Error", "messierror");
 				}
 			}
 			
 			
+			function messiprompt(msg, title, titleanimation) {
+				var titleclass;
 
+				if (titleanimation == "messisuccess") {
+					titleclass = 'success';
+
+				} else if (titleanimation == "messiinfo") {
+					titleclass = 'info';
+
+				} else if (titleanimation == "messiwarning") {
+					titleclass = 'anim warning';
+
+				} else if (titleanimation == "messierror") {
+					titleclass = 'anim error';
+				}
+
+				new Messi(msg, { title: title, titleClass: titleclass, modal: true });
+			}
 		</script>
 	</head>
 	
@@ -108,7 +137,7 @@
 					<div class="row row-list" style="background-color: #FFFFFF; color: #000000; width:100%;">
 						<div id="navbar-left" class="navbar-collapse collapse col-lg-6" style="padding-left: 20px; width:50%;">
 							<h1 class="soc-logo">
-								<a href="about.html">
+								<a href="index.html">
 									<span class="brand-ciat">CIAT</span>
 									<span class="brand-app">SOC</span>
 									<span class="brand-app">APP</span>
@@ -119,7 +148,7 @@
 						<div id="navbar-right" class="navbar-collapse collapse col-lg-6" style="padding-right: 20px; width:50%;">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a role="button" href="about.html">
+									<a role="button" href="index.html">
 										About
 									</a>
 								</li>
@@ -167,7 +196,7 @@
 							</div>
 							<div class="row">
 								<div class="col-md-12 sub-page-content">
-									<p id="psocappfunding"></p>
+									<p id="psocappfunding1" style="display:inline"></p><a target="_blank" id="psocappfunding2" class="italicfont" style="display:inline; font-size:18px;" href="https://www.giz.de/en/html/index.html"></a><p id="psocappfunding3" style="display:inline"></p>
 								</div>
 							</div>
 						</div>

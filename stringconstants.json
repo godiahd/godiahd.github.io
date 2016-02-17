@@ -17,7 +17,11 @@
 	
 	"socappteamkey": "This application was developed by David Godiah (godiah.david@gmail.com), Rolf Sommer (r.sommer@cgiar.org) and Nicolas Koech (n.koech@cgiar.org).",
 	
-	"socappfundingkey": "CIAT is grateful for the financial support from the Deutsche Gesellschaft für Internationale Zusammenarbeit, GIZ, for developing this application.",
+	"socappfundingkey1": "CIAT is grateful for the financial support from the ",
+	
+	"socappfundingkey2": "Deutsche Gesellschaft für Internationale Zusammenarbeit, GIZ, ",
+	
+	"socappfundingkey3": "for developing this application.",
 	
 	"copyrightkey": "The CIAT SOC APP is a soil organic content computation tool that computes SOC concentration and sequestration of a given soil, and outputs the results in graphic and table formats. The tool is open-access to be use by individuals, governments, NGOs, researchers, communities, and others. We are happy to share the source code upon enquiry.",
 	
