@@ -156,12 +156,6 @@ output {
 	font-weight: bold;
 }
 
-.navbar-default .navbar-nav > li > ul >li > a:hover, .navbar-default .navbar-nav > li >ul > li > a:focus {
-	background-color: #bfbfbf;
-    color: #777;
-	font-weight: bold;
-}
-
 .dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0;
