@@ -76,10 +76,16 @@
 			});
 				
 			
+			
 			$(window).load(function() {
 				repositionnavbar();
 				repositionfooter();
 			});
+			
+			window.onresize = function() {
+				repositionnavbar();
+				repositionfooter();
+			}
 
 			
 			function repositionnavbar() {
@@ -131,11 +137,20 @@
 	</head>
 	
 	<body class="offsetfootermargin">
-		<div id="divallbodyelements">
-			<nav class="navbar navbar-default navbar-fixed-top">
-				<div class="container-fluid" style="width:100%;">
-					<div class="row row-list" style="background-color: #FFFFFF; color: #000000; width:100%;">
-						<div id="navbar-left" class="navbar-collapse collapse col-lg-6" style="padding-left: 20px; width:50%;">
+		<div class="container" style="width:100%; padding: 0px">
+			<nav class="navbar navbar-default" style="width:100%;">
+				<div class="container-fluid" style="color: #000000; width:100%;">
+					<div class="navbar-header" style="width:100%;">
+						<button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" type="button">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					
+					<div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height:1px; width:100%;">
+						<ul class="nav navbar-nav navbar">
 							<h1 class="soc-logo">
 								<a href="index.html">
 									<span class="brand-ciat">CIAT</span>
@@ -143,89 +158,84 @@
 									<span class="brand-app">APP</span>
 								</a>
 							</h1>
-						</div>
-						
-						<div id="navbar-right" class="navbar-collapse collapse col-lg-6" style="padding-right: 20px; width:50%;">
-							<ul class="nav navbar-nav navbar-right">
-								<li>
-									<a role="button" href="index.html">
-										About
-									</a>
-								</li>
-								<li>
-									<a role="button" href="soccomputations.html">
-										Computations
-									</a>
-								</li>
-							</ul>
-						</div>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li>
+								<a role="button" href="index.html">
+									About
+								</a>
+							</li>
+							<li>
+								<a role="button" href="soccomputations.html">
+									Computations
+								</a>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</nav>
+		</div>
 			
-			<div id="divcleartop" style="clear:both; height:70px;"></div>
-			
-			<div id="divmain" class="container-fluid">
-				<div id="divinnermain" class="container-fluid">
-					<div class="socapp-content">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-md-12">
-									<h3 id="hsocapp">About the CIAT SOC APP</h3>
-								</div>
+		<div id="divmain" class="container-fluid">
+			<div id="divinnermain" class="container-fluid">
+				<div class="socapp-content">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-12">
+								<h3 id="hsocapp">About the CIAT SOC APP</h3>
 							</div>
-							<div class="row">
-								<div class="col-md-12 sub-page-content">
-									<p id="psocappdetails"></p>
-								</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 sub-page-content">
+								<p id="psocappdetails"></p>
 							</div>
-							<div class="row">
-								<div class="col-md-12 sub-page-content">
-									<button id="btnperformcalculations" onclick="window.location.href='soccomputations.html'" class="btn btn-success btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="top" title="Perform Calculations"><span class="ladda-label">Perform Calculations</span></button>
-								</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 sub-page-content">
+								<button id="btnperformcalculations" onclick="window.location.href='soccomputations.html'" class="btn btn-success btn-sm ladda-button" data-style="expand-left" data-toggle="tooltip" data-placement="top" title="Perform Calculations"><span class="ladda-label">Perform Calculations</span></button>
 							</div>
 						</div>
 					</div>
-					<hr>
-					<div class="socapp-funding">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-md-12">
-									<h3 id="hfunding">Funding Support</h3>
-								</div>
+				</div>
+				<hr>
+				<div class="socapp-funding">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-12">
+								<h3 id="hfunding">Funding Support</h3>
 							</div>
-							<div class="row">
-								<div class="col-md-12 sub-page-content">
-									<p id="psocappfunding1" style="display:inline"></p><a target="_blank" id="psocappfunding2" class="italicfont" style="display:inline; font-size:18px;" href="https://www.giz.de/en/html/index.html"></a><p id="psocappfunding3" style="display:inline"></p>
-								</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 sub-page-content">
+								<p id="psocappfunding1" style="display:inline"></p><a target="_blank" id="psocappfunding2" class="italicfont" style="display:inline; font-size:18px;" href="https://www.giz.de/en/html/index.html"></a><p id="psocappfunding3" style="display:inline"></p>
 							</div>
 						</div>
 					</div>
-					<hr>
-					<div class="team-content">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-md-12">
-									<h3 id="hteam">The Team</h3>
-								</div>
-								<div class="col-md-12 sub-page-content">
-									<p id="psocappteam"></p>
-								</div>
+				</div>
+				<hr>
+				<div class="team-content">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-12">
+								<h3 id="hteam">The Team</h3>
+							</div>
+							<div class="col-md-12 sub-page-content">
+								<p id="psocappteam"></p>
 							</div>
 						</div>
 					</div>
-					<hr>
-					<div class="copyright-content">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-md-12">
-									<h3>Copyright</h3>
-								</div>
+				</div>
+				<hr>
+				<div class="copyright-content">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-12">
+								<h3>Copyright</h3>
 							</div>
-							<div class="row">
-								<div class="col-md-12 sub-page-content">
-									<p id="hcopyright"></p>
-								</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 sub-page-content">
+								<p id="hcopyright"></p>
 							</div>
 						</div>
 					</div>
@@ -234,26 +244,24 @@
 		</div>
 	</body>
 	
-	<footer>
-		<div id="divfooter" class="page-footer">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-8">
-						<div class="org-logo-details">
-							<p class="ciat-full text-muted">International Center for Tropical Agriculture</p>
-							<p class="ciat-full text-muted">Member of the CGIAR Consortium </p>
-							<p class="copyright-notice text-muted">© 2015. All Rights Resverved.</p>
-						</div>
+	<footer class="bs-docs-footer" role="contentinfo">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="org-logo-details">
+						<p class="ciat-full text-muted">International Center for Tropical Agriculture</p>
+						<p class="ciat-full text-muted">Member of the CGIAR Consortium </p>
+						<p class="copyright-notice text-muted">© 2015. All Rights Resverved.</p>
 					</div>
-					<div class="col-md-4">
-						<div class="org-logo">
-							<div class="cgiar-logo pull-left">
-								<a href="http://www.cgiar.org/" target="_blank"><img class="img-responsive" src="./img/logocgiar.png" alt="CIAT"></a>
-							</div>
-							
-							<div class="ciat-logo pull-left">
-								<a href="http://ciat.cgiar.org/" target="_blank"><img class="img-responsive" src="./img/logociat.png" alt="CIAT"></a>
-							</div>
+				</div>
+				<div class="col-md-4">
+					<div class="org-logo">
+						<div class="cgiar-logo pull-left">
+							<a href="http://www.cgiar.org/" target="_blank"><img class="img-responsive" src="./img/logocgiar.png" alt="CIAT"></a>
+						</div>
+						
+						<div class="ciat-logo pull-left">
+							<a href="http://ciat.cgiar.org/" target="_blank"><img class="img-responsive" src="./img/logociat.png" alt="CIAT"></a>
 						</div>
 					</div>
 				</div>

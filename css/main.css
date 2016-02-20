@@ -1,5 +1,7 @@
 body {
 	background-color: #eeeaea;
+	 
+
 }
 
 body .offsetfootermargin {
@@ -13,9 +15,8 @@ footer {
 	height: 100px; /* same as body margin: 0 0 100px */
 }
 
-.editable-popup{
-	
-	
+.navbar {
+    margin-bottom: 0;
 }
 
 .div-outer {
@@ -128,7 +129,7 @@ output {
 	padding: 0;
 }
 
-#divfooter {
+.bs-docs-footer {
 	background-color: #EDF0D8;
 	display: block;
 	width: 100%;

@@ -52,11 +52,6 @@ function SocApp() {
 		$('#btncomputeactivity').tooltip();
 		$('#btnprinttotalseq').tooltip();
 		
-		window.onresize = function() {
-			repositionnavbar();
-			repositionfooter();
-		}
-
 		addtablerow(5);
 
 		$('#tblactivity1').on('click', 'input[type="image"]', function(e){
@@ -178,12 +173,6 @@ function SocApp() {
 			return false;
 		});	
 	});
-		
-
-	$(window).load(function() {
-		repositionnavbar();
-		repositionfooter();
-	});
 	
 	window.onload = function() {
 		if (!window.Highcharts || !window.jQuery) {  
@@ -298,7 +287,7 @@ function SocApp() {
 			} else {
 				nographnegatives = false;
 			}
-			
+		
 			// compute graph values
 			computeactivity2graphvalues();
 		}
@@ -309,15 +298,7 @@ function SocApp() {
 	}
 	
 
-	function repositionnavbar() {
-		try {
-			$('#divcleartop').css({"height": $('#navtopbar').height()});
-		}
-
-		catch (err) {
-			messiprompt("An error has occured: " + err.message, "Error", "messierror");
-		}
-	}
+	
 
 
 	function fetchacreage(selectedlocality) {
