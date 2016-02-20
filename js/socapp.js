@@ -59,6 +59,7 @@ function SocApp() {
 			if (addindex > 0) {
 				addindex-=1;
 			}
+			
 			repositionfooter();
 		});
 

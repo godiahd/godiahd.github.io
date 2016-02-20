@@ -40,11 +40,6 @@
 					return;
 				}
 				
-				window.onresize = function() {
-					repositionnavbar();
-					repositionfooter();
-				}
-			
 				// fetch json data
 				$.getJSON(filepath, {
 					format: "json"
@@ -75,29 +70,14 @@
 				
 			});
 				
-			
-			
 			$(window).load(function() {
-				repositionnavbar();
 				repositionfooter();
 			});
 			
-			window.onresize = function() {
-				repositionnavbar();
+			$(window).onresize(function() {
 				repositionfooter();
-			}
+			});
 
-			
-			function repositionnavbar() {
-				try {
-					$('#divcleartop').css({"height": $('#navtopbar').height()});
-				}
-				
-				catch (err) {
-					messiprompt("An error has occured: " + err.message, "Error", "messierror");
-				}
-			}
-			
 			
 			function repositionfooter() {
 				try {
@@ -139,7 +119,7 @@
 	<body class="offsetfootermargin">
 		<div class="container" style="width:100%; padding: 0px">
 			<nav class="navbar navbar-default" style="width:100%;">
-				<div class="container-fluid" style="color: #000000; width:100%;">
+				<div class="container-fluid" style="width:100%;">
 					<div class="navbar-header" style="width:100%;">
 						<button class="navbar-toggle collapsed" aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" type="button">
 							<span class="sr-only">Toggle navigation</span>
@@ -175,7 +155,7 @@
 				</div>
 			</nav>
 		</div>
-			
+		
 		<div id="divmain" class="container-fluid">
 			<div id="divinnermain" class="container-fluid">
 				<div class="socapp-content">

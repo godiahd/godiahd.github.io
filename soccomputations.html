@@ -76,10 +76,10 @@
 			function repositionfooter() {
 				try {
 					if (($('body').outerHeight() + $('footer').outerHeight()) < $(window).outerHeight()) {
-						$('footer').css({"bottom": 0 });
+						$('footer').css({"bottom": 0, "position": "absolute" });
 					
 					} else {
-						$('footer').css({"top": $('body').outerHeight() });
+						$('footer').css({"top": $('body').outerHeight(), "position": "absolute" });
 					}
 				}
 				
@@ -92,9 +92,10 @@
 				repositionfooter();
 			});
 			
-			window.onresize = function() {
+			$(window).onresize(function() {
 				repositionfooter();
-			}
+			});
+			
 		</script>
 	</head>
 	
